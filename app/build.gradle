@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 4
+    compileSdkVersion 11
     buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "org.handmadeideas.chordreader"
-        minSdkVersion 3
-        targetSdkVersion 4
+        minSdkVersion 11
+        targetSdkVersion 11
     }
 
     buildTypes {
