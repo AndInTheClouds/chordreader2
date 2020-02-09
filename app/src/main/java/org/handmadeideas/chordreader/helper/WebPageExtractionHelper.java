@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class WebPageExtractionHelper {
 
 	private static UtilLogger log = new UtilLogger(org.handmadeideas.chordreader.helper.WebPageExtractionHelper.class);
-	
+
     // html tag or html escaped character
     private static Pattern htmlObjectPattern = Pattern.compile(
             "(" +
@@ -24,7 +24,7 @@ public class WebPageExtractionHelper {
             "|" + // OR
             "<\\s*head.*?>.*?<\\s*/head\\s*>" + // head span
             "|" + // OR
-            "<[^>]++>" + // html tag, such as '<br/>' or '<a href="www.google.com">'
+            "<[^>]++>" + // html tag, such as '<br/>' or '<a href="www.duckduckgo.com">'
             "|" + // OR
             "&[^; \n\t]++;" + // escaped html character, such as '&amp;' or '&#0233;'
             ")", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
@@ -33,27 +33,27 @@ public class WebPageExtractionHelper {
     // HTML newline tag, such as '<p>' or '<br/>'
     private static Pattern htmlNewlinePattern = Pattern.compile(
             "<(?:p|br)\\s*+(?:/\\s*+)?>", Pattern.CASE_INSENSITIVE);
-    
-	private static Pattern prePattern = Pattern.compile("<pre[^>]*>(.*?)</pre>", 
+
+	private static Pattern prePattern = Pattern.compile("<pre[^>]*>(.*?)</pre>",
 				Pattern.DOTALL|Pattern.CASE_INSENSITIVE);
-	
+
 	private static Pattern chordiePattern = Pattern.compile(
 			"<!-- END HEADER -->(.*?)<!-- BOTTOM GRIDS - START -->",
 			Pattern.DOTALL);
-	
+
 	private static Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r ]*){2,}");
-	
+
 	public static String extractChordChart(ChordWebpage webpage, String html, NoteNaming noteNaming) {
-		
+
 		Pattern pattern = null;
-		
+
 		switch (webpage) {
 		case Chordie:
 			pattern = chordiePattern;
 			break;
 		}
 		Matcher matcher = pattern.matcher(html);
-		
+
 		if (matcher.find()) {
 			String chordHtml = matcher.group(1);
 			String chordTxt = convertHtmlToText(chordHtml);
@@ -63,7 +63,7 @@ public class WebPageExtractionHelper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Try to find a likely chord chard from the "pre" section of a page
 	 * Returns null if it doesn't find anything likely to be a chord chart
@@ -71,9 +71,9 @@ public class WebPageExtractionHelper {
 	 * @return
 	 */
 	public static String extractLikelyChordChart(String html, NoteNaming noteNaming) {
-		
+
 		Matcher matcher = prePattern.matcher(html);
-		
+
 		while (matcher.find()) {
 			String preHtml = matcher.group(1);
 			String preTxt = convertHtmlToText(preHtml);
@@ -82,7 +82,7 @@ public class WebPageExtractionHelper {
 			}
 		}
 		return null;
-		
+
 	}
 
 
@@ -100,7 +100,7 @@ public class WebPageExtractionHelper {
 
             String replacementString;
             if (htmlText.charAt(start) == '&') { // html escaped character
-                
+
                 if (htmlObject.equalsIgnoreCase("&nbsp;")) {
                     replacementString = " "; // apache replaces nbsp with unicode \xc2\xa0, but we prefer just " "
                 } else {
@@ -128,29 +128,29 @@ public class WebPageExtractionHelper {
             searchIndex = end;
 
         }
-        
+
         plainText.append(htmlText.substring(searchIndex, htmlText.length()));
 
         return plainText.toString();
     }
-	
+
 	private static String cleanUpText(String text) {
-		
+
 		if (text == null) {
 			return text;
 		}
-		
-		
+
+
 		text = text.trim();
-		
+
 		// get rid of \r
 		text = StringUtil.replace(text, "\r", "");
-		
+
 		// replace multiple newlines with just two newlines
 		text = multipleNewlinePattern.matcher(text).replaceAll("\n\n");
-		
+
 		return text;
-		
+
 	}
-	
+
 }

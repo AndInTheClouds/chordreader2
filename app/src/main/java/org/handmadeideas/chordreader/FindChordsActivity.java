@@ -773,7 +773,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			log.e(e, "this should never happen");
 		}
 
-		loadUrl("http://www.google.com/search?q=" + urlEncoded);
+		loadUrl("http://www.duckduckgo.com?q=" + urlEncoded);
 
 	}
 
@@ -863,7 +863,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 
 	private boolean checkHtmlOfUnknownWebpage() {
 
-		if (url.contains("google.com")) {
+		if (url.contains("duckduckgo.com")) {
 			return false; // skip google - we're on the search results page
 		}
 
@@ -1476,7 +1476,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			super.onPageFinished(view, url);
 			log.d("onPageFinished()　" + url);
 			
-			if (url.contains("www.google.com")) {
+			if (url.contains("www.duckduckgo.com")) {
 				// trust google to only load once
 				urlLoaded(url);
 			} else { // don't trust other websites
