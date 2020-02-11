@@ -1183,42 +1183,22 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	private void showChordView() {
 		
 		// do in the background to avoid jankiness
-		
-		final ProgressDialog progressDialog = new ProgressDialog(this);
-		progressDialog.setTitle(R.string.loading_title);
-		progressDialog.setMessage(getText(R.string.please_wait));
-		progressDialog.setIndeterminate(true);
-		
 		AsyncTask<Void,Void,Spannable> task = new AsyncTask<Void, Void, Spannable>(){
 
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				progressDialog.show();
 			}
 
 			@Override
 			protected Spannable doInBackground(Void... params) {
-				
-				long start = System.currentTimeMillis();
 				
 				if (capoFret != 0 || transposeHalfSteps != 0) {
 					updateChordsInTextForTransposition(-transposeHalfSteps, -capoFret);
 				}
 				
 				Spannable newText = buildUpChordTextToDisplay();
-				
-				long elapsed = System.currentTimeMillis() - start;
-				
-				if (elapsed < PROGRESS_DIALOG_MIN_TIME) {
-					// show progressdialog for at least 1 second, or else it goes by too fast
-					// XXX: this is a weird UI hack, but I don't know what else to do
-					try {
-						Thread.sleep(PROGRESS_DIALOG_MIN_TIME - elapsed);
-					} catch (InterruptedException e) {
-						log.e(e,"unexpected exception");
-					}
-				}
+
 				return newText;
 			}
 
@@ -1227,9 +1207,6 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 				super.onPostExecute(newText);
 				
 				applyLinkifiedChordsTextToTextView(newText);
-				
-				progressDialog.dismiss();
-				
 			}
 			
 		};
