@@ -134,6 +134,9 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	    case R.id.menu_search_chords:
 	    	switchToSearchingMode();
 	    	break;
+	    case R.id.menu_new_file:
+			showNewFileDialog();
+			break;
 	    case R.id.menu_open_file:
 	    	showOpenFileDialog(true);
 	    	break;
@@ -974,6 +977,59 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		
 		//log.d(chordText);
 		
+	}
+
+	// This function shows a filename suggesting dialog and creates a new file with its output.
+	protected void showNewFileDialog() {
+
+		if (!checkSdCard()) {
+			return;
+		}
+
+		final EditText editText = createEditTextForFilenameSuggestingDialog(); // TODO This might suggest the wrong filename sometimes
+
+
+		DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				if (isInvalidFilename(editText.getText())) {
+					Toast.makeText(FindChordsActivity.this, R.string.enter_good_filename, Toast.LENGTH_SHORT).show();
+				} else {
+
+					if (SaveFileHelper.fileExists(editText.getText().toString())) {
+
+						new Builder(FindChordsActivity.this)
+								.setCancelable(true)
+								.setTitle(R.string.overwrite_file_title)
+								.setMessage(R.string.overwrite_file)
+								.setNegativeButton(android.R.string.cancel, null)
+								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										saveFile(editText.getText().toString(), "");
+
+									}
+								})
+								.show();
+
+					} else {
+						saveFile(editText.getText().toString(), "");
+					}
+
+					// Open the new file for editing
+					openFile(editText.getText().toString());
+					showConfirmChordchartDialog(true);
+				}
+
+				dialog.dismiss();
+			}
+
+		};
+
+		showFilenameSuggestingDialog(editText, onClickListener, R.string.new_file);
 	}
 
 	protected void showSaveChordchartDialog() {

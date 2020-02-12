@@ -18,6 +18,8 @@
 	<item android:id="@+id/menu_stop" android:title="@string/stop"
 		android:alphabeticShortcut="@string/stop" android:icon="@drawable/ic_menu_stop" />
 
+	<item android:id="@+id/menu_new_file" android:title="@string/new_file"
+		android:alphabeticShortcut="@string/new_file" />
 		
 	<item android:id="@+id/menu_open_file" android:title="@string/open_file"
 		android:alphabeticShortcut="@string/open_file" android:icon="@drawable/ic_menu_upload" />

@@ -18,6 +18,7 @@
     <string name="enter_good_filename">Please enter a valid filename.</string>
     <string name="save">Save</string>
     <string name="about">About</string>
+    <string name="new_file">New File</string>
     <string name="open_file">Open File</string>
     <string name="manage_saved_files">Manage Files</string>
     <string name="no_saved_files">No saved files found.</string>
