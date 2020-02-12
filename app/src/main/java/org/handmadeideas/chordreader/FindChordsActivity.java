@@ -1,7 +1,7 @@
 package org.handmadeideas.chordreader;
 
 import android.app.Activity;
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -348,7 +348,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	private void createTransposeDialog() {
 		
 		final View view = DialogHelper.createTransposeDialogView(this, capoFret, transposeHalfSteps);
-		new Builder(this)
+		new AlertDialog.Builder(this)
 			.setTitle(R.string.transpose)
 			.setCancelable(true)
 			.setNegativeButton(android.R.string.cancel, null)
@@ -484,7 +484,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		messageTextView.setText(R.string.select_files_to_delete);
 		messageTextView.setPadding(3, 3, 3, 3);
 		
-		Builder builder = new Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
 		builder.setTitle(R.string.manage_saved_files)
 			.setCancelable(true)
@@ -528,7 +528,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	protected void verifyDelete(final CharSequence[] filenameArray,
 			final boolean[] checkedItems, final DialogInterface parentDialog) {
 		
-		Builder builder = new Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
 		int deleteCount = 0;
 		
@@ -600,7 +600,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		
 		ArrayAdapter<CharSequence> dropdownAdapter = new FileAdapter(this, filenames, fileToSelect, false);
 		
-		Builder builder = new Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
 		builder.setTitle(R.string.open_file)
 			.setCancelable(true)
@@ -638,7 +638,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			textView.setMovementMethod(LinkMovementMethod.getInstance());
 			textView.setText(R.string.first_run_message);
 			textView.setLinkTextColor(ColorStateList.valueOf(getResources().getColor(R.color.linkColorBlue)));
-			new Builder(this)
+			new AlertDialog.Builder(this)
 					.setTitle(R.string.first_run_title)
 			        .setView(view)
 			        .setPositiveButton(android.R.string.ok,
@@ -958,7 +958,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
 		editText.setText(chordText);
 
-		new Builder(FindChordsActivity.this)
+		new AlertDialog.Builder(FindChordsActivity.this)
 		             .setTitle(editMode? R.string.edit_chords : R.string.confirm_chordchart)  
 		             .setView(editText)
 		             .setCancelable(true)
@@ -1000,7 +1000,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 
 					if (SaveFileHelper.fileExists(editText.getText().toString())) {
 
-						new Builder(FindChordsActivity.this)
+						new AlertDialog.Builder(FindChordsActivity.this)
 								.setCancelable(true)
 								.setTitle(R.string.overwrite_file_title)
 								.setMessage(R.string.overwrite_file)
@@ -1052,7 +1052,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 					
 					if (SaveFileHelper.fileExists(editText.getText().toString())) {
 
-						new Builder(FindChordsActivity.this)
+						new AlertDialog.Builder(FindChordsActivity.this)
 							.setCancelable(true)
 							.setTitle(R.string.overwrite_file_title)
 							.setMessage(R.string.overwrite_file)
@@ -1182,7 +1182,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	private void showFilenameSuggestingDialog(EditText editText, 
 			DialogInterface.OnClickListener onClickListener, int titleResId) {
 		
-		Builder builder = new Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
 		builder.setTitle(titleResId)
 			.setCancelable(true)
