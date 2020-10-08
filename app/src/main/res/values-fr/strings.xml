@@ -4,9 +4,9 @@
     <string name="about_chord_reader">À propos de Chord Reader</string>
     <string name="find_chords_intro_message">Pour commencer, cherchez des accords sur Internet.</string>
     <string name="find_chords_second_message">Une fois que vous avez trouvé les accords que vous cherchez, cliquez ici.</string>
-    <string name="loading">Chargement...</string>
-    <string name="chord_search_hint">Entrer le nom de l'artiste ou de la chanson</string>
-    <string name="chords_keyword">accords</string>
+    <string name="loading">Chargement…</string>
+    <string name="chord_search_hint">Entrer le nom de l\'artiste ou de la chanson</string>
+    <string name="chords_keyword">chords</string>
     <string name="chords_found">Accords identifiés. Cliquez ici pour confirmer.</string>
     <string name="confirm_chordchart">Confirmer accords</string>
     <string name="enter_filename">Donner un nom au fichier pour le sauvegarder dans la carte SD :</string>
@@ -35,60 +35,43 @@
     <string name="transpose_title">Transposer (demi-tons):</string>
     <string name="refresh">Actualiser</string>
     <string name="stop">Arrêter</string>
-    <string name="stopping">Arrêt...</string>
+    <string name="stopping">Arrêt…</string>
     <string name="transposing">Transposition</string>
-    <string name="please_wait">Veuillez patienter...</string>
+    <string name="please_wait">Veuillez patienter…</string>
     <string name="loading_title">Chargement</string>
     <string name="sort_az">Ordre alphabétique</string>
     <string name="sort_by_date">Ordre chronologique</string>
     <string name="edit">Éditer</string>
     <string name="edit_chords">Éditer accords</string>
-    
+
     <string name="no_guitar_chord_available">Aucun doigté de guitare disponible.</string>
     <string name="variation">Var.</string>
-    
-	<string name="pref_text_size">text_size</string>
-	<string name="pref_text_size_title">Taille du texte</string>
-	
-	<string name="text_size_xsmall_value">XS</string>
-	<string name="text_size_small_value">S</string>
-    <string name="text_size_medium_value">M</string>
-    <string name="text_size_large_value">L</string>
-    <string name="text_size_xlarge_value">XL</string>
 
-	<string name="text_size_xsmall_name">Très petit (8pt)</string>
-	<string name="text_size_small_name">Petit (10pt)</string>
+    <string name="pref_text_size_title">Taille du texte</string>
+
+    <string name="text_size_xsmall_name">Très petit (8pt)</string>
+    <string name="text_size_small_name">Petit (10pt)</string>
     <string name="text_size_medium_name">Moyen (12pt)</string>
     <string name="text_size_large_name">Grand (14pt)</string>
     <string name="text_size_xlarge_name">Très grand (16pt)</string>
-    
-    <string name="pref_scheme">color_scheme</string>
+
     <string name="pref_scheme_title">Thème</string>
-    <string name="pref_scheme_dark">Sombre</string>
-    <string name="pref_scheme_light">Clair</string>
-    <string name="pref_scheme_android">Android</string>
-    
+
     <string name="pref_category_appearance">Apparence</string>
     <string name="pref_category_configuration">Configuration</string>
-    
-    <string name="pref_note_naming">note_naming</string>
+
     <string name="pref_note_naming_title">Nom des notes</string>
-    <string name="pref_note_naming_value_english">Anglais</string>
-    <string name="pref_note_naming_value_northern">Allemand</string>
-    <string name="pref_note_naming_value_southern">Latin</string>
     <string name="pref_note_naming_english">Anglais</string>
     <string name="pref_note_naming_northern">Allemand</string>
     <string name="pref_note_naming_southern">Latin</string>
     <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
     <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
     <string name="pref_note_naming_explanation_southern">Do, Ré, Mi, Fa, etc.</string>
-    <string name="pref_note_naming_default">@string/pref_note_naming_value_english</string>
-            
+
     <string name="settings">Paramètres</string>
-    
-    <string name="pref_first_run">first_run3</string>
-    <string name="pref_first_run_title">Réinitialiser l'introduction</string>
-    <string name="pref_first_run_summary">Montrer de nouveau le message d'introduction.</string>
+
+    <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
+    <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader !</string>
     <string name="first_run_message">\
 <b>Quoi de neuf dans la version 1.0 ?</b>\n\
@@ -98,9 +81,10 @@
 &#160;&#160;&#160;&#160;&#160;&#160;- Latin (Do, Ré, Mi)\n\
 &#160;&#160;&#160;* Plusieurs doigtés dans les pop-up.\n\
 &#160;&#160;&#160;* Suppression des publicités.\n\
-&#160;&#160;&#160;* L'application devient open-source.\n\n\
+&#160;&#160;&#160;* L\'application devient open-source.\n\n\
 Chord Reader est un <b>logiciel libre</b>. Si vous souhaitez faire un don, rendez-vous sur <a href='http://nolanlawson.com'>le site web</a> !\
-</string> 
+</string>
+    <string name="new_file">Nouveau fichier</string>
 
-    
+
 </resources>
