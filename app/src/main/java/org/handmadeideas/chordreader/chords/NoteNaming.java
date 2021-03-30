@@ -34,14 +34,14 @@ public enum NoteNaming {
 			.put(ChordRoot.Bb , "B", "A#", "Asharp")
 			.put(ChordRoot.B , "H")
 			.put(ChordRoot.C , "C")
-			.put(ChordRoot.Db , "Db", "C#", "Dflat", "Csharp")
+			.put(ChordRoot.Db , "C#", "Db", "Dflat", "Csharp")
 			.put(ChordRoot.D , "D")
-			.put(ChordRoot.Eb , "Eb", "D#", "Eflat", "Dsharp")
+			.put(ChordRoot.Eb , "D#", "Eb", "Eflat", "Dsharp")
 			.put(ChordRoot.E , "E")
 			.put(ChordRoot.F , "F")
-			.put(ChordRoot.Gb , "Gb", "F#", "Gflat", "Gsharp")
+			.put(ChordRoot.Gb , "F#", "Gb", "Gflat", "Gsharp")
 			.put(ChordRoot.G , "G")
-			.put(ChordRoot.Ab , "Ab", "G#", "Aflat", "Gsharp")
+			.put(ChordRoot.Ab , "G#", "Ab", "Aflat", "Gsharp")
 			.build()),
 			
 	SouthernEuropean (R.string.pref_note_naming_southern,

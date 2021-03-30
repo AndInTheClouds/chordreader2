@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.handmadeideas.chordreader" android:versionCode="8"
-	android:versionName="1.0.3">
+	android:versionName="1.1.0">
 
 	<application android:icon="@drawable/chord_reader_icon" android:label="@string/app_name">
 	
@@ -15,8 +15,8 @@
 		</activity>
 
 		<activity android:name="org.handmadeideas.chordreader.AboutActivity" android:theme="@android:style/Theme.Dialog" />
-		
 		<activity android:name="org.handmadeideas.chordreader.SettingsActivity" android:label="@string/settings"/>
+		<activity android:name="org.handmadeideas.chordreader.ChordDictionaryEditActivity" android:theme="@style/TransparentTheme" />
 
 	</application>
 

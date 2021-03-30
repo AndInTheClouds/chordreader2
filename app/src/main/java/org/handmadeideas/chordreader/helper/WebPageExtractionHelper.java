@@ -22,7 +22,7 @@ public class WebPageExtractionHelper {
             "|" + // OR
             "<\\s*script.*?>.*?<\\s*/script\\s*>" + // script span
             "|" + // OR
-            "<\\s*head.*?>.*?<\\s*/head\\s*>" + // head span
+            "<\\s*head[.*?&&[\\W]].*?>.*?<\\s*/head\\s*>" + // head span
             "|" + // OR
             "<[^>]++>" + // html tag, such as '<br/>' or '<a href="www.duckduckgo.com">'
             "|" + // OR

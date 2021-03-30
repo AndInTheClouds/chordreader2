@@ -3,14 +3,20 @@ package org.handmadeideas.chordreader;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListAdapter;
+import android.widget.NumberPicker;
+
 import org.handmadeideas.chordreader.adapter.BasicTwoLineAdapter;
 import org.handmadeideas.chordreader.helper.PreferenceHelper;
 
@@ -21,9 +27,11 @@ public class SettingsActivity extends PreferenceActivity
 		implements OnPreferenceChangeListener, OnPreferenceClickListener {
 	
 	public static final String EXTRA_NOTE_NAMING_CHANGED = "noteNamingChanged";
-	
+	private static final String SEARCH_ENGINE = "searchEngineURL";
+
 	private ListPreference textSizePreference, themePreference;
 	private Preference noteNamingPreference;
+	private EditTextPreference searchEnginePreference;
 	private boolean noteNamingChanged;
 	
 	@Override
@@ -36,8 +44,7 @@ public class SettingsActivity extends PreferenceActivity
 	}
 	
 	private void setUpPreferences() {
-		
-		
+
 		textSizePreference = (ListPreference) findPreference(getString(R.string.pref_text_size));
 		textSizePreference.setSummary(textSizePreference.getEntry());
 		textSizePreference.setOnPreferenceChangeListener(this);
@@ -53,7 +60,12 @@ public class SettingsActivity extends PreferenceActivity
 		
 		CharSequence noteNamingSummary = getString(PreferenceHelper.getNoteNaming(this).getPrintableNameResource());
 		noteNamingPreference.setSummary(noteNamingSummary);
-		
+
+		searchEnginePreference = (EditTextPreference) findPreference(getString(R.string.pref_search_engine));
+		searchEnginePreference.setOnPreferenceChangeListener(this);
+		CharSequence searchEngineSummary = PreferenceHelper.getSearchEngineURL(this);
+		searchEnginePreference.setSummary(searchEngineSummary);
+
 	}
 	
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -69,8 +81,10 @@ public class SettingsActivity extends PreferenceActivity
 		} else if (preference.getKey().equals(getString(R.string.pref_scheme))) {
 			themePreference.setSummary(newValue.toString());
 			return true;	
-		} else { // show ads
-			// TODO
+		} else if (preference.getKey().equals(getString(R.string.pref_search_engine))) {
+			searchEnginePreference.setSummary(newValue.toString());
+			return true;
+		}else {
 			return true;
 		}
 	}
@@ -98,17 +112,17 @@ public class SettingsActivity extends PreferenceActivity
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
-		
+
 		// show note naming convention popup
-		
+
 		final List<String> noteNameDisplays = Arrays.asList(getResources().getStringArray(R.array.note_namings));
 		final List<String> noteNameValues = Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
 		final List<String> noteNameExplanations = Arrays.asList(getResources().getStringArray(R.array.note_namings_explanations));
-		
+
 		int currentValueIndex = noteNameValues.indexOf(PreferenceHelper.getNoteNaming(this).name());
-		
+
 		ListAdapter adapter = new BasicTwoLineAdapter(this, noteNameDisplays, noteNameExplanations, currentValueIndex);
-		
+
 		new AlertDialog.Builder(this)
 			.setTitle(noteNamingPreference.getTitle())
 			.setNegativeButton(android.R.string.cancel, null)
@@ -121,7 +135,7 @@ public class SettingsActivity extends PreferenceActivity
 				noteNamingPreference.setSummary(noteNameDisplays.get(which));
 				noteNamingChanged = true;
 				dialog.dismiss();
-				
+
 			}})
 			.show();
 

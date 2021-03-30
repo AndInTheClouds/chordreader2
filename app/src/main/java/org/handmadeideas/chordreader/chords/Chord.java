@@ -1,6 +1,8 @@
 package org.handmadeideas.chordreader.chords;
 
-public class Chord implements Cloneable {
+import java.io.Serializable;
+
+public class Chord implements Cloneable, Serializable {
 
 	private ChordRoot root;
 	private ChordQuality quality;

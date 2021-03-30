@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/chord_edit_main_view"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/scheme_light_background"
+	android:gravity="center"
+	android:orientation="vertical"
+	android:padding="5dp">
+
+	<LinearLayout
+		android:id="@+id/topPanel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:minHeight="@android:dimen/app_icon_size"
+		android:orientation="vertical"
+		android:paddingBottom="10dp">
+
+		<TextView
+			android:id="@+id/chord_edit_title"
+			style="?android:attr/textAppearanceLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:gravity="center_horizontal"
+			android:paddingBottom="5dp"
+			android:singleLine="true"
+			android:text="@string/chord_variation_editing"
+			android:textColor="@color/scheme_light_foreground"
+			android:textSize="18sp" />
+
+		<ImageView
+			android:layout_width="fill_parent"
+			android:layout_height="1dip"
+			android:gravity="fill_horizontal"
+			android:scaleType="fitXY"
+			android:src="@drawable/dialog_divider_horizontal_light"
+			android:visibility="visible" />
+	</LinearLayout>
+
+	<ScrollView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/chord_edit_chord_TextView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="10dp"
+				android:gravity="center_horizontal"
+				android:singleLine="true"
+				android:textColor="@color/scheme_light_foreground"
+				android:textSize="24sp"
+				android:textStyle="bold" />
+
+			<ImageView
+				android:layout_width="fill_parent"
+				android:layout_height="1dip"
+				android:gravity="fill_horizontal"
+				android:scaleType="fitXY"
+				android:src="@drawable/dialog_divider_horizontal_light"
+				android:visibility="visible" />
+
+			<TableLayout
+				android:id="@+id/chord_var_view"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_E"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="E"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_A"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="A"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_D"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="D"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_G"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="G"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_B"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="B"
+						android:textColor="@color/scheme_light_foreground" />
+
+					<TextView
+						android:id="@+id/string_e2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:text="e"
+						android:textColor="@color/scheme_light_foreground" />
+				</TableRow>
+			</TableLayout>
+
+			<ImageButton
+				android:id="@+id/add_chord_var_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:background="@drawable/popup_background"
+				android:src="@android:drawable/ic_menu_add" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:orientation="horizontal"
+				android:paddingTop="10dp">
+
+				<Button
+					android:id="@+id/chord_edit_cancel_button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:minWidth="100dp"
+					android:text="@android:string/cancel" />
+
+				<Button
+					android:id="@+id/chord_edit_save_button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:minWidth="100dp"
+					android:text="@string/save" />
+			</LinearLayout>
+
+		</LinearLayout>
+	</ScrollView>
+
+</LinearLayout>
+

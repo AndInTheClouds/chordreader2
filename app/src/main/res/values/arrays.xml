@@ -5,6 +5,8 @@
 		<item>@string/text_size_medium_value</item>
 		<item>@string/text_size_large_value</item>
 		<item>@string/text_size_xlarge_value</item>
+		<item>@string/text_size_xxlarge_value</item>
+		<item>@string/text_size_xxxlarge_value</item>
 	</string-array>
 		
 	<string-array name="text_sizes">
@@ -13,6 +15,8 @@
 		<item>@string/text_size_medium_name</item>
 		<item>@string/text_size_large_name</item>
 		<item>@string/text_size_xlarge_name</item>
+		<item>@string/text_size_xxlarge_name</item>
+		<item>@string/text_size_xxxlarge_name</item>
 	</string-array>
 	
 	<string-array name="color_schemes">
@@ -37,5 +41,35 @@
 	    <item>@string/pref_note_naming_explanation_english</item>
 	    <item>@string/pref_note_naming_explanation_northern</item>
 	    <item>@string/pref_note_naming_explanation_southern</item>	    	    
+	</string-array>
+
+	<string-array name="chord_tabs">
+		<item>x</item>
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+		<item>7</item>
+		<item>8</item>
+		<item>9</item>
+		<item>10</item>
+		<item>11</item>
+		<item>12</item>
+		<item>13</item>
+		<item>14</item>
+		<item>15</item>
+		<item>16</item>
+		<item>17</item>
+		<item>18</item>
+		<item>19</item>
+		<item>20</item>
+		<item>21</item>
+		<item>22</item>
+		<item>23</item>
+		<item>24</item>
+		<item>25</item>
 	</string-array>
 </resources>

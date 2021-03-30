@@ -14,7 +14,8 @@ public class PreferenceHelper {
 	private static float textSize = -1;
 	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
-	
+	private static String searchEngineURL = null;
+
 	private static UtilLogger log = new UtilLogger(org.handmadeideas.chordreader.helper.PreferenceHelper.class);
 		
 	public static float getTextSizePreference(Context context) {
@@ -35,8 +36,12 @@ public class PreferenceHelper {
 				cacheTextsize(context, R.dimen.text_size_medium);
 			} else if (textSizePref.equals(context.getText(R.string.text_size_large_value))) {
 				cacheTextsize(context, R.dimen.text_size_large);
-			} else { // xlarge
+			} else if (textSizePref.equals(context.getText(R.string.text_size_xlarge_value))) {
 				cacheTextsize(context, R.dimen.text_size_xlarge);
+			} else if (textSizePref.equals(context.getText(R.string.text_size_xxlarge_value))) {
+				cacheTextsize(context, R.dimen.text_size_xxlarge);
+			} else { // xxxlarge
+				cacheTextsize(context, R.dimen.text_size_xxxlarge);
 			}
 		}
 		
@@ -48,6 +53,7 @@ public class PreferenceHelper {
 		textSize = -1;
 		colorScheme = null;
 		noteNaming = null;
+		searchEngineURL = null;
 	}
 	
 	private static void cacheTextsize(Context context, int dimenId) {
@@ -125,5 +131,26 @@ public class PreferenceHelper {
 		
 	}
 
-	
+	public static String getSearchEngineURL(Context context) {
+
+		if (searchEngineURL == null) {
+
+			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+			searchEngineURL = sharedPrefs.getString(
+					context.getString(R.string.pref_search_engine),
+					context.getString(R.string.pref_search_engine_default));
+		}
+
+		return searchEngineURL;
+	}
+
+	public static void setSearchEngineURL(Context context, String searchEngineURL) {
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = sharedPrefs.edit();
+		editor.putString(context.getString(R.string.pref_search_engine), searchEngineURL);
+		editor.commit();
+
+	}
+
+
 }

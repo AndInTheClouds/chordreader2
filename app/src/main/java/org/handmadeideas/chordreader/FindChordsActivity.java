@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.Typeface;
 import android.os.*;
 import android.text.*;
 import android.text.method.LinkMovementMethod;
@@ -15,6 +18,8 @@ import android.util.TypedValue;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -32,16 +37,22 @@ import org.handmadeideas.chordreader.db.Transposition;
 import org.handmadeideas.chordreader.helper.*;
 import org.handmadeideas.chordreader.util.InternalURLSpan;
 import org.handmadeideas.chordreader.util.Pair;
+import org.handmadeideas.chordreader.util.StringUtil;
 import org.handmadeideas.chordreader.util.UtilLogger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FindChordsActivity extends Activity implements OnEditorActionListener, OnClickListener, TextWatcher, OnTouchListener {
 
@@ -70,17 +81,28 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	private ChordWebpage chordWebpage;
 	private String html = null;
 	private String url = null;
-	
+	private String searchEngineURL = null;
+
 	private String filename;
 	private volatile String chordText;
 	private List<ChordInText> chordsInText;
 	private int capoFret = 0;
 	private int transposeHalfSteps = 0;
-	
+
+	private boolean isEditedTextToSave = false;
+
 	private TextView viewingTextView;
-	private ScrollView viewingScrollView;
+
+	private AutoScrollView viewingScrollView;
 	private LinearLayout mainView;
-	
+	private LinearLayout chordsViewingLayout;
+
+	private ImageButton autoscrollPlayButton, autoscrollPauseButton, autoscrollSlowerButton, autoscrollFasterButton;
+
+	private GestureDetector mDetector;
+	private Handler metronomHandler = new Handler();
+	private Timer metronomTimer;
+
 	private ArrayAdapter<String> queryAdapter;
 	
     @Override
@@ -94,7 +116,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
         setUpWidgets();
         
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getPackageName());
+        wakeLock = powerManager != null ? powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getPackageName()) : null;
         
         // initially, search rather than view chords
         switchToSearchingMode();
@@ -102,13 +124,14 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
         initializeChordDictionary();
         
         applyColorScheme();
-        
+
+        applySearchEngineURL();
+
         showInitialMessage();
     }
     
     @Override
     public void onDestroy() {
-    	
     	super.onDestroy();
     }
     
@@ -141,7 +164,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	    	showOpenFileDialog(true);
 	    	break;
 	    case R.id.menu_save_chords:
-	    	showSaveChordchartDialog();
+	    	showSaveChordChartDialog("");
 	    	break;
 	    case R.id.menu_transpose:
 	    	createTransposeDialog();
@@ -156,7 +179,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	    	startSettingsActivity();
 	    	break;
 	    case R.id.menu_edit_file:
-	    	showConfirmChordchartDialog(true);
+	    	showConfirmChordChartDialog(true);
 	    	break;
 	    	
 	    }
@@ -184,10 +207,14 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 				&& data.hasExtra(SettingsActivity.EXTRA_NOTE_NAMING_CHANGED)
 				&& data.getBooleanExtra(SettingsActivity.EXTRA_NOTE_NAMING_CHANGED, false)
 				&& isInViewingMode()) {
-			openFile(filename);
+			if (isEditedTextToSave)
+				switchToViewingMode();
+			else
+				openFile(filename);
 		}
-		
-		
+
+		// reapply search engine
+		applySearchEngineURL();
 	}
 
 	private void startAboutActivity() {
@@ -245,14 +272,15 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	}
 
 
+
 	private void setUpWidgets() {
-		
+
 		searchEditText = (AutoCompleteTextView) findViewById(R.id.find_chords_edit_text);
 		searchEditText.setOnEditorActionListener(this);
 		searchEditText.addTextChangedListener(this);
 		searchEditText.setOnClickListener(this);
-		
-		
+
+
 		long queryLimit = System.currentTimeMillis() - HISTORY_WINDOW;
 		ChordReaderDBHelper dbHelper = null;
 		try {
@@ -265,40 +293,102 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 				dbHelper.close();
 			}
 		}
-		
+
 		webView = (WebView) findViewById(R.id.find_chords_web_view);
 		webView.setWebViewClient(client);
 		//webView.getSettings().setUserAgentString(DESKTOP_USERAGENT);
-		
-		/* JavaScript must be enabled if you want it to work, obviously */  
-		webView.getSettings().setJavaScriptEnabled(true);  
-		  
-		/* Register a new JavaScript interface called HTMLOUT */  
-		webView.addJavascriptInterface(this, "HTMLOUT");  
+
+		/* JavaScript must be enabled if you want it to work, obviously */
+		webView.getSettings().setJavaScriptEnabled(true);
+
+		/* Register a new JavaScript interface called HTMLOUT */
+		webView.addJavascriptInterface(this, "HTMLOUT");
 
 		progressBar = (ProgressBar) findViewById(R.id.find_chords_progress_bar);
 		infoIconImageView = (ImageView) findViewById(R.id.find_chords_image_view);
 		searchButton = (Button) findViewById(R.id.find_chords_search_button);
 		searchButton.setOnClickListener(this);
-		
+
 		messageSecondaryView = findViewById(R.id.find_chords_message_secondary_view);
 		messageSecondaryView.setOnClickListener(this);
 		messageSecondaryView.setEnabled(false);
-		
+
 		messageTextView = (TextView) findViewById(R.id.find_chords_message_text_view);
-		
+
 		viewingTextView = (TextView) findViewById(R.id.find_chords_viewing_text_view);
 		viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferenceHelper.getTextSizePreference(this));
-		viewingScrollView = (ScrollView) findViewById(R.id.find_chords_viewing_scroll_view);
-		viewingScrollView.setVisibility(View.GONE);
-		
+		viewingScrollView = (AutoScrollView) findViewById(R.id.find_chords_viewing_scroll_view);
+		viewingScrollView.setTargetTextView(viewingTextView);
+
+		chordsViewingLayout = (LinearLayout) findViewById(R.id.chords_viewing_layout);
+		chordsViewingLayout.setVisibility(View.GONE);
+
+		autoscrollPlayButton = (ImageButton) findViewById(R.id.autoScrollPlayButton);
+		autoscrollPlayButton.setVisibility(View.GONE);
+		autoscrollPlayButton.setOnClickListener(this);
+		autoscrollPauseButton = (ImageButton) findViewById(R.id.autoScrollPauseButton);
+		autoscrollPauseButton.setVisibility(View.GONE);
+		autoscrollPauseButton.setOnClickListener(this);
+		autoscrollSlowerButton = (ImageButton) findViewById(R.id.autoScrollSlower);
+		autoscrollSlowerButton.setVisibility(View.GONE);
+		autoscrollSlowerButton.setOnClickListener(this);
+		autoscrollFasterButton = (ImageButton) findViewById(R.id.autoScrollFaster);
+		autoscrollFasterButton.setVisibility(View.GONE);
+		autoscrollFasterButton.setOnClickListener(this);
+
 		searchingView = findViewById(R.id.find_chords_finding_view);
-		
 		mainView = (LinearLayout) findViewById(R.id.find_chords_main_view);
-		
-		viewingTextView.setOnTouchListener(this);
+
+		mDetector = new GestureDetector(this, new MyGestureListener());
+		// pass the events to the gesture detector
+		// a return value of true means the detector is handling it
+		// a return value of false means the detector didn't
+		// recognize the event
+		OnTouchListener touchListener = new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+
+				final int action = event.getAction();
+
+				if (action == MotionEvent.ACTION_UP) {
+					if (viewingScrollView.isAutoScrollOn()) {
+						viewingScrollView.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
+							@Override
+							public void run() {
+								if (!viewingScrollView.isFlingActive() && viewingScrollView.isAutoScrollOn() && !viewingScrollView.isAutoScrollActive()) {
+									viewingScrollView.startAutoScroll();
+								}
+							}
+						}, 100);
+					}
+				}
+
+
+
+				return mDetector.onTouchEvent(event);
+
+			}
+		};
+
+//		viewingTextView.setOnTouchListener(this);
+//		viewingScrollView.setOnTouchListener(touchListener);
+		viewingTextView.setOnTouchListener(touchListener);
+
+		viewingScrollView.setOnFlingListener(new AutoScrollView.OnFlingListener() {
+			@Override
+			public void onFlingStarted() {
+				viewingScrollView.setFlingActive(true);
+			}
+
+			@Override
+			public void onFlingStopped() {
+				viewingScrollView.setFlingActive(false);
+				if (viewingScrollView.isAutoScrollOn())
+					viewingScrollView.startAutoScroll();
+			}
+		});
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -320,9 +410,61 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		
 		if (isInViewingMode() && !wakeLock.isHeld()) {
 			log.d("Acquiring wakelock");
-			wakeLock.acquire();
+			wakeLock.acquire(10*60*1000L /*10 minutes*/);
 		}
 		
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (isEditedTextToSave) {
+			showSavePromptDialog("onBackPressed");
+		}
+		else {
+			if (webView.copyBackForwardList().getCurrentIndex() > 0) {
+				webView.goBack();
+			}
+			else {
+
+				new AlertDialog.Builder(this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.closing_chordreader)
+						.setMessage(R.string.closing_chordreader_message)
+						.setNegativeButton(R.string.no, null)
+						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								finish();
+							}
+
+						})
+						.show();
+			}
+		}
+
+	}
+
+	private void showSavePromptDialog(final String callingMethod) {
+		new AlertDialog.Builder(this)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.unsaved_changes)
+				.setMessage(R.string.unsaved_changes_message)
+				.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						isEditedTextToSave = false;
+						proceedAfterSaving(callingMethod);
+
+					}
+				})
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						showSaveChordChartDialog(callingMethod);
+					}
+				})
+				.show();
 	}
 
 	private NoteNaming getNoteNaming() {
@@ -463,66 +605,70 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	}
 
 	private void startDeleteSavedFilesDialog() {
-		
-		if (!checkSdCard()) {
-			return;
+
+    	if (isEditedTextToSave) {
+			showSavePromptDialog("startDeleteSavedFilesDialog");
 		}
-		
-		List<CharSequence> filenames = new ArrayList<CharSequence>(SaveFileHelper.getSavedFilenames());
-		
-		if (filenames.isEmpty()) {
-			Toast.makeText(this, R.string.no_saved_files, Toast.LENGTH_SHORT).show();
-			return;			
+		else {
+			if (!checkSdCard()) {
+				return;
+			}
+
+			List<CharSequence> filenames = new ArrayList<CharSequence>(SaveFileHelper.getSavedFilenames());
+
+			if (filenames.isEmpty()) {
+				Toast.makeText(this, R.string.no_saved_files, Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			final CharSequence[] filenameArray = filenames.toArray(new CharSequence[filenames.size()]);
+
+			final FileAdapter dropdownAdapter = new FileAdapter(
+					this, filenames, -1, true);
+
+			final TextView messageTextView = new TextView(this);
+			messageTextView.setText(R.string.select_files_to_delete);
+			messageTextView.setPadding(3, 3, 3, 3);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			builder.setTitle(R.string.manage_saved_files)
+					.setCancelable(true)
+					.setNegativeButton(android.R.string.cancel, null)
+					.setNeutralButton(R.string.delete_all, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							boolean[] allChecked = new boolean[dropdownAdapter.getCount()];
+
+							for (int i = 0; i < allChecked.length; i++) {
+								allChecked[i] = true;
+							}
+							verifyDelete(filenameArray, allChecked, dialog);
+
+						}
+					})
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+
+							verifyDelete(filenameArray, dropdownAdapter.getCheckedItems(), dialog);
+
+						}
+					})
+					.setView(messageTextView)
+					.setSingleChoiceItems(dropdownAdapter, 0, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dropdownAdapter.checkOrUncheck(which);
+
+						}
+					});
+
+			builder.show();
 		}
-		
-		final CharSequence[] filenameArray = filenames.toArray(new CharSequence[filenames.size()]);
-		
-		final FileAdapter dropdownAdapter = new FileAdapter(
-				this, filenames, -1, true);
-		
-		final TextView messageTextView = new TextView(this);
-		messageTextView.setText(R.string.select_files_to_delete);
-		messageTextView.setPadding(3, 3, 3, 3);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		builder.setTitle(R.string.manage_saved_files)
-			.setCancelable(true)
-			.setNegativeButton(android.R.string.cancel, null)
-			.setNeutralButton(R.string.delete_all, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					boolean[] allChecked = new boolean[dropdownAdapter.getCount()];
-					
-					for (int i = 0; i < allChecked.length; i++) {
-						allChecked[i] = true;
-					}
-					verifyDelete(filenameArray, allChecked, dialog);
-					
-				}
-			})
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-					verifyDelete(filenameArray, dropdownAdapter.getCheckedItems(), dialog);
-					
-				}
-			})
-			.setView(messageTextView)
-			.setSingleChoiceItems(dropdownAdapter, 0, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dropdownAdapter.checkOrUncheck(which);
-					
-				}
-			});
-		
-		builder.show();
-		
 	}
 
 	protected void verifyDelete(final CharSequence[] filenameArray,
@@ -569,63 +715,68 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			builder.setNegativeButton(android.R.string.cancel, null);
 			builder.show();
 		}
-		
-		
 	}
 	
 	
 	private void showOpenFileDialog(final boolean sortedByDate) {
-		
-		if (!checkSdCard()) {
-			return;
-		}
-		
-		final List<CharSequence> filenames = new ArrayList<CharSequence>(SaveFileHelper.getSavedFilenames());
-		
-		if (filenames.isEmpty()) {
-			Toast.makeText(this, R.string.no_saved_files, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (!sortedByDate) {
-			
-			Collections.sort(filenames, new Comparator<CharSequence>(){
 
-				@Override
-				public int compare(CharSequence first, CharSequence second) {
-					return first.toString().toLowerCase().compareTo(second.toString().toLowerCase());
-				}});
+		if (isEditedTextToSave) {
+			showSavePromptDialog("showOpenFileDialog");
 		}
-		
-		int fileToSelect = filename != null ? filenames.indexOf(filename) : -1;
-		
-		ArrayAdapter<CharSequence> dropdownAdapter = new FileAdapter(this, filenames, fileToSelect, false);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		builder.setTitle(R.string.open_file)
-			.setCancelable(true)
-			.setPositiveButton(sortedByDate ? R.string.sort_az : R.string.sort_by_date, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					showOpenFileDialog(!sortedByDate); // switch sorting
-				}
-			})
-			.setNegativeButton(android.R.string.cancel, null)
-			.setSingleChoiceItems(dropdownAdapter, fileToSelect, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					String filename = filenames.get(which).toString();
-					openFile(filename);
-					
-				}
-			});
-		
-		builder.show();
-		
+		else {
+			if (!checkSdCard()) {
+				return;
+			}
+
+			final List<CharSequence> filenames = new ArrayList<CharSequence>(SaveFileHelper.getSavedFilenames());
+
+			if (filenames.isEmpty()) {
+				Toast.makeText(this, R.string.no_saved_files, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (!sortedByDate) {
+
+				Collections.sort(filenames, new Comparator<CharSequence>() {
+
+					@Override
+					public int compare(CharSequence first, CharSequence second) {
+						return first.toString().toLowerCase().compareTo(second.toString().toLowerCase());
+					}
+				});
+			}
+
+			int fileToSelect = filename != null ? filenames.indexOf(filename) : -1;
+
+			ArrayAdapter<CharSequence> dropdownAdapter = new FileAdapter(this, filenames, fileToSelect, false);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			builder.setTitle(R.string.open_file)
+					.setCancelable(true)
+					.setPositiveButton(sortedByDate ? R.string.sort_az : R.string.sort_by_date, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							showOpenFileDialog(!sortedByDate); // switch sorting
+						}
+					})
+					.setNegativeButton(android.R.string.cancel, null)
+					.setSingleChoiceItems(dropdownAdapter, fileToSelect, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+							String filename = filenames.get(which).toString();
+							viewingScrollView.resetAutoScrollView();
+							animationSwitch(autoscrollPauseButton, autoscrollPlayButton);
+							openFile(filename);
+
+						}
+					});
+
+			builder.show();
+		}
 	}	
 	
     private void showInitialMessage() {
@@ -659,14 +810,15 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	private void openFile(String filenameToOpen) {
 
 		filename = filenameToOpen;
-
 		chordText = SaveFileHelper.openFile(filename);
-
-		switchToViewingMode();
+		if (chordText.isEmpty())
+			switchToSearchingMode();
+		else
+			switchToViewingMode();
 	}
 
 
-    public void showHTML(String html) {
+	public void showHTML(String html) {
 
 
     	log.d("html is %s...", html != null ? (html.substring(0, Math.min(html.length(),30))) : html);
@@ -776,7 +928,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			log.e(e, "this should never happen");
 		}
 
-		loadUrl("http://www.duckduckgo.com?q=" + urlEncoded);
+		loadUrl(searchEngineURL + urlEncoded);
 
 	}
 
@@ -818,7 +970,9 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 
 	}
 
-
+	public void setSearchEngineURL(String searchEngineURL) {
+    	this.searchEngineURL = searchEngineURL;
+	}
 
 	public void urlLoading(String url) {
 		progressBar.setVisibility(View.VISIBLE);
@@ -866,8 +1020,8 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 
 	private boolean checkHtmlOfUnknownWebpage() {
 
-		if (url.contains("duckduckgo.com")) {
-			return false; // skip google - we're on the search results page
+		if (url.contains(searchEngineURL)) {
+			return false; // skip page - we're on the search results page
 		}
 
 		String txt = WebPageExtractionHelper.convertHtmlToText(html);
@@ -906,25 +1060,39 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.find_chords_search_button:
-			performSearch();
-			break;
-		case R.id.find_chords_message_secondary_view:
-			analyzeHtml();
-			break;
-		case R.id.find_chords_edit_text:
-			// I think it's intuitive to select the whole text when you click here
-			if (!TextUtils.isEmpty(searchEditText.getText())) {
-				searchEditText.setSelection(0, searchEditText.getText().length());
-			}
-			break;
+			case R.id.find_chords_search_button:
+				performSearch();
+				break;
+			case R.id.find_chords_message_secondary_view:
+				analyzeHtml();
+				break;
+			case R.id.find_chords_edit_text:
+				// I think it's intuitive to select the whole text when you click here
+				if (!TextUtils.isEmpty(searchEditText.getText())) {
+					searchEditText.setSelection(0, searchEditText.getText().length());
+				}
+				break;
+			case R.id.autoScrollPlayButton:
+				startAutoscroll();
+				break;
+			case R.id.autoScrollPauseButton:
+				stopAutoscroll();
+				break;
+			case R.id.autoScrollSlower:
+				animationBlink(autoscrollSlowerButton);
+				changeAutoScrollFactor(false);
+				break;
+			case R.id.autoScrollFaster:
+				animationBlink(autoscrollFasterButton);
+				changeAutoScrollFactor(true);
+				break;
 		}
 
 	}
 
 	private void analyzeHtml() {
-
-		if (chordWebpage != null) {
+//removed section for known webpage as html structure may change -> chordie pattern doesn't work anymore
+/*		if (chordWebpage != null) {
 			// known webpage
 
 			log.d("known web page: %s", chordWebpage);
@@ -932,6 +1100,8 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			chordText = WebPageExtractionHelper.extractChordChart(
 					chordWebpage, html, getNoteNaming());
 		} else {
+
+ */
 			// unknown webpage
 
 			log.d("unknown webpage");
@@ -945,36 +1115,46 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 
 				chordText = WebPageExtractionHelper.convertHtmlToText(html);
 			}
-		}
+//		}
 
-		showConfirmChordchartDialog(false);
+		showConfirmChordChartDialog(false);
 
 	}
 
-	private void showConfirmChordchartDialog(boolean editMode) {
+	private void showConfirmChordChartDialog(boolean editMode) {
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
 		editText.setText(chordText);
-
-		new AlertDialog.Builder(FindChordsActivity.this)
-		             .setTitle(editMode? R.string.edit_chords : R.string.confirm_chordchart)  
-		             .setView(editText)
-		             .setCancelable(true)
-		             .setNegativeButton(android.R.string.cancel, null)
-		             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							chordText = editText.getText().toString();
-							switchToViewingMode();
-							
-						}
-					})  
-		             .create()  
-		             .show(); 
+		editText.setTypeface(Typeface.MONOSPACE);
 		
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setTitle(editMode? R.string.edit_chords : R.string.confirm_chordchart)
+				.setTitle(editMode? R.string.edit_chords : R.string.confirm_chordchart)
+				.setView(editText)
+				.setCancelable(true)
+				.setNegativeButton(android.R.string.cancel, null)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						chordText = editText.getText().toString();
+						switchToViewingMode();
+						isEditedTextToSave = true;
+					}
+				});
+
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(alertDialog.getWindow().getAttributes());
+		lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+		lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+		alertDialog.getWindow().setAttributes(lp);
+
 		//log.d(chordText);
 		
 	}
@@ -982,57 +1162,61 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	// This function shows a filename suggesting dialog and creates a new file with its output.
 	protected void showNewFileDialog() {
 
-		if (!checkSdCard()) {
-			return;
-		}
-
-		final EditText editText = createEditTextForFilenameSuggestingDialog(); // TODO This might suggest the wrong filename sometimes
-
-
-		DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-
-				if (isInvalidFilename(editText.getText())) {
-					Toast.makeText(FindChordsActivity.this, R.string.enter_good_filename, Toast.LENGTH_SHORT).show();
-				} else {
-
-					if (SaveFileHelper.fileExists(editText.getText().toString())) {
-
-						new AlertDialog.Builder(FindChordsActivity.this)
-								.setCancelable(true)
-								.setTitle(R.string.overwrite_file_title)
-								.setMessage(R.string.overwrite_file)
-								.setNegativeButton(android.R.string.cancel, null)
-								.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										saveFile(editText.getText().toString(), "");
-
-									}
-								})
-								.show();
-
-					} else {
-						saveFile(editText.getText().toString(), "");
-					}
-
-					// Open the new file for editing
-					openFile(editText.getText().toString());
-					showConfirmChordchartDialog(true);
-				}
-
-				dialog.dismiss();
+		if (isEditedTextToSave) {
+			showSavePromptDialog("showNewFileDialog");
+		} else {
+			if (!checkSdCard()) {
+				return;
 			}
 
-		};
+			final EditText editText = createEditTextForFilenameSuggestingDialog(); // TODO This might suggest the wrong filename sometimes
 
-		showFilenameSuggestingDialog(editText, onClickListener, R.string.new_file);
+
+			DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					if (isInvalidFilename(editText.getText())) {
+						Toast.makeText(FindChordsActivity.this, R.string.enter_good_filename, Toast.LENGTH_SHORT).show();
+					} else {
+
+						if (SaveFileHelper.fileExists(editText.getText().toString())) {
+
+							new AlertDialog.Builder(FindChordsActivity.this)
+									.setCancelable(true)
+									.setTitle(R.string.overwrite_file_title)
+									.setMessage(R.string.overwrite_file)
+									.setNegativeButton(android.R.string.cancel, null)
+									.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											saveFile(editText.getText().toString(), "");
+
+										}
+									})
+									.show();
+
+						} else {
+							saveFile(editText.getText().toString(), "");
+						}
+
+						// Open the new file for editing
+						openFile(editText.getText().toString());
+						showConfirmChordChartDialog(true);
+					}
+
+					dialog.dismiss();
+				}
+
+			};
+
+			showFilenameSuggestingDialog(editText, onClickListener, R.string.new_file);
+		}
 	}
 
-	protected void showSaveChordchartDialog() {
+	protected void showSaveChordChartDialog(final String callingMethod) {
 		
 		if (!checkSdCard()) {
 			return;
@@ -1062,7 +1246,8 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									saveFile(editText.getText().toString(), chordText);
-									
+									isEditedTextToSave = false;
+									proceedAfterSaving(callingMethod);
 								}
 							})
 							.show();
@@ -1071,19 +1256,32 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 							
 					} else {
 						saveFile(editText.getText().toString(), chordText);
+						isEditedTextToSave = false;
+						proceedAfterSaving(callingMethod);
 					}
-					
+
 					
 				}
-				
-				
 				dialog.dismiss();
-				
+
 			}
 		};
 		
 		showFilenameSuggestingDialog(editText, onClickListener, R.string.save_file);		
 		
+	}
+
+	private void proceedAfterSaving(String callingMethod) {
+		if (callingMethod.equals("showOpenFileDialog"))
+			showOpenFileDialog(true);
+		else if (callingMethod.equals("switchToSearchingMode"))
+			switchToSearchingMode();
+		else if (callingMethod.equals("onBackPressed"))
+			finish();
+		else if (callingMethod.equals("showNewFileDialog"))
+			showNewFileDialog();
+		else if (callingMethod.equals("startDeleteSavedFilesDialog"))
+			startDeleteSavedFilesDialog();
 	}
 	
 	private boolean isInvalidFilename(CharSequence filename) {
@@ -1193,7 +1391,8 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		
 		builder.show();
 		
-	}	
+	}
+
 	private boolean checkSdCard() {
 		
 		boolean result = SaveFileHelper.checkIfSdCardExists();
@@ -1224,17 +1423,92 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	}	
 	
 
-	private void analyzeChordsAndShowChordView() {
-	
+	private void analyzeChordsEtcAndShowChordView() {
+
+		// <-- find BPMs and AutoScrollSpeed
+		int bpmTemp = (int) extractAutoScrollParam(chordText,"bpm");
+		if (bpmTemp > 0)
+			AutoScrollView.setBpm(bpmTemp);
+		else {
+			Toast.makeText(getApplicationContext(), R.string.No_BPM_found, Toast.LENGTH_LONG).show();
+			AutoScrollView.setBpm(100);
+		}
+
+		float scrollVelocityCorrectionFactorTemp = extractAutoScrollParam(chordText,"scrollVelocityCorrectionFactor");
+		if (scrollVelocityCorrectionFactorTemp > 0)
+			viewingScrollView.setScrollVelocityCorrectionFactor(scrollVelocityCorrectionFactorTemp);
+		else {
+			viewingScrollView.setScrollVelocityCorrectionFactor(1);
+		}
+
+		String returnCheckAndAddAutoScrollParams = checkAndAddAutoScrollParams(chordText, viewingScrollView.getScrollVelocityCorrectionFactor());
+		if (!returnCheckAndAddAutoScrollParams.isEmpty()) {
+			chordText = returnCheckAndAddAutoScrollParams;
+		}
+		// -->
+
 		chordsInText = ChordParser.findChordsInText(chordText, getNoteNaming());
-		
+
+
 		log.d("found %d chords", chordsInText.size());
 		
 		showChordView();
 		
 	}
 
+	public static float extractAutoScrollParam(String text, String AutoScrollParam) {
 
+		Matcher matcher;
+		int matchGroup;
+
+		if (AutoScrollParam.equals("bpm")) {
+			Pattern bpmPattern = Pattern.compile("(\\d{2,3})(\\s*bpm)", Pattern.CASE_INSENSITIVE);
+			matcher = bpmPattern.matcher(text);
+			matchGroup = 1;
+		} else if (AutoScrollParam.equals("scrollVelocityCorrectionFactor")) {
+			Pattern scrollVelocityCorrectionFactorPattern = Pattern.compile("(autoscrollfactor|asf):?\\s*(\\d+[.|,]\\d+)", Pattern.CASE_INSENSITIVE);
+			matcher = scrollVelocityCorrectionFactorPattern.matcher(text);
+			matchGroup = 2;
+		} else
+			return -1;
+
+		if (matcher.find()) {
+			String match = matcher.group(matchGroup);
+			if (match != null)
+				match = match.replace(",",".");
+			return Float.parseFloat(match);
+		} else
+			return -1;
+	}
+
+	public static String checkAndAddAutoScrollParams(String text, String scrollVelocityCorrectionFactor) {
+		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(StringUtil.split(text, "\n")));
+		String firstLine = lines.get(0).toLowerCase();
+
+		if (!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor"))) {
+			lines.add(0, "*** " + AutoScrollView.getBpm() + " BPM - AutoScrollFactor: " + scrollVelocityCorrectionFactor + " ***");
+
+			StringBuilder resultText = new StringBuilder();
+			for (String line : lines) {
+				resultText.append(line).append("\n");
+			}
+			return resultText.toString();
+		}
+		else
+			return "";
+	}
+
+	private void changeAutoScrollFactor(boolean acceleration) {
+		String toReplaceText = viewingTextView.getText().toString();
+		String oldValue = viewingScrollView.getScrollVelocityCorrectionFactor();
+		viewingScrollView.changeScrollVelocity(acceleration);
+		String newValue = viewingScrollView.getScrollVelocityCorrectionFactor();
+		chordText = toReplaceText.replace("AutoScrollFactor: " + oldValue + " ***", "AutoScrollFactor: " + newValue + " ***");
+		chordsInText = ChordParser.findChordsInText(chordText, getNoteNaming());
+		Spannable newText = buildUpChordTextToDisplay();
+		applyLinkifiedChordsTextToTextView(newText);
+		isEditedTextToSave = true;
+	}
 
 	private void showChordView() {
 		
@@ -1263,6 +1537,12 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 				super.onPostExecute(newText);
 				
 				applyLinkifiedChordsTextToTextView(newText);
+				viewingTextView.post(new Runnable() {
+					@Override
+					public void run() {
+						viewingScrollView.calculateAutoScrollVelocity();
+					}
+				});
 			}
 			
 		};
@@ -1274,8 +1554,9 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 	
 	private void applyLinkifiedChordsTextToTextView(Spannable newText) {
 		
-		viewingTextView.setMovementMethod(LinkMovementMethod.getInstance());
+		viewingTextView.setMovementMethod(MyLinkMovementMethod.getInstance());
 		viewingTextView.setText(newText);
+
 	}
 
 	private Spannable buildUpChordTextToDisplay() {
@@ -1340,7 +1621,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		return spannable;
 	}
 
-	private void showChordPopup(Chord chord) {
+	private void showChordPopup(final Chord chord) {
 		
 		if (!ChordDictionary.isInitialized()) {
 			// it could take a second or two to initialize, so just wait until then...
@@ -1350,14 +1631,26 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		final PopupWindow window = PopupHelper.newBasicPopupWindow(this);
 		
 
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		View view = inflater.inflate(R.layout.chord_popup, null);
-		TextView textView = (TextView) view.findViewById(android.R.id.text1);
+		final TextView textView = (TextView) view.findViewById(android.R.id.text1);
 		textView.setText(chord.toPrintableString(getNoteNaming()));
 		
-		TextView textView2 = (TextView) view.findViewById(android.R.id.text2);
+		final TextView textView2 = (TextView) view.findViewById(android.R.id.text2);
 		textView2.setText(createGuitarChordText(chord));
+
+		ImageButton chordVarEditButton = (ImageButton) view.findViewById(R.id.chord_var_edit_button);
+		chordVarEditButton.setVisibility(View.VISIBLE);
+		chordVarEditButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				startChordEditActivity(chord);
+				window.dismiss();
+			}
+
+		});
 		
 		window.setContentView(view);
 		
@@ -1406,36 +1699,62 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		}
 	}
 
+	private void startChordEditActivity(Chord chord) {
+		Intent chordVarEditIntent = new Intent(getBaseContext(), ChordDictionaryEditActivity.class);
+		//pass chord by intend
+		chordVarEditIntent.putExtra("CHORD", chord);
+		chordVarEditIntent.putExtra("NOTENAMING", getNoteNaming());
+		startActivity(chordVarEditIntent);
+	}
+
 	private void switchToViewingMode() {
 
-        wakeLock.acquire();
-		
+		wakeLock.acquire(30*60*1000L /*30 minutes*/);
+
 		resetDataExceptChordTextAndFilename();
 		
 		searchingView.setVisibility(View.GONE);
-		viewingScrollView.setVisibility(View.VISIBLE);
-		
-		analyzeChordsAndShowChordView();
-		
-		
+		chordsViewingLayout.setVisibility(View.VISIBLE);
+
+		autoscrollPauseButton.setVisibility(View.GONE);
+		autoscrollPlayButton.setVisibility(View.VISIBLE);
+		autoscrollSlowerButton.setVisibility(View.VISIBLE);
+		autoscrollFasterButton.setVisibility(View.VISIBLE);
+		stopAnimationMetronom();
+		viewingScrollView.resetAutoScrollView();
+		viewingScrollView.scrollTo(0,0);
+
+		analyzeChordsEtcAndShowChordView();
 	}
 	
 	private void switchToSearchingMode() {
-		
-		if (wakeLock.isHeld()) {
-			wakeLock.release();
+		if (isEditedTextToSave) {
+			showSavePromptDialog("switchToSearchingMode");
 		}
-		
-		resetData();
-		
-		searchingView.setVisibility(View.VISIBLE);
-		viewingScrollView.setVisibility(View.GONE);
+		else {
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+
+			resetData();
+
+			searchingView.setVisibility(View.VISIBLE);
+			chordsViewingLayout.setVisibility(View.GONE);
+
+			autoscrollPlayButton.setVisibility(View.GONE);
+			autoscrollPauseButton.setVisibility(View.GONE);
+			autoscrollSlowerButton.setVisibility(View.GONE);
+			autoscrollFasterButton.setVisibility(View.GONE);
+			viewingScrollView.resetAutoScrollView();
+		}
 	}
 
 	private void resetData() {
 		
 		chordText = null;
 		filename = null;
+		viewingScrollView.resetAutoScrollView();
+
 		resetDataExceptChordTextAndFilename();
 		
 	}
@@ -1469,14 +1788,40 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		
 		lastXCoordinate = event.getRawX();
 		lastYCoordinate = event.getRawY();
-		
-		return false;
+
+		final int action = event.getAction();
+		if (action == MotionEvent.ACTION_DOWN) { //press
+
+			if (viewingScrollView.isAutoScrollOn()) {
+				viewingScrollView.stopAutoScroll();
+
+			}
+			return super.onTouchEvent(event);
+		}
+
+		else if (action == MotionEvent.ACTION_UP) {
+			if (viewingScrollView.isAutoScrollOn()) {
+				viewingScrollView.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
+					@Override
+					public void run() {
+						if (!viewingScrollView.isFlingActive() && viewingScrollView.isAutoScrollOn()) {
+							viewingScrollView.startAutoScroll();
+						}
+					}
+				}, 100);
+			}
+			return super.onTouchEvent(event);
+		}
+		else
+			return false;
+
 	}
 	
 	private void applyColorScheme() {
 		
 		ColorScheme colorScheme = PreferenceHelper.getColorScheme(this);
-		
+
+		searchEditText.setTextColor(colorScheme.getForegroundColor(this));
 		messageTextView.setTextColor(colorScheme.getForegroundColor(this));
 		viewingTextView.setTextColor(colorScheme.getForegroundColor(this));
 		mainView.setBackgroundColor(colorScheme.getBackgroundColor(this));
@@ -1485,7 +1830,83 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 		messageSecondaryView.setBackgroundResource(colorScheme.getSelectorResource());
 		
 	}
-	
+
+	private void applySearchEngineURL() {
+		searchEngineURL = PreferenceHelper.getSearchEngineURL(this);
+
+	}
+
+	// Animations
+	protected void animationBlink(ImageButton imageButton) {
+		Animation animButtonBlink = AnimationUtils.loadAnimation(this, R.anim.blink_anim);
+		imageButton.startAnimation(animButtonBlink);
+	}
+
+	public void animationSwitch(final View view1, final View view2) {
+		view1.setVisibility(View.GONE);
+		view2.setVisibility(View.VISIBLE);
+	}
+
+
+	protected void startAnimationMetronome() {
+		final long switchDuration = (long) (60d *1000) / AutoScrollView.getBpm();
+		final LightingColorFilter lightningColorFilter = new LightingColorFilter(Color.rgb(50,160,186), Color.rgb(0,60,86));
+
+		metronomTimer = new Timer();
+		TimerTask metronomTimerTask = new TimerTask() {
+			public void run() {
+				metronomHandler.post(new Runnable() {
+					public void run() {
+
+						autoscrollPauseButton.setColorFilter(lightningColorFilter);
+						autoscrollPauseButton.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
+							@Override
+							public void run() {
+								autoscrollPauseButton.clearColorFilter();
+							}
+						}, switchDuration/5);
+
+
+					}
+				});
+			}
+		};
+		metronomTimer.schedule(metronomTimerTask, switchDuration, switchDuration);
+	}
+
+	protected void stopAnimationMetronom() {
+		if(metronomTimer != null) {
+			metronomTimer.cancel();
+			metronomTimer.purge();
+		}
+	}
+
+	// Autoscroll
+
+	private void stopAutoscroll (){
+		viewingScrollView.setAutoScrollOn(false);
+		viewingScrollView.stopAutoScroll();
+		stopAnimationMetronom();
+		animationSwitch(autoscrollPauseButton, autoscrollPlayButton);
+	}
+
+	private void startAutoscroll(){
+		animationSwitch(autoscrollPlayButton, autoscrollPauseButton);
+		viewingScrollView.setAutoScrollOn(true);
+		viewingScrollView.setAutoScrollActive(true);
+		startAnimationMetronome();
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (!viewingScrollView.isAutoScrollOn())
+					return;
+				viewingScrollView.startAutoScroll();
+			}
+		}, (long)(60d / AutoScrollView.getBpm() * 1000 * 4)); // delay of autoScroll start, to watch metronom firstly
+	}
+
+
 	private class CustomWebViewClient extends WebViewClient {
 		
 		private AtomicInteger taskCounter = new AtomicInteger(0);
@@ -1509,7 +1930,7 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			super.onPageFinished(view, url);
 			log.d("onPageFinished()　" + url);
 			
-			if (url.contains("www.duckduckgo.com")) {
+			if (url.contains(searchEngineURL)) {
 				// trust google to only load once
 				urlLoaded(url);
 			} else { // don't trust other websites
@@ -1559,6 +1980,92 @@ public class FindChordsActivity extends Activity implements OnEditorActionListen
 			log.d("onPageStarted()");
 			taskCounter.incrementAndGet();
 			urlLoading(url);
+		}
+	}
+
+	private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onDown(MotionEvent event) {
+			// don't return false here or else none of the other
+			// gestures will work
+			if (viewingScrollView.isAutoScrollOn()) {
+				viewingScrollView.stopAutoScroll();
+
+			}
+
+			return true;
+		}
+
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+
+			return true;
+		}
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+
+		}
+
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			if (viewingScrollView.isAutoScrollOn())
+				stopAutoscroll();
+			else
+				startAutoscroll();
+
+			return true;
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+								float distanceX, float distanceY) {
+
+			return true;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent event1, MotionEvent event2,
+							   float velocityX, float velocityY) {
+			return true;
+		}
+	}
+
+	// LinkMovementMethod/onTouchEvent needs to be adapted as otherwise linkified chord links will
+	// be triggered till end of line/text view, when linkified chord is last on line
+	public static class MyLinkMovementMethod extends LinkMovementMethod {
+		private static MyLinkMovementMethod sInstance;
+
+		public static MyLinkMovementMethod getInstance() {
+			if (sInstance == null)
+				sInstance = new MyLinkMovementMethod();
+			return sInstance;
+		}
+
+
+		@Override
+		public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+			int action = event.getAction();
+
+			if (action == MotionEvent.ACTION_UP) {
+				int x = (int) event.getX();
+				int y = (int) event.getY();
+
+				y -= widget.getTotalPaddingTop();
+				y += widget.getScrollY();
+
+				Layout layout = widget.getLayout();
+				int line = layout.getLineForVertical(y);
+				float lineLeft = layout.getLineLeft(line);
+				float lineRight = layout.getLineRight(line);
+
+				if (x > lineRight || (x >= 0 && x < lineLeft)) {
+					return true;
+				}
+			}
+
+			return super.onTouchEvent(widget, buffer, event);
 		}
 	}
 }

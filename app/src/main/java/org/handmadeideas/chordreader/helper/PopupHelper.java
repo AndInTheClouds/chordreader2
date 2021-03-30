@@ -69,7 +69,7 @@ public class PopupHelper {
 		int xPos = anchorRect.left - rootWidth + xOffset;
 		int yPos = anchorRect.top - rootHeight + yOffset;
 
-		window.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
+		window.showAtLocation(anchor, Gravity.CENTER_VERTICAL, xPos, yPos);
 	}
 	
 }

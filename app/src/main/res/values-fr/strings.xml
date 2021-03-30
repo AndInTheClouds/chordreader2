@@ -45,15 +45,14 @@
     <string name="edit_chords">Éditer accords</string>
 
     <string name="no_guitar_chord_available">Aucun doigté de guitare disponible.</string>
-    <string name="variation">Var.</string>
 
     <string name="pref_text_size_title">Taille du texte</string>
 
     <string name="text_size_xsmall_name">Très petit (8pt)</string>
     <string name="text_size_small_name">Petit (10pt)</string>
     <string name="text_size_medium_name">Moyen (12pt)</string>
-    <string name="text_size_large_name">Grand (14pt)</string>
-    <string name="text_size_xlarge_name">Très grand (16pt)</string>
+    <string name="text_size_large_name">Grand (16pt)</string>
+    <string name="text_size_xlarge_name">Très grand (20pt)</string>
 
     <string name="pref_scheme_title">Thème</string>
 
@@ -74,17 +73,30 @@
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader !</string>
     <string name="first_run_message">\
-<b>Quoi de neuf dans la version 1.0 ?</b>\n\
-&#160;&#160;&#160;* Nom des notes :\n\
-&#160;&#160;&#160;&#160;&#160;&#160;- Anglais (A, B, C)\n\
-&#160;&#160;&#160;&#160;&#160;&#160;- Allemand (A, H, C)\n\
-&#160;&#160;&#160;&#160;&#160;&#160;- Latin (Do, Ré, Mi)\n\
-&#160;&#160;&#160;* Plusieurs doigtés dans les pop-up.\n\
-&#160;&#160;&#160;* Suppression des publicités.\n\
-&#160;&#160;&#160;* L\'application devient open-source.\n\n\
+<b>Quoi de neuf dans la version 1.1 ?</b>\n\
+&#160;&#160;&#160;- Fonction de défilement automatique\n\
+&#160;&#160;&#160;- Métronome au début du défilement automatique\n\
+&#160;&#160;&#160;- Demander quitter et enregistrer\n\
+&#160;&#160;&#160;- Enregistrer le BPM du morceau et le facteur de défilement automatique spécifique à l\'appareil dans un fichier TXT\n\
+&#160;&#160;&#160;- Plusieurs doigtés dans les pop-up.\n\
+&#160;&#160;&#160;- Suppression des publicités\n\
+&#160;&#160;&#160;- Moteur de recherche personnalisable\n\
+&#160;&#160;&#160;- Personnaliser les tables de variation d\'accords\n\
+&#160;&#160;&#160;- L\'application devient open-source\n\n\
 Chord Reader est un <b>logiciel libre</b>. Si vous souhaitez faire un don, rendez-vous sur <a href='http://nolanlawson.com'>le site web</a> !\
 </string>
+    <string name="unsaved_changes">Modifications non enregistrées</string>
+    <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
+    <string name="closing_chordreader">Fermeture ChordReader</string>
+    <string name="closing_chordreader_message">Êtes-vous sûr de vouloir fermer ChordReader?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="No_BPM_found">Aucune valeur BPM trouvée. Veuillez ajuster la valeur souhaitée dans la première ligne.</string>
+    <string name="text_size_xxlarge_name">Très² grand (25pt)</string>
+    <string name="text_size_xxxlarge_name">Très³ grand (30pt)</string>
+    <string name="pref_search_engine_title">Moteur de recherche URL</string>
     <string name="new_file">Nouveau fichier</string>
-
+    <string name="chord_variation_editing">"Édition de variation d'accord: "</string>
+    <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
 
 </resources>

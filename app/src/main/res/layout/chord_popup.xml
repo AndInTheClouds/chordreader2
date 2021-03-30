@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="@dimen/popup_height"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
 	android:background="@drawable/popup_background"
-	android:gravity="left|center_vertical" android:orientation="vertical"
-	android:paddingLeft="10dp" android:paddingRight="10dp"
-	android:paddingBottom="10dp" android:paddingTop="5dp">
-	
-	<TextView android:layout_width="fill_parent" android:id="@android:id/text1"
-	    android:layout_height="wrap_content"
+	android:gravity="left|center_vertical"
+	android:orientation="vertical"
+	android:paddingLeft="10dp"
+	android:paddingTop="5dp"
+	android:paddingRight="10dp"
+	android:paddingBottom="10dp">
+
+	<TextView
+		android:id="@android:id/text1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:paddingLeft="2dp"
+		android:paddingRight="2dp"
+		android:text="text"
 		android:textColor="@android:color/primary_text_light_nodisable"
-		android:text="text" android:textSize="24sp" android:gravity="center_horizontal"
-		android:paddingLeft="2dp" android:paddingRight="2dp"/>
-	
-	<ScrollView android:layout_width="fill_parent" android:layout_height="@dimen/popup_text_height">
-		    
-		<TextView android:layout_height="wrap_content"
-			android:layout_width="wrap_content" android:id="@android:id/text2"
-			android:textColor="@android:color/primary_text_light_nodisable"
-			android:text="text" android:textSize="18sp" android:gravity="left|center_vertical"
-				android:paddingLeft="2dp" android:paddingRight="5dp"/>	    
+		android:textSize="24sp" />
+
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@android:id/text2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="left|center_vertical"
+				android:paddingLeft="2dp"
+				android:paddingRight="5dp"
+				android:text="text"
+				android:textColor="@android:color/primary_text_light_nodisable"
+				android:textSize="18sp" />
+
+			<ImageButton
+				android:id="@+id/chord_var_edit_button"
+				style="@android:style/Widget.ImageButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:src="@android:drawable/ic_menu_edit" />
+		</LinearLayout>
 	</ScrollView>
 
 

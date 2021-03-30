@@ -1,897 +1,912 @@
-A: 002220
-A: 577655
-A: x02220
-A#5: x03221
-A#5: x0x221
-A/Ab: x02120
-A/B: 002420
-A/B: x07600
-A/D: x00220
-A/D: xx0220
-A/D: xx0655
-A/D: xx09109
-A/G: 3x2220
-A/G: x02020
-A/G: x02223
-A/Gb: 002222
-A/Gb: 0x4220
-A/Gb: 2x2220
-A/Gb: x04220
-A/Gb: xx2222
-A5: 577xx5
-A9: x022x0
-A5: 577xx0
-A6: 002222
-A6: 0x4220
-A6: 2x2220
-A6: x04220
-A6: xx2222
-A6/7: 002022
-A6/7sus or A6/7sus4: 554030
-A6/7sus or A6/7sus4: x02032
-A7: 3x2220
-A7: x02020
-A7: x02223
-A7(#5): 103021
-A7/add11 or A7/11: x00020
-A7sus4: x02030
-A7sus4: x02033
-A7sus4: x02233
-A7sus4: 5x0030
-A7sus4: x000x0
-Aadd9: 002420
-Aadd9: x07600
-Aaug/D: xx0221
-Aaug/G: 103021
-Ab: 466544
-Ab#5: x32110
-Ab/A: xx1214
-Ab/F: x810898
-Ab/F: xx1111
-Ab/Gb: xx1112
-Ab/Gb: xx4544
-Ab5 or Ab(no3rd): 466xx4
-Ab6: x810898
-Ab6: xx1111
-Ab7: xx1112
-Ab7: xx4544
-Abdim/E: 020100
-Abdim/E: 022130
-Abdim/E: x20130
-Abdim/E: xx0100
-Abdim/Eb: xx0444
-Abdim/F: x20101
-Abdim/F: xx0101
-Abdim/F: xx3434
-Abdim7: x20101
-Abdim7: xx0101
-Abdim7: xx3434
-Abm: xx6444
-Abm/D: xx0444
-Abm/E: 021100
-Abm/E: 0x6440
-Abm/E: xx1100
-Abm/Gb: xx4444
-Abm7: xx4444
-Absus or Absus4: xx6644
-Absus2/F: x13141
-Adim/Ab: xx1214
-Adim/E: 03x240
-Adim/F: xx1211
-Adim/F: xx3545
-Adim/G: xx1213
-Adim/Gb: xx1212
-Adim7: xx1212
-Am: x02210
-Am: x07555
-Am: x32210
-Am/B: 007500
-Am/B: x32200
-Am/D: xx0210
-Am/D: xx0555
-Am/Eb: 03x240
-Am/F: 003210
-Am/F: 133210
-Am/F: 1x2210
-Am/F: xx2211
-Am/F: xx3210
-Am/G: 002013
-Am/G: x02010
-Am/G: x02213
-Am/G: x05558
-Am/Gb: x02212
-Am/Gb: xx2212
-Am6: x02212
-Am6: xx2212
-Am7: 002013
-Am7: x02010
-Am7: x02213
-Am7: x05558
-Am7(b5) or Ao7: xx1213
-Am7/add11 or Am7/11: x57580
-Amaj7 or A#7: x02120
-Amin/maj9: x06557
-Asus or Asus4: 002230
-Asus or Asus4: x02230
-Asus or Asus4: 5577x0
-Asus or Asus4: x00230
-Asus2 or Aadd9(no3): 002200
-Asus2 or Aadd9(no3): 002400
-Asus2 or Aadd9(no3): 022200
-Asus2 or Aadd9(no3): x02200
-Asus2 or Aadd9(no3): xx2200
-Asus2/Ab: x02100
-Asus2/C: 007500
-Asus2/C: x32200
-Asus2/D: 020200
-Asus2/D: x20230
-Asus2/Db: 002420
-Asus2/Db: x07600
-Asus2/Eb: x21200
-Asus2/F: 003200
-Asus2/G: 3x2200
-Asus2/G: x02000
-Asus2/G: x05450
-Asus2/Gb: x04400
-Asus2/Gb: x24252
-Asus4/Ab: 4x0230
-Asus4/B: 020200
-Asus4/Bb: 01x230
-Asus4/C: xx0210
-Asus4/C: xx0555
-Asus4/Db: x00220
-Asus4/Db: xx0220
-Asus4/Db: xx0655
-Asus4/Db: xx09109
-Asus4/F: xx7760
-Asus4/G: x02030
-Asus4/G: x02033
-Asus4/G: x02233
-Asus4/G: x000x0
-Asus4/Gb: 000232
-Asus4/Gb: 004230
-Asus4/Gb: 2x0230
-Asus4/Gb: x02232
-Asus4/Gb: xx2232
-Asus4/Gb: x54230
-Asus4/Gb: x977x0
-H: 224442
-H: 799877
-H#5: 321003
-H#5: 3x1003
-H/A: 2x1202
-H/A: x01202
-H/A: x21202
-H/A: x24242
-H/Ab: xx4444
-H/E: x22442
-H/E: xx4440
-H5: 799xx2
-H5: x244x2
-H6: xx4444
-H7: 2x1202
-H7: x01202
-H7: x21202
-H7: x24242
-H7/add11 or H7/11: 004440
-H7/add11 or H7/11: 021202
-H7sus4: x04400
-H7sus4: x24252
-Haug/E: 3x1000
-Haug/E: xx1000
-Hb: 113331
-Hb: x13331
-Hb: xx0331
-Hb#5: xx0332
-Hbb5: xx03x0
-Hb/A: 113231
-Hb/Ab: x13131
-Hb/Ab: xx3334
-Hb/Db: xx0666
-Hb/E: x13330
-Hb/G: 353333
-Hb/G: xx3333
-Hb5 or Hb(no3rd): 688xx6
-Hb5 or Hb(no3rd): x133x6
-Hb6: 353333
-Hb6: xx3333
-Hb6/add9 or Hb6/9: x33333
-Hb7: x13131
-Hb7: xx3334
-Hb7sus4: x13141
-Hbadd#11: x13330
-Hbaug/E: 2x4330
-Hbdim/C: x3x320
-Hbdim/D: xx0320
-Hbdim/G: x12020
-Hbdim/G: xx2323
-Hbdim/Gb: 242322
-Hbdim/Gb: xx4320
-Hbdim7: x12020
-Hbdim7: xx2323
-Hbm: 113321
-Hbm/Ab: x13121
-Hbm/D: xx0666
-Hbm/Gb: xx3322
-Hbm7: x13121
-Hbmaj7 or Hb#7: 113231
-Hbmaj9 or Hb9(#7): x33335
-Hbsus2 or Hbadd9(no3): xx3311
-Hbsus2/G: x35363
-Hbsus4/Ab: x13141
-Hdim/A: x20201
-Hdim/A: xx0201
-Hdim/Ab: x20101
-Hdim/Ab: xx0101
-Hdim/Ab: xx3434
-Hdim/G: 1x0003
-Hdim/G: 320001
-Hdim/G: xx0001
-Hdim7: x20101
-Hdim7: xx0101
-Hdim7: xx3434
-Hm: 224432
-Hm: x24432
-Hm: xx0432
-Hm/A: x04432
-Hm/A: x20202
-Hm/A: x20232
-Hm/A: x24232
-Hm/A: xx0202
-Hm/G: 220003
-Hm/G: 220033
-Hm/G: 320002
-Hm/G: xx4433
-Hm7: x04432
-Hm7: x20202
-Hm7: x20232
-Hm7: x24232
-Hm7: xx0202
-Hm7(b5): 123231
-Hm7(b5): x20201
-Hm7(b5): xx0201
-Hm7/add11 or Hm7/11: 002432
-Hm7/add11 or Hm7/11: 020202
-Hmaj7/#11: x23342
-Hsus or Hsus4: 799xx0
-Hsus or Hsus4: x244x0
-Hsus2 or Hadd9(no3): x444x2
-Hsus2 or Hadd9(no3): xx4422
-Hsus2/E: x444x0
-Hsus4/A: x04400
-Hsus4/A: x24252
-Hsus4/Ab: 022102
-Hsus4/Ab: 0x4100
-Hsus4/Ab: 222100
-Hsus4/Db: x444x0
-Hsus4/Eb: x22442
-Hsus4/Eb: xx4440
-Hsus4/G: 022002
-Hsus4/G: 024000
-Hsus4/G: 0x4000
-Hsus4/G: 222000
-C: 032010
-C: 035553
-C: 332010
-C: 3x2010
-C: x32010
-C: x35550
-C#5: x32110
-Cb5: xx45x0
-C/A: 002013
-C/A: x02010
-C/A: x02213
-C/A: x05558
-C/B: 032000
-C/B: x22010
-C/B: x35453
-C/Bb: x35353
-C/D: 3x0010
-C/D: x30010
-C/D: x32030
-C/D: x32033
-C/D: xx0010
-C/D: xx0553
-C/D: x101212130
-C/D: x555x0
-C/F: x33010
-C/F: xx3010
-C5: x355x3
-C6: 002013
-C6: x02010
-C6: x02213
-C6: x05558
-C6/add9 or C6/9: x57580
-C7: x35353
-C7sus4: x35363
-C9(b5): 03x332
-Cadd9: 3x0010
-Cadd9: x30010
-Cadd9: x32030
-Cadd9: x32033
-Cadd9: xx0010
-Cadd9: xx0553
-Cadd9: x101212130
-Cadd9: x32030
-Cadd9: x555x0
-Cdim/A: xx1212
-Cdim/Ab: xx1112
-Cdim/Ab: xx4544
-Cdim/D: x54542
-Cdim7: xx1212
-Cm: x35543
-Cm: xx5543
-Cm/A: xx1213
-Cm/Bb: x35343
-Cm6: xx1213
-Cm7: x35343
-Cmaj7 or C#7: 032000
-Cmaj7 or C#7: x22010
-Cmaj7 or C#7: x35453
-Cmaj9 or C9(#7): x30000
-Csus or Csus4: x33011
-Csus or Csus4: xx3011
-Csus2 or Cadd9(no3): x101212133
-Csus2 or Cadd9(no3): x555x3
-Csus2 or Cadd9(no3): x30033
-Csus2 or Cadd9(no3): x35533
-Csus2/A: x57583
-Csus2/A: xx0213
-Csus2/B: 330003
-Csus2/B: x30003
-Csus2/E: 3x0010
-Csus2/E: x30010
-Csus2/E: x32030
-Csus2/E: x32033
-Csus2/E: xx0010
-Csus2/E: xx0553
-Csus2/E: x101212130
-Csus2/E: x555x0
-Csus2/F: 330011
-Csus4/A: 3x3211
-Csus4/A: xx3213
-Csus4/B: x33003
-Csus4/Bb: x35363
-Csus4/D: 330011
-Csus4/E: x33010
-Csus4/E: xx3010
-D: x54232
-D: x977x2
-D: 200232
-D: x00232
-D: x04232
-D#5: xx0332
-D/B: x04432
-D/B: x20202
-D/B: x20232
-D/B: x24232
-D/B: xx0202
-D/C: x57572
-D/C: x00212
-D/C: x3x232
-D/C: x57575
-D/Db: xx0141414
-D/Db: xx0222
-D/E: 000232
-D/E: 004230
-D/E: 2x0230
-D/E: x02232
-D/E: xx2232
-D/E: x54230
-D/E: x977x0
-D/G: 5x4035
-D/G: 3x0232
-D5: 5577x5
-D5: x00235
-D6: x04432
-D6: x20202
-D6: x20232
-D6: x24232
-D6: xx0202
-D6/add9 or D6/9: 002432
-D6/add9 or D6/9: 020202
-D7: x57572
-D7: x00212
-D7: x3x232
-D7: x57575
-D7sus4: x57583
-D7sus4: xx0213
-D9: 000212
-D9: 2x0210
-D9: x57570
-D9(#5): 03x332
-Dadd9: 000232
-Dadd9: 004230
-Dadd9: 2x0230
-Dadd9: x02232
-Dadd9: xx2232
-Dadd9: x54230
-Dadd9: x977x0
-Daug/E: 2x4330
-Db or Dbmaj: 446664
-Db or Dbmaj: x43121
-Db or Dbmaj: x46664
-Db or Dbmaj: xx3121
-Db or Dbmaj: xx6664
-Db#5 or Dbaug: x03221
-Db#5 or Dbaug: x0x221
-Dbb5: xx3021
-Db/B: x43404
-Db/Bb: x13121
-Db/C: x33121
-Db/C: x46564
-Db5 or Db(no3rd): x466x4
-Db6: x13121
-Db7: x43404
-Dbaug/D: xx0221
-Dbaug/G: 103021
-Dbdim/A: 3x2220
-Dbdim/A: x02020
-Dbdim/A: x02223
-Dbdim/B: 022020
-Dbdim/Bb: x12020
-Dbdim/Bb: xx2323
-Dbdim/D: 3x0020
-Dbdim/D: xx0020
-Dbdim7: x12020
-Dbdim7: xx2323
-Dbm: x46654
-Dbm: xx2120
-Dbm: x466x0
-Dbm/A: x02120
-Dbm/B: 022120
-Dbm/B: x46454
-Dbm7: 022120
-Dbm7: x46454
-Dbm7(b5) or Dbo7: 022020
-Dbmaj7 or Db#7: x33121
-Dbmaj7 or Db#7: x46564
-Dbsus2 or Dbadd9(no3): xx6644
-Dbsus4/Bb: xx4324
-Ddim/B: x20101
-Ddim/B: xx0101
-Ddim/B: xx3434
-Ddim/Bb: x13131
-Ddim/Bb: xx3334
-Ddim/C: xx0111
-Ddim7: x20101
-Ddim7: xx0101
-Ddim7: xx3434
-Dm: x00231
-Dm/B: 123231
-Dm/B: x20201
-Dm/B: xx0201
-Dm/Bb: 113231
-Dm/C: x57565
-Dm/C: xx0211
-Dm/C: xx0565
-Dm/Db: xx0221
-Dm/E: xx7760
-Dm6: 123231
-Dm6: x20201
-Dm6: xx0201
-Dm7: x57565
-Dm7: xx0211
-Dm7: xx0565
-Dm7(b5) or Do7: xx0111
-Dm7/add11 or Dm7/11: 3x0211
-Dmaj7 or D#7: xx0141414
-Dmaj7 or D#7: xx0222
-Dmin/maj7: xx0221
-Dsus or Dsus4: 5x0035
-Dsus or Dsus4: 300033
-Dsus or Dsus4: x00033
-Dsus or Dsus4: xx0233
-Dsus2 or Dadd9(no3): 5577x0
-Dsus2 or Dadd9(no3): x00230
-Dsus2 or Dadd9(no3): 002230
-Dsus2 or Dadd9(no3): x02230
-Dsus2 or Dadd9(no3): xx0230
-Dsus2/Ab: 4x0230
-Dsus2/B: 020200
-Dsus2/B: x20230
-Dsus2/Bb: 01x230
-Dsus2/C: xx0210
-Dsus2/C: xx0555
-Dsus2/Db: x00220
-Dsus2/Db: xx0220
-Dsus2/Db: xx0655
-Dsus2/Db: xx09109
-Dsus2/F: xx7760
-Dsus2/G: x02030
-Dsus2/G: x02033
-Dsus2/G: x02233
-Dsus2/G: 5x0030
-Dsus2/G: x000x0
-Dsus2/Gb: 000232
-Dsus2/Gb: 004230
-Dsus2/Gb: 2x0230
-Dsus2/Gb: x02232
-Dsus2/Gb: xx2232
-Dsus2/Gb: x54230
-Dsus2/Gb: x977x0
-Dsus4/B: 300003
-Dsus4/B: 320203
-Dsus4/C: x57583
-Dsus4/C: xx0213
-Dsus4/E: x02030
-Dsus4/E: 5x0030
-Dsus4/E: x000x0
-Dsus4/Gb: 5x4035
-Dsus4/Gb: 3x0232
-E or Emaj: 022100
-E: x76450
-E#5: x32110
-E/A: x02100
-E/D: 020100
-E/D: 022130
-E/D: x20130
-E/D: xx0100
-E/Db: 022120
-E/Db: x46454
-E/Eb: 021100
-E/Eb: 0x6440
-E/Eb: xx1100
-E/Gb: 022102
-E/Gb: 0x4100
-E/Gb: 222100
-E11/b9: 003434
-E5: 02xxx0
-E5: 002100
-E5: x799x0
-E6: 022120
-E6: x46454
-E7: 020100
-E7: 022130
-E7: x20130
-E7: xx0100
-E7/add11 or E7/11: x00100
-E7/b9(b5): 013131
-E7sus4: 020200
-E9: 020102
-E9: 220100
-Eadd9: 022102
-Eadd9: 0x4100
-Eadd9: 222100
-Eb or Ebmaj: x11343
-Eb or Ebmaj: xx1343
-Eb or Ebmaj: xx5343
-Eb#5 or Ebaug: 321003
-Eb#5 or Ebaug: 3x1003
-Eb/C: x35343
-Eb/D: x68786
-Eb/Db: x11323
-Eb/Db: x68686
-Eb/Db: xx1323
-Eb/E: xx5340
-Eb5 or Eb(no3rd): x688x6
-Eb6: x35343
-Eb7: x11323
-Eb7: x68686
-Eb7: xx1323
-Ebaug/E: 3x1000
-Ebaug/E: xx1000
-Ebdim/B: 2x1202
-Ebdim/B: x01202
-Ebdim/B: x21202
-Ebdim/B: x24242
-Ebdim/C: xx1212
-Ebdim7: xx1212
-Ebm: xx4342
-Ebm/Db: xx1322
-Ebm7: xx1322
-Ebmaj7 or Eb#7: x68786
-Ebsus2/Ab: x13141
-Ebsus4/F: x13141
-Edim/C: x35353
-Edim/D: 3x0330
-Edim/Db: x12020
-Edim/Db: xx2323
-Edim/Eb: xx5340
-Edim7: x12020
-Edim7: xx2323
-Em: 022000
-Em: 3x2000
-Em: x25xx0
-Em/A: 3x2200
-Em/A: x02000
-Em/A: x05450
-Em/C: 032000
-Em/C: x22010
-Em/C: x35453
-Em/D: 020000
-Em/D: 020030
-Em/D: 022030
-Em/D: 022033
-Em/D: xx0121212
-Em/D: xx0987
-Em/D: xx2433
-Em/D: 0x0000
-Em/D: x101212120
-Em/Db: 022020
-Em/Eb: 3x1000
-Em/Eb: xx1000
-Em/Gb: 022002
-Em/Gb: 024000
-Em/Gb: 0x4000
-Em/Gb: 222000
-Em6: 022020
-Em7: 020000
-Em7: 020030
-Em7: 022030
-Em7: 022033
-Em7: xx0000
-Em7: xx0121212
-Em7: xx0987
-Em7: xx2433
-Em7: 0x0000
-Em7: x101212120
-Em7(b5): 3x0330
-Em7/add11 or Em7/11: 000000
-Em7/add11 or Em7/11: 000003
-Em7/add11 or Em7/11: 3x0200
-Em9: 020002
-Em9: 020032
-Em9: 220000
-Emaj7 or E#7: 021100
-Emaj7 or E#7: 0x6440
-Emaj7 or E#7: xx1100
-Emaj9 or E9(#7): 021102
-Emaj9 or E9(#7): 4x4440
-Emin/maj7: 3x1000
-Emin/maj7: xx1000
-Emin/maj9: 064000
-Esus or Esus4: 002200
-Esus or Esus4: 002400
-Esus or Esus4: 022200
-Esus or Esus4: x02200
-Esus or Esus4: xx2200
-Esus2 or Eadd9(no3): 799xx0
-Esus2 or Eadd9(no3): x244x0
-Esus2/A: x04400
-Esus2/A: x24252
-Esus2/Ab: 022102
-Esus2/Ab: 0x4100
-Esus2/Ab: 222100
-Esus2/Db: x444x0
-Esus2/Eb: x22442
-Esus2/Eb: xx4440
-Esus2/G: 022002
-Esus2/G: 024000
-Esus2/G: 0x4000
-Esus2/G: 222000
-Esus4/Ab: x02100
-Esus4/C: 007500
-Esus4/C: x32200
-Esus4/D: 020200
-Esus4/D: x20230
-Esus4/Db: 002420
-Esus4/Db: x07600
-Esus4/Eb: x21200
-Esus4/F: 003200
-Esus4/G: 3x2200
-Esus4/G: x02000
-Esus4/G: x05450
-Esus4/Gb: x04400
-Esus4/Gb: x24252
-F: 133211
-F: x03210
-F: x33211
-F: xx3211
-F#5: x03221
-F#: 244322
-F/D: x57565
-F/D: xx0211
-F/D: xx0565
-F/E: 003210
-F/E: 133210
-F/E: 1x2210
-F/E: xx2211
-F/E: xx3210
-F/Eb: xx1211
-F/Eb: xx3545
-F/G: 3x3211
-F/G: xx3213
-F5: 133xx1
-F5: x810xx1
-F6: x57565
-F6: xx0211
-F6: xx0565
-F6/add9 or F6/9: 3x0211
-F7: xx1211
-F7: xx3545
-Fadd9: 3x3211
-Fadd9: xx3213
-Faug/D: xx0221
-Faug/G: 103021
-Fdim/D: x20101
-Fdim/D: xx0101
-Fdim/D: xx3434
-Fdim/Db: x43404
-Fdim7: x20101
-Fdim7: xx0101
-Fdim7: xx3434
-Fm: x33111
-Fm: xx3111
-Fm/D: xx0111
-Fm/Db: x33121
-Fm/Db: x46564
-Fm/Eb: x810898
-Fm/Eb: xx1111
-Fm6: xx0111
-Fm7: x810898
-Fm7: xx1111
-Fmaj7 or F#7: 003210
-Fmaj7 or F#7: 133210
-Fmaj7 or F#7: 1x2210
-Fmaj7 or F#7: xx2211
-Fmaj7 or F#7: xx3210
-Fmaj7/#11: 023210
-Fmaj7/#11: 133200
-Fmaj9 or F9(#7): 003013
-Fsus or Fsus4: xx3311
-Fsus2 or Fadd9(no3): x33011
-Fsus2 or Fadd9(no3): xx3011
-Fsus2/A: 3x3211
-Fsus2/A: xx3213
-Fsus2/B: x33003
-Fsus2/Bb: x35363
-Fsus2/D: 330011
-Fsus2/E: x33010
-Fsus2/E: xx3010
-Fsus4/G: x35363
-F#m: 244222
-F#m7: 242222
-G: 320003
-G/B: 320033
-G or Gmaj: 355433
-G: 3x0003
-G: x55433
-G#5: 321003
-G#: 466544
-G#m: 466444
-G/A: 300003
-G/A: 320203
-G/C: 330003
-G/C: x30003
-G/E: 020000
-G/E: 020030
-G/E: 022030
-G/E: 022033
-G/E: xx0121212
-G/E: xx0987
-G/E: xx2433
-G/E: 0x0000
-G/E: x101212120
-G/F: 1x0003
-G/F: 320001
-G/F: xx0001
-G/Gb: 220003
-G/Gb: 220033
-G/Gb: 320002
-G/Gb: xx4433
-G5: 355xx3
-G5: 3x0033
-G6: 020000
-G6: 320000
-G6: 022030
-G6: 022033
-G6: xx0121212
-G6: xx0987
-G6: xx2433
-G6: 0x0000
-G6: x101212120
-G6/add9 or G6/9: 000000
-G6/add9 or G6/9: 000003
-G6/add9 or G6/9: 3x0200
-G7: 1x0003
-G7: 320001
-G7: xx0001
-G7/add11 or G7/11: x30001
-G7sus4: 330011
-G9: x00001
-G9: x23233
-Gadd9: 300003
-Gadd9: 320203
-Gaug/E: 3x1000
-Gaug/E: xx1000
-Gb or Gbmaj: 244322
-Gb or Gbmaj: x44322
-Gb or Gbmaj: xx4322
-Gb#5: xx0332
-Gb/Ab: xx4324
-Gb/E: 242322
-Gb/E: xx4320
-Gb/Eb: xx1322
-Gb/F: xx3322
-Gb6: xx1322
-Gb7 or Gbdom7: 242322
-Gb7 or Gbdom7: xx4320
-Gb7(#5): 2x4330
-Gb7/#9: x04320
-Gb7sus4: x444x0
-Gbadd9 or Gb2: xx4324
-Gbaug/E: 2x4330
-Gbdim/D: x57572
-Gbdim/D: x00212
-Gbdim/D: x3x232
-Gbdim/D: x57575
-Gbdim/E: x02212
-Gbdim/E: xx2212
-Gbdim/Eb: xx1212
-Gbdim7: xx1212
-Gbm: 244222
-Gbm: x44222
-Gbm: xx4222
-Gbm/D: xx0141414
-Gbm/D: xx0222
-Gbm/E: 002222
-Gbm/E: 0x4220
-Gbm/E: 2x2220
-Gbm/E: x04220
-Gbm/E: xx2222
-Gbm7: 002222
-Gbm7: 0x4220
-Gbm7: 2x2220
-Gbm7: x04220
-Gbm7: xx2222
-Gbm7(b5) or Gbo7: x02212
-Gbm7(b5) or Gbo7: xx2212
-Gbm7/b9: 002022
-Gbmaj7 or Gb#7: xx3322
-Gbsus or Gbsus4: x44422
-Gbsus2/Bb: xx4324
-Gbsus4/E: x444x0
-Gdim/E: x12020
-Gdim/E: xx2323
-Gdim/Eb: x11323
-Gdim/Eb: x68686
-Gdim/Eb: xx1323
-Gdim7: x12020
-Gdim7: xx2323
-Gm: 355333
-Gm: xx0333
-Gm/E: 3x0330
-Gm/Eb: x68786
-Gm/F: 353333
-Gm/F: xx3333
-Gm13: 003333
-Gm6: 3x0330
-Gm7: 353333
-Gm7: xx3333
-Gm7/add11 or Gm7/11: x33333
-Gm9: 353335
-Gmaj7 or G#7: 220003
-Gmaj7 or G#7: 220033
-Gmaj7 or G#7: 320002
-Gmaj7 or G#7: xx4433
-Gsus or Gsus4: x101212133
-Gsus or Gsus4: x30033
-Gsus or Gsus4: x35533
-Gsus or Gsus4: x55533
-Gsus2 or Gadd9(no3): 5x0035
-Gadd9(no3): 300033
-Gsus2 or Gadd9(no3): x00033
-Gsus2 or Gadd9(no3): xx0233
-Gsus2/B: 300003
-Gsus2/B: 320203
-Gsus2/C: x57583
-Gsus2/C: xx0213
-Gsus2/E: x02030
-Gsus2/E: x02033
-Gsus2/E: x02233
-Gsus2/E: 500030
-Gsus2/Gb: 5x4035
-Gsus2/Gb: 3x0232
-Gsus4/A: x57583
-Gsus4/A: xx0213
-Gsus4/B: 330003
-Gsus4/B: x30003
-Gsus4/E: 3x0010
-Gsus4/E: x30010
-Gsus4/E: x32030
-Gsus4/E: x32033
-Gsus4/E: xx0010
-Gsus4/E: xx0553
-Gsus4/E: x555x0
-Gsus4/F: 330011
+A: 0-0-2-2-2-0
+A: 5-7-7-6-5-5
+A: x-0-2-2-2-0
+A#5: x-0-3-2-2-1
+A#5: x-0-x-2-2-1
+A/Ab: x-0-2-1-2-0
+A/B: 0-0-2-4-2-0
+A/B: x-0-7-6-0-0
+A/D: x-0-0-2-2-0
+A/D: x-x-0-2-2-0
+A/D: x-x-0-6-5-5
+A/D: x-x-0-9-10-9
+A/G: 3-x-2-2-2-0
+A/G: x-0-2-0-2-0
+A/G: x-0-2-2-2-3
+A/Gb: 0-0-2-2-2-2
+A/Gb: 0-x-4-2-2-0
+A/Gb: 2-x-2-2-2-0
+A/Gb: x-0-4-2-2-0
+A/Gb: x-x-2-2-2-2
+A5: 5-7-7-x-x-5
+A9: x-0-2-2-x-0
+A5: 5-7-7-x-x-0
+A6: 0-0-2-2-2-2
+A6: 0-x-4-2-2-0
+A6: 2-x-2-2-2-0
+A6: x-0-4-2-2-0
+A6: x-x-2-2-2-2
+A6/7: 0-0-2-0-2-2
+A6/7sus or A6/7sus4: 5-5-4-0-3-0
+A6/7sus or A6/7sus4: x-0-2-0-3-2
+A7: 3-x-2-2-2-0
+A7: x-0-2-0-2-0
+A7: x-0-2-2-2-3
+A7(#5): 1-0-3-0-2-1
+A7/add11 or A7/11: x-0-0-0-2-0
+A7sus4: x-0-2-0-3-0
+A7sus4: x-0-2-0-3-3
+A7sus4: x-0-2-2-3-3
+A7sus4: 5-x-0-0-3-0
+A7sus4: x-0-0-0-x-0
+Aadd9: 0-0-2-4-2-0
+Aadd9: x-0-7-6-0-0
+Aaug/D: x-x-0-2-2-1
+Aaug/G: 1-0-3-0-2-1
+Ab: 4-6-6-5-4-4
+Ab#5: x-3-2-1-1-0
+Ab/A: x-x-1-2-1-4
+Ab/F: x-8-10-8-9-8
+Ab/F: x-x-1-1-1-1
+Ab/Gb: x-x-1-1-1-2
+Ab/Gb: x-x-4-5-4-4
+Ab5 or Ab(no3rd): 4-6-6-x-x-4
+Ab6: x-8-10-8-9-8
+Ab6: x-x-1-1-1-1
+Ab7: x-x-1-1-1-2
+Ab7: x-x-4-5-4-4
+Abdim/E: 0-2-0-1-0-0
+Abdim/E: 0-2-2-1-3-0
+Abdim/E: x-2-0-1-3-0
+Abdim/E: x-x-0-1-0-0
+Abdim/Eb: x-x-0-4-4-4
+Abdim/F: x-2-0-1-0-1
+Abdim/F: x-x-0-1-0-1
+Abdim/F: x-x-3-4-3-4
+Abdim7: x-2-0-1-0-1
+Abdim7: x-x-0-1-0-1
+Abdim7: x-x-3-4-3-4
+Abm: x-x-6-4-4-4
+Abm/D: x-x-0-4-4-4
+Abm/E: 0-2-1-1-0-0
+Abm/E: 0-x-6-4-4-0
+Abm/E: x-x-1-1-0-0
+Abm/Gb: x-x-4-4-4-4
+Abm7: x-x-4-4-4-4
+Absus or Absus4: x-x-6-6-4-4
+Absus2/F: x-1-3-1-4-1
+Adim/Ab: x-x-1-2-1-4
+Adim/E: 0-3-x-2-4-0
+Adim/F: x-x-1-2-1-1
+Adim/F: x-x-3-5-4-5
+Adim/G: x-x-1-2-1-3
+Adim/Gb: x-x-1-2-1-2
+Adim7: x-x-1-2-1-2
+Am: x-0-2-2-1-0
+Am: x-0-7-5-5-5
+Am: x-3-2-2-1-0
+Am/B: 0-0-7-5-0-0
+Am/B: x-3-2-2-0-0
+Am/D: x-x-0-2-1-0
+Am/D: x-x-0-5-5-5
+Am/Eb: 0-3-x-2-4-0
+Am/F: 0-0-3-2-1-0
+Am/F: 1-3-3-2-1-0
+Am/F: 1-x-2-2-1-0
+Am/F: x-x-2-2-1-1
+Am/F: x-x-3-2-1-0
+Am/G: 0-0-2-0-1-3
+Am/G: x-0-2-0-1-0
+Am/G: x-0-2-2-1-3
+Am/G: x-0-5-5-5-8
+Am/Gb: x-0-2-2-1-2
+Am/Gb: x-x-2-2-1-2
+Am6: x-0-2-2-1-2
+Am6: x-x-2-2-1-2
+Am7: 0-0-2-0-1-3
+Am7: x-0-2-0-1-0
+Am7: x-0-2-2-1-3
+Am7: x-0-5-5-5-8
+Am7(b5) or Ao7: x-x-1-2-1-3
+Am7/add11 or Am7/11: x-5-7-5-8-0
+Amaj7 or A#7: x-0-2-1-2-0
+Amin/maj9: x-0-6-5-5-7
+Asus or Asus4: 0-0-2-2-3-0
+Asus or Asus4: x-0-2-2-3-0
+Asus or Asus4: 5-5-7-7-x-0
+Asus or Asus4: x-0-0-2-3-0
+Asus2 or Aadd9(no3): 0-0-2-2-0-0
+Asus2 or Aadd9(no3): 0-0-2-4-0-0
+Asus2 or Aadd9(no3): 0-2-2-2-0-0
+Asus2 or Aadd9(no3): x-0-2-2-0-0
+Asus2 or Aadd9(no3): x-x-2-2-0-0
+Asus2/Ab: x-0-2-1-0-0
+Asus2/C: 0-0-7-5-0-0
+Asus2/C: x-3-2-2-0-0
+Asus2/D: 0-2-0-2-0-0
+Asus2/D: x-2-0-2-3-0
+Asus2/Db: 0-0-2-4-2-0
+Asus2/Db: x-0-7-6-0-0
+Asus2/Eb: x-2-1-2-0-0
+Asus2/F: 0-0-3-2-0-0
+Asus2/G: 3-x-2-2-0-0
+Asus2/G: x-0-2-0-0-0
+Asus2/G: x-0-5-4-5-0
+Asus2/Gb: x-0-4-4-0-0
+Asus2/Gb: x-2-4-2-5-2
+Asus4/Ab: 4-x-0-2-3-0
+Asus4/B: 0-2-0-2-0-0
+Asus4/Bb: 0-1-x-2-3-0
+Asus4/C: x-x-0-2-1-0
+Asus4/C: x-x-0-5-5-5
+Asus4/Db: x-0-0-2-2-0
+Asus4/Db: x-x-0-2-2-0
+Asus4/Db: x-x-0-6-5-5
+Asus4/Db: x-x-0-9-10-9
+Asus4/F: x-x-7-7-6-0
+Asus4/G: x-0-2-0-3-0
+Asus4/G: x-0-2-0-3-3
+Asus4/G: x-0-2-2-3-3
+Asus4/G: x-0-0-0-x-0
+Asus4/Gb: 0-0-0-2-3-2
+Asus4/Gb: 0-0-4-2-3-0
+Asus4/Gb: 2-x-0-2-3-0
+Asus4/Gb: x-0-2-2-3-2
+Asus4/Gb: x-x-2-2-3-2
+Asus4/Gb: x-5-4-2-3-0
+Asus4/Gb: x-9-7-7-x-0
+H: 2-2-4-4-4-2
+H: 7-9-9-8-7-7
+H#5: 3-2-1-0-0-3
+H#5: 3-x-1-0-0-3
+H/A: 2-x-1-2-0-2
+H/A: x-0-1-2-0-2
+H/A: x-2-1-2-0-2
+H/A: x-2-4-2-4-2
+H/Ab: x-x-4-4-4-4
+H/E: x-2-2-4-4-2
+H/E: x-x-4-4-4-0
+H5: 7-9-9-x-x-2
+H5: x-2-4-4-x-2
+H6: x-x-4-4-4-4
+H7: 2-x-1-2-0-2
+H7: x-0-1-2-0-2
+H7: x-2-1-2-0-2
+H7: 2-2-4-2-4-2
+H7/add11 or H7/11: 0-0-4-4-4-0
+H7/add11 or H7/11: 0-2-1-2-0-2
+H7sus4: x-0-4-4-0-0
+H7sus4: x-2-4-2-5-2
+H7/9: 2-2-1-2-2-2
+Haug/E: 3-x-1-0-0-0
+Haug/E: x-x-1-0-0-0
+Hb: 1-1-3-3-3-1
+Hb: x-1-3-3-3-1
+Hb: x-x-0-3-3-1
+Hb#5: x-x-0-3-3-2
+Hbb5: x-x-0-3-x-0
+Hb/A: 1-1-3-2-3-1
+Hb/Ab: x-1-3-1-3-1
+Hb/Ab: x-x-3-3-3-4
+Hb/Db: x-x-0-6-6-6
+Hb/E: x-1-3-3-3-0
+Hb/G: 3-5-3-3-3-3
+Hb/G: x-x-3-3-3-3
+Hb5 or Hb(no3rd): 6-8-8-x-x-6
+Hb5 or Hb(no3rd): x-1-3-3-x-6
+Hb6: 3-5-3-3-3-3
+Hb6: x-x-3-3-3-3
+Hb6/add9 or Hb6/9: x-3-3-3-3-3
+Hb7: x-1-3-1-3-1
+Hb7: x-x-3-3-3-4
+Hb7sus4: x-1-3-1-4-1
+Hbadd#11: x-1-3-3-3-0
+Hbaug/E: 2-x-4-3-3-0
+Hbdim/C: x-3-x-3-2-0
+Hbdim/D: x-x-0-3-2-0
+Hbdim/G: x-1-2-0-2-0
+Hbdim/G: x-x-2-3-2-3
+Hbdim/Gb: 2-4-2-3-2-2
+Hbdim/Gb: x-x-4-3-2-0
+Hbdim7: x-1-2-0-2-0
+Hbdim7: x-x-2-3-2-3
+Hbm: 1-1-3-3-2-1
+Hbm/Ab: x-1-3-1-2-1
+Hbm/D: x-x-0-6-6-6
+Hbm/Gb: x-x-3-3-2-2
+Hbm7: x-1-3-1-2-1
+Hbmaj7 or Hb#7: 1-1-3-2-3-1
+Hbmaj9 or Hb9(#7): x-3-3-3-3-5
+Hbsus2 or Hbadd9(no3): x-x-3-3-1-1
+Hbsus2/G: x-3-5-3-6-3
+Hbsus4/Ab: x-1-3-1-4-1
+Hdim/A: x-2-0-2-0-1
+Hdim/A: x-x-0-2-0-1
+Hdim/Ab: x-2-0-1-0-1
+Hdim/Ab: x-x-0-1-0-1
+Hdim/Ab: x-x-3-4-3-4
+Hdim/G: 1-x-0-0-0-3
+Hdim/G: 3-2-0-0-0-1
+Hdim/G: x-x-0-0-0-1
+Hdim7: x-2-0-1-0-1
+Hdim7: x-x-0-1-0-1
+Hdim7: x-x-3-4-3-4
+Hm: 2-2-4-4-3-2
+Hm: x-2-4-4-3-2
+Hm: x-x-0-4-3-2
+Hm/A: x-0-4-4-3-2
+Hm/A: x-2-0-2-0-2
+Hm/A: x-2-0-2-3-2
+Hm/A: x-2-4-2-3-2
+Hm/A: x-x-0-2-0-2
+Hm/G: 2-2-0-0-0-3
+Hm/G: 2-2-0-0-3-3
+Hm/G: 3-2-0-0-0-2
+Hm/G: x-x-4-4-3-3
+Hm7: x-2-1-2-0-2
+Hm7: x-0-4-4-3-2
+Hm7: x-2-0-2-0-2
+Hm7: x-2-0-2-3-2
+Hm7: x-2-4-2-3-2
+Hm7: x-x-0-2-0-2
+Hm7(b5): 1-2-3-2-3-1
+Hm7(b5): x-2-0-2-0-1
+Hm7(b5): x-x-0-2-0-1
+Hm7(b5): 0-2-3-2-3-0
+Hm7/add11 or Hm7/11: 0-0-2-4-3-2
+Hm7/add11 or Hm7/11: 0-2-0-2-0-2
+Hmaj7/#11: x-2-3-3-4-2
+Hsus or Hsus4: 7-9-9-x-x-0
+Hsus or Hsus4: x-2-4-4-x-0
+Hsus2 or Hadd9(no3): x-4-4-4-x-2
+Hsus2 or Hadd9(no3): x-x-4-4-2-2
+Hsus2/E: x-4-4-4-x-0
+Hsus4/A: x-0-4-4-0-0
+Hsus4/A: x-2-4-2-5-2
+Hsus4/Ab: 0-2-2-1-0-2
+Hsus4/Ab: 0-x-4-1-0-0
+Hsus4/Ab: 2-2-2-1-0-0
+Hsus4/Db: x-4-4-4-x-0
+Hsus4/Eb: x-2-2-4-4-2
+Hsus4/Eb: x-x-4-4-4-0
+Hsus4/G: 0-2-2-0-0-2
+Hsus4/G: 0-2-4-0-0-0
+Hsus4/G: 0-x-4-0-0-0
+Hsus4/G: 2-2-2-0-0-0
+C: 0-3-2-0-1-0
+C: 0-3-5-5-5-3
+C: 3-3-2-0-1-0
+C: 3-x-2-0-1-0
+C: x-3-2-0-1-0
+C: x-3-5-5-5-0
+C#5: x-3-2-1-1-0
+Cb5: x-x-4-5-x-0
+C/A: 0-0-2-0-1-3
+C/A: x-0-2-0-1-0
+C/A: x-0-2-2-1-3
+C/A: x-0-5-5-5-8
+C/B: 0-3-2-0-0-0
+C/B: x-2-2-0-1-0
+C/B: x-3-5-4-5-3
+C/Bb: x-3-5-3-5-3
+C/D: 3-x-0-0-1-0
+C/D: x-3-0-0-1-0
+C/D: x-3-2-0-3-0
+C/D: x-3-2-0-3-3
+C/D: x-x-0-0-1-0
+C/D: x-x-0-5-5-3
+C/D: x-10-12-12-13-0
+C/D: x-5-5-5-x-0
+C/F: x-3-3-0-1-0
+C/F: x-x-3-0-1-0
+C/G: 3-3-2-0-1-0
+C5: x-3-5-5-x-3
+C6: 0-0-2-0-1-3
+C6: x-0-2-0-1-0
+C6: x-0-2-2-1-3
+C6: x-0-5-5-5-8
+C6/add9 or C6/9: x-5-7-5-8-0
+C7: x-3-5-3-5-3
+C7sus4: x-3-5-3-6-3
+C9(b5): 0-3-x-3-3-2
+Cadd9: 3-x-0-0-1-0
+Cadd9: x-3-0-0-1-0
+Cadd9: x-3-2-0-3-0
+Cadd9: x-3-2-0-3-3
+Cadd9: x-x-0-0-1-0
+Cadd9: x-x-0-5-5-3
+Cadd9: x-10-12-12-13-0
+Cadd9: x-3-2-0-3-0
+Cadd9: x-5-5-5-x-0
+Cdim: 2-3-4-2-4-2
+Cdim/A: x-x-1-2-1-2
+Cdim/Ab: x-x-1-1-1-2
+Cdim/Ab: x-x-4-5-4-4
+Cdim/D: x-5-4-5-4-2
+Cdim7: x-x-1-2-1-2
+Cm: x-3-5-5-4-3
+Cm: x-x-5-5-4-3
+Cm/A: x-x-1-2-1-3
+Cm/Bb: x-3-5-3-4-3
+Cm6: x-x-1-2-1-3
+Cm7: x-3-5-3-4-3
+Cmaj7 or C#7: 0-3-2-0-0-0
+Cmaj7 or C#7: x-2-2-0-1-0
+Cmaj7 or C#7: x-3-5-4-5-3
+Cmaj9 or C9(#7): x-3-0-0-0-0
+Csus or Csus4: x-3-3-0-1-1
+Csus or Csus4: x-x-3-0-1-1
+Csus2 or Cadd9(no3): x-10-12-12-13-3
+Csus2 or Cadd9(no3): x-5-5-5-x-3
+Csus2 or Cadd9(no3): x-3-0-0-3-3
+Csus2 or Cadd9(no3): x-3-5-5-3-3
+Csus2/A: x-5-7-5-8-3
+Csus2/A: x-x-0-2-1-3
+Csus2/B: 3-3-0-0-0-3
+Csus2/B: x-3-0-0-0-3
+Csus2/E: 3-x-0-0-1-0
+Csus2/E: x-3-0-0-1-0
+Csus2/E: x-3-2-0-3-0
+Csus2/E: x-3-2-0-3-3
+Csus2/E: x-x-0-0-1-0
+Csus2/E: x-x-0-5-5-3
+Csus2/E: x-10-12-12-13-0
+Csus2/E: x-5-5-5-x-0
+Csus2/F: 3-3-0-0-1-1
+Csus4/A: 3-x-3-2-1-1
+Csus4/A: x-x-3-2-1-3
+Csus4/B: x-3-3-0-0-3
+Csus4/Bb: x-3-5-3-6-3
+Csus4/D: 3-3-0-0-1-1
+Csus4/E: x-3-3-0-1-0
+Csus4/E: x-x-3-0-1-0
+D: x-5-4-2-3-2
+D: x-9-7-7-x-2
+D: 2-0-0-2-3-2
+D: x-0-0-2-3-2
+D: x-0-4-2-3-2
+D#5: x-x-0-3-3-2
+D/B: x-0-4-4-3-2
+D/B: x-2-0-2-0-2
+D/B: x-2-0-2-3-2
+D/B: x-2-4-2-3-2
+D/B: x-x-0-2-0-2
+D/C: x-5-7-5-7-2
+D/C: x-0-0-2-1-2
+D/C: x-3-x-2-3-2
+D/C: x-5-7-5-7-5
+D/C#: x-4-0-2-3-2
+D/Db: x-x-0-14-14-14
+D/Db: x-x-0-2-2-2
+D/E: 0-0-0-2-3-2
+D/E: 0-0-4-2-3-0
+D/E: 2-x-0-2-3-0
+D/E: x-0-2-2-3-2
+D/E: x-x-2-2-3-2
+D/E: x-5-4-2-3-0
+D/E: x-9-7-7-x-0
+D/G: 5-x-4-0-3-5
+D/G: 3-x-0-2-3-2
+D5: 5-5-7-7-x-5
+D5: x-0-0-2-3-5
+D6: x-0-4-4-3-2
+D6: x-2-0-2-0-2
+D6: x-2-0-2-3-2
+D6: x-2-4-2-3-2
+D6: x-x-0-2-0-2
+D6/add9 or D6/9: 0-0-2-4-3-2
+D6/add9 or D6/9: 0-2-0-2-0-2
+D7: x-5-7-5-7-2
+D7: x-0-0-2-1-2
+D7: x-3-x-2-3-2
+D7: x-5-7-5-7-5
+D7sus4: x-5-7-5-8-3
+D7sus4: x-x-0-2-1-3
+D7/9: 5-5-4-5-5-5
+D9: 0-0-0-2-1-2
+D9: 2-x-0-2-1-0
+D9: x-5-7-5-7-0
+D9(#5): 0-3-x-3-3-2
+Dadd9: 0-0-0-2-3-2
+Dadd9: 0-0-4-2-3-0
+Dadd9: 2-x-0-2-3-0
+Dadd9: x-0-2-2-3-2
+Dadd9: x-x-2-2-3-2
+Dadd9: x-5-4-2-3-0
+Dadd9: x-9-7-7-x-0
+Daug/E: 2-x-4-3-3-0
+Db or Dbmaj: 4-4-6-6-6-4
+Db or Dbmaj: x-4-3-1-2-1
+Db or Dbmaj: x-4-6-6-6-4
+Db or Dbmaj: x-x-3-1-2-1
+Db or Dbmaj: x-x-6-6-6-4
+Db#5 or Dbaug: x-0-3-2-2-1
+Db#5 or Dbaug: x-0-x-2-2-1
+Dbb5: x-x-3-0-2-1
+Db/B: x-4-3-4-0-4
+Db/Bb: x-1-3-1-2-1
+Db/C: x-3-3-1-2-1
+Db/C: x-4-6-5-6-4
+Db5 or Db(no3rd): x-4-6-6-x-4
+Db6: x-1-3-1-2-1
+Db7: x-4-3-4-0-4
+Db7/9: 4-4-3-4-4-4
+Dbaug/D: x-x-0-2-2-1
+Dbaug/G: 1-0-3-0-2-1
+Dbdim/A: 3-x-2-2-2-0
+Dbdim/A: x-0-2-0-2-0
+Dbdim/A: x-0-2-2-2-3
+Dbdim/B: 0-2-2-0-2-0
+Dbdim/Bb: x-1-2-0-2-0
+Dbdim/Bb: x-x-2-3-2-3
+Dbdim/D: 3-x-0-0-2-0
+Dbdim/D: x-x-0-0-2-0
+Dbdim7: x-1-2-0-2-0
+Dbdim7: x-x-2-3-2-3
+Dbm: x-4-6-6-5-4
+Dbm: x-x-2-1-2-0
+Dbm: x-4-6-6-x-0
+Dbm/A: x-0-2-1-2-0
+Dbm/B: 0-2-2-1-2-0
+Dbm/B: x-4-6-4-5-4
+Dbm7: 0-2-2-1-2-0
+Dbm7: x-4-6-4-5-4
+Dbm7(b5) or Dbo7: 0-2-2-0-2-0
+Dbmaj7 or Db#7: x-3-3-1-2-1
+Dbmaj7 or Db#7: x-4-6-5-6-4
+Dbsus2 or Dbadd9(no3): x-x-6-6-4-4
+Dbsus4/Bb: x-x-4-3-2-4
+Ddim/B: x-2-0-1-0-1
+Ddim/B: x-x-0-1-0-1
+Ddim/B: x-x-3-4-3-4
+Ddim/Bb: x-1-3-1-3-1
+Ddim/Bb: x-x-3-3-3-4
+Ddim/C: x-x-0-1-1-1
+Ddim7: x-2-0-1-0-1
+Ddim7: x-x-0-1-0-1
+Ddim7: x-x-3-4-3-4
+Dm: x-0-0-2-3-1
+Dm/B: x-2-0-2-3-1
+Dm/B: 1-2-3-2-3-1
+Dm/B: x-2-0-2-0-1
+Dm/B: x-x-0-2-0-1
+Dm/Bb: x-1-0-2-3-1
+Dm/Bb: 1-1-3-2-3-1
+Dm/C: x-3-0-2-3-1
+Dm/C: x-5-7-5-6-5
+Dm/C: x-x-0-2-1-1
+Dm/C: x-x-0-5-6-5
+Dm/Db: x-x-0-2-2-1
+Dm/E: x-x-7-7-6-0
+Dm6: 1-2-3-2-3-1
+Dm6: x-2-0-2-0-1
+Dm6: x-x-0-2-0-1
+Dm7: x-5-7-5-6-5
+Dm7: x-x-0-2-1-1
+Dm7: x-x-0-5-6-5
+Dm7(b5) or Do7: x-x-0-1-1-1
+Dm7/add11 or Dm7/11: 3-x-0-2-1-1
+Dmaj7 or D#7: x-x-0-14-14-14
+Dmaj7 or D#7: x-x-0-2-2-2
+Dmin/maj7: x-x-0-2-2-1
+Dsus or Dsus4: 5-x-0-0-3-5
+Dsus or Dsus4: 3-0-0-0-3-3
+Dsus or Dsus4: x-0-0-0-3-3
+Dsus or Dsus4: x-x-0-2-3-3
+Dsus2 or Dadd9(no3): 5-5-7-7-x-0
+Dsus2 or Dadd9(no3): x-0-0-2-3-0
+Dsus2 or Dadd9(no3): 0-0-2-2-3-0
+Dsus2 or Dadd9(no3): x-0-2-2-3-0
+Dsus2 or Dadd9(no3): x-x-0-2-3-0
+Dsus2/Ab: 4-x-0-2-3-0
+Dsus2/B: 0-2-0-2-0-0
+Dsus2/B: x-2-0-2-3-0
+Dsus2/Bb: 0-1-x-2-3-0
+Dsus2/C: x-x-0-2-1-0
+Dsus2/C: x-x-0-5-5-5
+Dsus2/Db: x-0-0-2-2-0
+Dsus2/Db: x-x-0-2-2-0
+Dsus2/Db: x-x-0-6-5-5
+Dsus2/Db: x-x-0-9-10-9
+Dsus2/F: x-x-7-7-6-0
+Dsus2/G: x-0-2-0-3-0
+Dsus2/G: x-0-2-0-3-3
+Dsus2/G: x-0-2-2-3-3
+Dsus2/G: 5-x-0-0-3-0
+Dsus2/G: x-0-0-0-x-0
+Dsus2/Gb: 0-0-0-2-3-2
+Dsus2/Gb: 0-0-4-2-3-0
+Dsus2/Gb: 2-x-0-2-3-0
+Dsus2/Gb: x-0-2-2-3-2
+Dsus2/Gb: x-x-2-2-3-2
+Dsus2/Gb: x-5-4-2-3-0
+Dsus2/Gb: x-9-7-7-x-0
+Dsus4/B: 3-0-0-0-0-3
+Dsus4/B: 3-2-0-2-0-3
+Dsus4/C: x-5-7-5-8-3
+Dsus4/C: x-x-0-2-1-3
+Dsus4/E: x-0-2-0-3-0
+Dsus4/E: 5-x-0-0-3-0
+Dsus4/E: x-0-0-0-x-0
+Dsus4/Gb: 5-x-4-0-3-5
+Dsus4/Gb: 3-x-0-2-3-2
+E or Emaj: 0-2-2-1-0-0
+E: x-7-6-4-5-0
+E#5: x-3-2-1-1-0
+E/A: x-0-2-1-0-0
+E/D: 0-2-0-1-0-0
+E/D: 0-2-2-1-3-0
+E/D: x-2-0-1-3-0
+E/D: x-x-0-1-0-0
+E/Db: 0-2-2-1-2-0
+E/Db: x-4-6-4-5-4
+E/Eb: 0-2-1-1-0-0
+E/Eb: 0-x-6-4-4-0
+E/Eb: x-x-1-1-0-0
+E/Gb: 0-2-2-1-0-2
+E/Gb: 0-x-4-1-0-0
+E/Gb: 2-2-2-1-0-0
+E11/b9: 0-0-3-4-3-4
+E5: 0-2-x-x-x-0
+E5: 0-0-2-1-0-0
+E5: x-7-9-9-x-0
+E6: 0-2-2-1-2-0
+E6: x-4-6-4-5-4
+E7: 0-2-0-1-0-0
+E7: 0-2-2-1-3-0
+E7: x-2-0-1-3-0
+E7: x-x-0-1-0-0
+E7/add11 or E7/11: x-0-0-1-0-0
+E7/b9(b5): 0-1-3-1-3-1
+E7/9: 7-7-6-7-7-7
+E7sus4: 0-2-0-2-0-0
+E9: 0-2-0-1-0-2
+E9: 2-2-0-1-0-0
+Eadd9: 0-2-2-1-0-2
+Eadd9: 0-x-4-1-0-0
+Eadd9: 2-2-2-1-0-0
+Eb or Ebmaj: x-1-1-3-4-3
+Eb or Ebmaj: x-x-1-3-4-3
+Eb or Ebmaj: x-x-5-3-4-3
+Eb#5 or Ebaug: 3-2-1-0-0-3
+Eb#5 or Ebaug: 3-x-1-0-0-3
+Eb/C: x-3-5-3-4-3
+Eb/D: x-6-8-7-8-6
+Eb/Db: x-1-1-3-2-3
+Eb/Db: x-6-8-6-8-6
+Eb/Db: x-x-1-3-2-3
+Eb/E: x-x-5-3-4-0
+Eb5 or Eb(no3rd): x-6-8-8-x-6
+Eb6: x-3-5-3-4-3
+Eb7: x-1-1-3-2-3
+Eb7: x-6-8-6-8-6
+Eb7: x-x-1-3-2-3
+Ebaug/E: 3-x-1-0-0-0
+Ebaug/E: x-x-1-0-0-0
+Ebdim/B: 2-x-1-2-0-2
+Ebdim/B: x-0-1-2-0-2
+Ebdim/B: x-2-1-2-0-2
+Ebdim/B: x-2-4-2-4-2
+Ebdim/C: x-x-1-2-1-2
+Ebdim7: x-x-1-2-1-2
+Ebm: x-x-4-3-4-2
+Ebm/Db: x-x-1-3-2-2
+Ebm7: x-x-1-3-2-2
+Ebmaj7 or Eb#7: x-6-8-7-8-6
+Ebsus2/Ab: x-1-3-1-4-1
+Ebsus4/F: x-1-3-1-4-1
+Edim/C: x-3-5-3-5-3
+Edim/D: 3-x-0-3-3-0
+Edim/Db: x-1-2-0-2-0
+Edim/Db: x-x-2-3-2-3
+Edim/Eb: x-x-5-3-4-0
+Edim7: x-1-2-0-2-0
+Edim7: x-x-2-3-2-3
+Em: 0-2-2-0-0-0
+Em: 3-x-2-0-0-0
+Em: x-2-5-x-x-0
+Em/A: 3-x-2-2-0-0
+Em/A: x-0-2-0-0-0
+Em/A: x-0-5-4-5-0
+Em/C: 0-3-2-0-0-0
+Em/C: x-2-2-0-1-0
+Em/C: x-3-5-4-5-3
+Em/D: 0-2-0-0-0-0
+Em/D: 0-2-0-0-3-0
+Em/D: 0-2-2-0-3-0
+Em/D: 0-2-2-0-3-3
+Em/D: x-x-0-12-12-12
+Em/D: x-x-0-9-8-7
+Em/D: x-x-2-4-3-3
+Em/D: 0-x-0-0-0-0
+Em/D: x-10-12-12-12-0
+Em/Db: 0-2-2-0-2-0
+Em/Eb: 3-x-1-0-0-0
+Em/Eb: x-x-1-0-0-0
+Em/Gb: 0-2-2-0-0-2
+Em/Gb: 0-2-4-0-0-0
+Em/Gb: 0-x-4-0-0-0
+Em/Gb: 2-2-2-0-0-0
+Em6: 0-2-2-0-2-0
+Em7: 0-2-0-0-0-0
+Em7: 0-2-0-0-3-0
+Em7: 0-2-2-0-3-0
+Em7: 0-2-2-0-3-3
+Em7: x-x-0-0-0-0
+Em7: x-x-0-12-12-12
+Em7: x-x-0-9-8-7
+Em7: x-x-2-4-3-3
+Em7: 0-x-0-0-0-0
+Em7: x-10-12-12-12-0
+Em7(b5): 3-x-0-3-3-0
+Em7/add11 or Em7/11: 0-0-0-0-0-0
+Em7/add11 or Em7/11: 0-0-0-0-0-3
+Em7/add11 or Em7/11: 3-x-0-2-0-0
+Em9: 0-2-0-0-0-2
+Em9: 0-2-0-0-3-2
+Em9: 2-2-0-0-0-0
+Emaj7 or E#7: 0-2-1-1-0-0
+Emaj7 or E#7: 0-x-6-4-4-0
+Emaj7 or E#7: x-x-1-1-0-0
+Emaj9 or E9(#7): 0-2-1-1-0-2
+Emaj9 or E9(#7): 4-x-4-4-4-0
+Emin/maj7: 3-x-1-0-0-0
+Emin/maj7: x-x-1-0-0-0
+Emin/maj9: 0-6-4-0-0-0
+Esus or Esus4: 0-0-2-2-0-0
+Esus or Esus4: 0-0-2-4-0-0
+Esus or Esus4: 0-2-2-2-0-0
+Esus or Esus4: x-0-2-2-0-0
+Esus or Esus4: x-x-2-2-0-0
+Esus2 or Eadd9(no3): 7-9-9-x-x-0
+Esus2 or Eadd9(no3): x-2-4-4-x-0
+Esus2/A: x-0-4-4-0-0
+Esus2/A: x-2-4-2-5-2
+Esus2/Ab: 0-2-2-1-0-2
+Esus2/Ab: 0-x-4-1-0-0
+Esus2/Ab: 2-2-2-1-0-0
+Esus2/Db: x-4-4-4-x-0
+Esus2/Eb: x-2-2-4-4-2
+Esus2/Eb: x-x-4-4-4-0
+Esus2/G: 0-2-2-0-0-2
+Esus2/G: 0-2-4-0-0-0
+Esus2/G: 0-x-4-0-0-0
+Esus2/G: 2-2-2-0-0-0
+Esus4/Ab: x-0-2-1-0-0
+Esus4/C: 0-0-7-5-0-0
+Esus4/C: x-3-2-2-0-0
+Esus4/D: 0-2-0-2-0-0
+Esus4/D: x-2-0-2-3-0
+Esus4/Db: 0-0-2-4-2-0
+Esus4/Db: x-0-7-6-0-0
+Esus4/Eb: x-2-1-2-0-0
+Esus4/F: 0-0-3-2-0-0
+Esus4/G: 3-x-2-2-0-0
+Esus4/G: x-0-2-0-0-0
+Esus4/G: x-0-5-4-5-0
+Esus4/Gb: x-0-4-4-0-0
+Esus4/Gb: x-2-4-2-5-2
+F: 1-3-3-2-1-1
+F: x-0-3-2-1-0
+F: x-3-3-2-1-1
+F: x-x-3-2-1-1
+F#5: x-0-3-2-2-1
+F#: 2-4-4-3-2-2
+F/D: x-5-7-5-6-5
+F/D: x-x-0-2-1-1
+F/D: x-x-0-5-6-5
+F/E: 0-0-3-2-1-0
+F/E: 1-3-3-2-1-0
+F/E: 1-x-2-2-1-0
+F/E: x-x-2-2-1-1
+F/E: x-x-3-2-1-0
+F/Eb: x-x-1-2-1-1
+F/Eb: x-x-3-5-4-5
+F/G: 3-x-3-2-1-1
+F/G: x-x-3-2-1-3
+F5: 1-3-3-x-x-1
+F5: x-8-10-x-x-1
+F6: x-5-7-5-6-5
+F6: x-x-0-2-1-1
+F6: x-x-0-5-6-5
+F6/add9 or F6/9: 3-x-0-2-1-1
+F7: x-x-1-2-1-1
+F7: x-x-3-5-4-5
+F7/9: 8-8-7-8-8-8
+Fadd9: 3-x-3-2-1-1
+Fadd9: x-x-3-2-1-3
+Faug/D: x-x-0-2-2-1
+Faug/G: 1-0-3-0-2-1
+Fdim/D: x-2-0-1-0-1
+Fdim/D: x-x-0-1-0-1
+Fdim/D: x-x-3-4-3-4
+Fdim/Db: x-4-3-4-0-4
+Fdim7: x-2-0-1-0-1
+Fdim7: x-x-0-1-0-1
+Fdim7: x-x-3-4-3-4
+Fm: x-3-3-1-1-1
+Fm: x-x-3-1-1-1
+Fm/D: x-x-0-1-1-1
+Fm/Db: x-3-3-1-2-1
+Fm/Db: x-4-6-5-6-4
+Fm/Eb: x-8-10-8-9-8
+Fm/Eb: x-x-1-1-1-1
+Fm6: x-x-0-1-1-1
+Fm7: x-8-10-8-9-8
+Fm7: x-x-1-1-1-1
+Fmaj7 or F#7: 0-0-3-2-1-0
+Fmaj7 or F#7: 1-3-3-2-1-0
+Fmaj7 or F#7: 1-x-2-2-1-0
+Fmaj7 or F#7: x-x-2-2-1-1
+Fmaj7 or F#7: x-x-3-2-1-0
+Fmaj7/#11: 0-2-3-2-1-0
+Fmaj7/#11: 1-3-3-2-0-0
+Fmaj9 or F9(#7): 0-0-3-0-1-3
+Fsus or Fsus4: x-x-3-3-1-1
+Fsus2 or Fadd9(no3): x-3-3-0-1-1
+Fsus2 or Fadd9(no3): x-x-3-0-1-1
+Fsus2/A: 3-x-3-2-1-1
+Fsus2/A: x-x-3-2-1-3
+Fsus2/B: x-3-3-0-0-3
+Fsus2/Bb: x-3-5-3-6-3
+Fsus2/D: 3-3-0-0-1-1
+Fsus2/E: x-3-3-0-1-0
+Fsus2/E: x-x-3-0-1-0
+Fsus4/G: x-3-5-3-6-3
+F#m: 2-4-4-2-2-2
+F#m7: 2-4-2-2-2-2
+G: 3-2-0-0-0-3
+G/B: 3-2-0-0-3-3
+G or Gmaj: 3-5-5-4-3-3
+G: 3-x-0-0-0-3
+G: x-5-5-4-3-3
+G#5: 3-2-1-0-0-3
+G#: 4-6-6-5-4-4
+G#m: 4-6-6-4-4-4
+G/A: 3-0-0-0-0-3
+G/A: 3-2-0-2-0-3
+G/C: 3-3-0-0-0-3
+G/C: x-3-0-0-0-3
+G/E: 0-2-0-0-0-0
+G/E: 0-2-0-0-3-0
+G/E: 0-2-2-0-3-0
+G/E: 0-2-2-0-3-3
+G/E: x-x-0-12-12-12
+G/E: x-x-0-9-8-7
+G/E: x-x-2-4-3-3
+G/E: 0-x-0-0-0-0
+G/E: x-10-12-12-12-0
+G/F: 1-x-0-0-0-3
+G/F: 3-2-0-0-0-1
+G/F: x-x-0-0-0-1
+G/Gb: 2-2-0-0-0-3
+G/Gb: 2-2-0-0-3-3
+G/Gb: 3-2-0-0-0-2
+G/Gb: x-x-4-4-3-3
+G5: 3-5-5-x-x-3
+G5: 3-x-0-0-3-3
+G6: 3-5-3-4-5-3
+G6: 0-2-0-0-0-0
+G6: 3-2-0-0-0-0
+G6: 0-2-2-0-3-0
+G6: 0-2-2-0-3-3
+G6: x-x-0-12-12-12
+G6: x-x-0-9-8-7
+G6: x-x-2-4-3-3
+G6: 0-x-0-0-0-0
+G6: x-10-12-12-12-0
+G6/add9 or G6/9: 0-0-0-0-0-0
+G6/add9 or G6/9: 0-0-0-0-0-3
+G6/add9 or G6/9: 3-x-0-2-0-0
+G7: 1-x-0-0-0-3
+G7: 3-2-0-0-0-1
+G7: x-x-0-0-0-1
+G7/add11 or G7/11: x-3-0-0-0-1
+G7sus4: 3-3-0-0-1-1
+G7/9: 10-10-9-10-10-10
+G9: x-0-0-0-0-1
+G9: x-2-3-2-3-3
+Gadd9: 3-0-0-0-0-3
+Gadd9: 3-2-0-2-0-3
+Gaug/E: 3-x-1-0-0-0
+Gaug/E: x-x-1-0-0-0
+Gb or Gbmaj: 2-4-4-3-2-2
+Gb or Gbmaj: x-4-4-3-2-2
+Gb or Gbmaj: x-x-4-3-2-2
+Gb#5: x-x-0-3-3-2
+Gb/Ab: x-x-4-3-2-4
+Gb/E: 2-4-2-3-2-2
+Gb/E: x-x-4-3-2-0
+Gb/Eb: x-x-1-3-2-2
+Gb/F: x-x-3-3-2-2
+Gb6: x-x-1-3-2-2
+Gb7 or Gbdom7: 2-4-2-3-2-2
+Gb7 or Gbdom7: x-x-4-3-2-0
+Gb7(#5): 2-x-4-3-3-0
+Gb7/#9: x-0-4-3-2-0
+Gb7sus4: x-4-4-4-x-0
+Gbadd9 or Gb2: x-x-4-3-2-4
+Gbaug/E: 2-x-4-3-3-0
+Gbdim/D: x-5-7-5-7-2
+Gbdim/D: x-0-0-2-1-2
+Gbdim/D: x-3-x-2-3-2
+Gbdim/D: x-5-7-5-7-5
+Gbdim/E: x-0-2-2-1-2
+Gbdim/E: x-x-2-2-1-2
+Gbdim/Eb: x-x-1-2-1-2
+Gbdim7: x-x-1-2-1-2
+Gbm: 2-4-4-2-2-2
+Gbm: x-4-4-2-2-2
+Gbm: x-x-4-2-2-2
+Gbm/D: x-x-0-14-14-14
+Gbm/D: x-x-0-2-2-2
+Gbm/E: 0-0-2-2-2-2
+Gbm/E: 0-x-4-2-2-0
+Gbm/E: 2-x-2-2-2-0
+Gbm/E: x-0-4-2-2-0
+Gbm/E: x-x-2-2-2-2
+Gbm7: 0-0-2-2-2-2
+Gbm7: 0-x-4-2-2-0
+Gbm7: 2-x-2-2-2-0
+Gbm7: x-0-4-2-2-0
+Gbm7: x-x-2-2-2-2
+Gbm7(b5) or Gbo7: x-0-2-2-1-2
+Gbm7(b5) or Gbo7: x-x-2-2-1-2
+Gbm7/b9: 0-0-2-0-2-2
+Gbmaj7 or Gb#7: x-x-3-3-2-2
+Gbsus or Gbsus4: x-4-4-4-2-2
+Gbsus2/Bb: x-x-4-3-2-4
+Gbsus4/E: x-4-4-4-x-0
+Gdim/E: x-1-2-0-2-0
+Gdim/E: x-x-2-3-2-3
+Gdim/Eb: x-1-1-3-2-3
+Gdim/Eb: x-6-8-6-8-6
+Gdim/Eb: x-x-1-3-2-3
+Gdim7: x-1-2-0-2-0
+Gdim7: x-x-2-3-2-3
+Gm: 3-5-5-3-3-3
+Gm: x-x-0-3-3-3
+Gm/E: 3-x-0-3-3-0
+Gm/Eb: x-6-8-7-8-6
+Gm/F: 3-5-3-3-3-3
+Gm/F: x-x-3-3-3-3
+Gm13: 0-0-3-3-3-3
+Gm6: 3-x-0-3-3-0
+Gm7: 3-5-3-3-3-3
+Gm7: x-x-3-3-3-3
+Gm7/add11 or Gm7/11: x-3-3-3-3-3
+Gm9: 3-5-3-3-3-5
+Gmaj7 or G#7: 2-2-0-0-0-3
+Gmaj7 or G#7: 2-2-0-0-3-3
+Gmaj7 or G#7: 3-2-0-0-0-2
+Gmaj7 or G#7: x-x-4-4-3-3
+Gsus or Gsus4: x-10-12-12-13-3
+Gsus or Gsus4: x-3-0-0-3-3
+Gsus or Gsus4: x-3-5-5-3-3
+Gsus or Gsus4: x-5-5-5-3-3
+Gsus2 or Gadd9(no3): 5-x-0-0-3-5
+Gadd9(no3): 3-0-0-0-3-3
+Gsus2 or Gadd9(no3): x-0-0-0-3-3
+Gsus2 or Gadd9(no3): x-x-0-2-3-3
+Gsus2/B: 3-0-0-0-0-3
+Gsus2/B: 3-2-0-2-0-3
+Gsus2/C: x-5-7-5-8-3
+Gsus2/C: x-x-0-2-1-3
+Gsus2/E: x-0-2-0-3-0
+Gsus2/E: x-0-2-0-3-3
+Gsus2/E: x-0-2-2-3-3
+Gsus2/E: 5-0-0-0-3-0
+Gsus2/Gb: 5-x-4-0-3-5
+Gsus2/Gb: 3-x-0-2-3-2
+Gsus4/A: x-5-7-5-8-3
+Gsus4/A: x-x-0-2-1-3
+Gsus4/B: 3-3-0-0-0-3
+Gsus4/B: x-3-0-0-0-3
+Gsus4/E: 3-x-0-0-1-0
+Gsus4/E: x-3-0-0-1-0
+Gsus4/E: x-3-2-0-3-0
+Gsus4/E: x-3-2-0-3-3
+Gsus4/E: x-x-0-0-1-0
+Gsus4/E: x-x-0-5-5-3
+Gsus4/E: x-5-5-5-x-0
+Gsus4/F: 3-3-0-0-1-1

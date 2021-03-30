@@ -5,13 +5,6 @@
 	<item android:id="@+id/menu_search_chords" android:title="@string/search_for_chords"
 		android:alphabeticShortcut="@string/search_for_chords" android:icon="@drawable/ic_menu_search" />
 
-	<item android:id="@+id/menu_transpose" android:title="@string/transpose"
-		android:alphabeticShortcut="@string/transpose" android:icon="@drawable/ic_menu_music_up" />
-
-
-	<item android:id="@+id/menu_save_chords" android:title="@string/save_chords"
-		android:alphabeticShortcut="@string/save_chords" android:icon="@drawable/ic_menu_save" />
-
 	<item android:id="@+id/menu_refresh" android:title="@string/refresh"
 		android:alphabeticShortcut="@string/refresh" android:icon="@drawable/ic_menu_refresh" />
 
@@ -24,10 +17,16 @@
 	<item android:id="@+id/menu_open_file" android:title="@string/open_file"
 		android:alphabeticShortcut="@string/open_file" android:icon="@drawable/ic_menu_upload" />
 
+	<item android:id="@+id/menu_save_chords" android:title="@string/save_chords"
+		android:alphabeticShortcut="@string/save_chords" android:icon="@drawable/ic_menu_save" />
+
 
 	<item android:id="@+id/menu_edit_file" android:title="@string/edit"
 		android:alphabeticShortcut="@string/edit" android:icon="@drawable/ic_menu_edit" />
-		
+
+	<item android:id="@+id/menu_transpose" android:title="@string/transpose"
+		android:alphabeticShortcut="@string/transpose" android:icon="@drawable/ic_menu_music_up" />
+
 	<item android:id="@+id/menu_manage_files" android:title="@string/manage_saved_files"
 		android:alphabeticShortcut="@string/manage_saved_files" android:icon="@drawable/ic_menu_manage" />
 		

@@ -1,6 +1,8 @@
 package org.handmadeideas.chordreader.helper;
 
 import android.content.Context;
+import android.os.AsyncTask;
+
 import org.handmadeideas.chordreader.R;
 import org.handmadeideas.chordreader.chords.Chord;
 import org.handmadeideas.chordreader.chords.NoteNaming;
@@ -9,35 +11,63 @@ import org.handmadeideas.chordreader.util.StringUtil;
 import org.handmadeideas.chordreader.util.UtilLogger;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChordDictionary {
 
 	private static UtilLogger log = new UtilLogger(org.handmadeideas.chordreader.helper.ChordDictionary.class);
-	
+
 	// maps chords to finger positions on guitar frets, e.g. 133211
 	private static Map<Chord, List<String>> chordsToGuitarChords = null;
+	private static String customChordVars;
 	
 	public static void initialize(Context context) {
 		Map<Chord, List<String>> dictionary = new HashMap<Chord, List<String>>();
+
+		// load custom chord variations
 		try {
-			loadIntoChordDictionary(context, R.raw.chords1, NoteNaming.English, dictionary);
-			loadIntoChordDictionary(context, R.raw.chords2, NoteNaming.NorthernEuropean, dictionary);
-			
-			log.i("Chord Dictionary initialized");
-			chordsToGuitarChords = dictionary;
+			customChordVars = SaveFileHelper.openFile("customChordVariations_DO_NOT_EDIT.txt");
+
+			if (!customChordVars.isEmpty()) {
+				loadIntoChordDictionary(context, -1, NoteNaming.English, dictionary);
+			} else
+				throw new IOException();
+
 		} catch (IOException e) {
-			log.e(e, "unexpected exception, couldn't initialize ChordDictionary");
+			//no customChordVariations_DO_NOT_EDIT.txt - ignore
+			log.e(e, "No customChordVariations file, load default");
+
+			try {
+				loadIntoChordDictionary(context, R.raw.chords1, NoteNaming.English, dictionary);
+				loadIntoChordDictionary(context, R.raw.chords2, NoteNaming.NorthernEuropean, dictionary);
+
+			} catch (IOException f) {
+				log.e(e, "unexpected exception, couldn't initialize ChordDictionary");
+			} catch (Exception f) {
+				log.e(e, "unknown exception, couldn't initialize ChordDictionary");
+			}
 		}
-		
+		if (!dictionary.isEmpty())
+			log.i("Chord Dictionary initialized");
+		chordsToGuitarChords = dictionary;
 	}
 	
 	private static void loadIntoChordDictionary(Context context, int resId, NoteNaming noteNaming, Map<Chord, List<String>> dictionary) throws IOException {
-
-		InputStream inputStream = context.getResources().openRawResource(resId);
+		InputStream inputStream;
+		
+		if (resId == -1) {
+			inputStream =  new ByteArrayInputStream(customChordVars.getBytes());
+		} else {
+			inputStream = context.getResources().openRawResource(resId);
+		}
 		
 		BufferedReader bufferedReader = null;
 		
@@ -83,5 +113,46 @@ public class ChordDictionary {
 	public static List<String> getGuitarChordsForChord(Chord chord) {
 		List<String> result = chordsToGuitarChords.get(chord);
 		return result != null ? result : Collections.<String>emptyList();
+	}
+
+	public static void setGuitarChordsForChord(Chord chord, List<String> newGuitarChords) {
+		List<String> existingValue = chordsToGuitarChords.get(chord);
+		if (existingValue != null) {
+			chordsToGuitarChords.remove(chord);
+		}
+		chordsToGuitarChords.put(chord, newGuitarChords);
+
+		saveChordDictionaryToFile();
+	}
+
+	private static void saveChordDictionaryToFile() {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Object key : chordsToGuitarChords.keySet()) {
+			String chord = ((Chord) key).toPrintableString(NoteNaming.English);
+			List<String> chordVarsList = chordsToGuitarChords.get(key);
+
+			for (String chordVar : chordVarsList) {
+				stringBuilder
+						.append(chord)
+						.append(": ")
+						.append(chordVar)
+						.append('\n');
+			}
+		}
+		final String result = stringBuilder.substring(0, stringBuilder.length() - 1); // cut off final newline
+
+
+		// do in background to avoid jankiness
+
+		AsyncTask<Void,Void,Boolean> saveTask = new AsyncTask<Void, Void, Boolean>(){
+
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				return SaveFileHelper.saveFile(result, "customChordVariations_DO_NOT_EDIT.txt");
+			}
+		};
+
+		saveTask.execute((Void)null);
+
 	}
 }

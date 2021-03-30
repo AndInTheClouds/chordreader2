@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chord Reader</string>
+    <string name="about_chord_reader">Über Chord Reader</string>
+    <string name="find_chords_intro_message">Zuerst im Internet suchen um Akkorde zu finden.</string>
+    <string name="find_chords_second_message">Wenn die gesuchten Akkorde gefunden sind, hier klicken.</string>
+    <string name="loading">Lädt…</string>
+    <string name="chord_search_hint">Lied/Künstler-Name eingeben</string>
+    <string name="chords_keyword">chords</string>
+    <string name="chords_found">Akkorde erfasst. Hier klicken zum Bestätigen.</string>
+    <string name="confirm_chordchart">Bestätige Akkorde</string>
+    <string name="enter_filename">Dateinamen angeben um auf die SD-Karte zu speichern:</string>
+    <string name="save_chordchart">Speichere Akkordtabelle</string>
+    <string name="sd_card_not_found">SD-Karte nicht gefunden.</string>
+    <string name="save_file">Speichere Datei</string>
+    <string name="file_saved">Datei gespeichert.</string>
+    <string name="unable_to_save_file">Speichern nicht möglich.</string>
+    <string name="enter_good_filename">Bitte gültigen Dateinamen eingeben.</string>
+    <string name="save">Speichern</string>
+    <string name="about">Über</string>
+    <string name="open_file">Öffne Datei</string>
+    <string name="manage_saved_files">Dateien verwalten</string>
+    <string name="no_saved_files">Keine gespeicherten Dateien gefunden.</string>
+    <string name="search_for_chords">Suche</string>
+    <string name="save_chords">Speichern</string>
+    <string name="overwrite_file">Bestehende Datei wird überschrieben.</string>
+    <string name="overwrite_file_title">Überschreibe Datei</string>
+    <string name="transpose">Transponieren</string>
+    <string name="select_files_to_delete">Dateien zum löschen wählen.</string>
+    <string name="delete_all">Alles löschen</string>
+    <string name="delete_saved_file">Lösche Datei(en)</string>
+    <string name="are_you_sure">Sicher? %d Datei(en) löschen?</string>
+    <string name="files_deleted">%d Datei(en) gelöscht.</string>
+    <string name="capo_title">Capo auf Bund:</string>
+    <string name="transpose_title">Transponieren (Halb-Schritte):</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="stop">Stop</string>
+    <string name="stopping">Stoppe…</string>
+    <string name="transposing">Transponiere</string>
+    <string name="please_wait">Bitte warten…</string>
+    <string name="loading_title">Lädt…</string>
+    <string name="sort_az">Sortieren A-Z</string>
+    <string name="sort_by_date">Sortieren nach Datum</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="edit_chords">Akkorde bearbeiten</string>
+    
+    <string name="no_guitar_chord_available">Keine Gitarrengriffe verfügbar.</string>
+
+    <string name="pref_text_size_title">Text Größe</string>
+
+    <string name="text_size_xsmall_name">Extra Klein (8pt)</string>
+	<string name="text_size_small_name">Klein (10pt)</string>
+    <string name="text_size_medium_name">Medium (12pt)</string>
+    <string name="text_size_large_name">Groß (16pt)</string>
+    <string name="text_size_xlarge_name">Extra Groß (20pt)</string>
+
+    <string name="pref_scheme_title">Farbschema</string>
+
+    <string name="pref_category_appearance">Erscheinung</string>
+    <string name="pref_category_configuration">Konfiguration</string>
+
+    <string name="pref_note_naming_title">Noten Bezeichnung</string>
+    <string name="pref_note_naming_english">Englisch</string>
+    <string name="pref_note_naming_northern">Nordeuropäisch</string>
+    <string name="pref_note_naming_southern">Südeuropäisch</string>
+    <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
+    <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
+    <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa, etc.</string>
+
+    <string name="settings">Einstellungen</string>
+
+    <string name="pref_first_run_title">Einführung zurücksetzen</string>
+    <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
+    <string name="first_run_title">Willkommen zu Chord Reader!</string>
+    <string name="first_run_message">\
+<b>Was ist neu in 1.1?</b>\n\
+&#160;&#160;&#160;- Auto-Scroll Funktion \n\
+&#160;&#160;&#160;- Metronome während Auto-Scroll\n\
+&#160;&#160;&#160;- Exit- und Speicherdialog\n\
+&#160;&#160;&#160;- Anpassbare Suchmaschine\n\
+&#160;&#160;&#160;- Anpassbare Akkordvariationen\n\
+&#160;&#160;&#160;- Speichern von BPM des Liedes und gerätespeziefischen Auto-Scroll Factor in TXT-Datei\n\n\
+Chord Reader ist eine <b>freie Software</b>. Wenn du spenden möchtest, besuche die <a href='http://nolanlawson.com'>Website</a>!\
+</string>
+    <string name="unsaved_changes">Ungespeicherte Änderungen</string>
+    <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
+    <string name="closing_chordreader">ChordReader schließen</string>
+    <string name="closing_chordreader_message">Möchtest du ChordReader schließen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="No_BPM_found">Keine BPM-Angabe gefunden. Bitte gewünschten Wert in der ersten Zeile anpassen.</string>
+    <string name="text_size_xxlarge_name">Extra² Groß (25pt)</string>
+    <string name="text_size_xxxlarge_name">Extra³ Groß (30pt)</string>
+    <string name="pref_search_engine_title">Suchmaschine URL</string>
+    <string name="new_file">Neue Datei</string>
+    <string name="chord_variation_editing">"Bearbeitung Akkord-Varianten: "</string>
+    <string name="no_chord_available_add">Keine Gitarrengriffe verfügbar. Bitte hinzufügen.</string>
+
+</resources>

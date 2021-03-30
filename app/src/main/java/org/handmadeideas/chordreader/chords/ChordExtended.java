@@ -25,19 +25,19 @@ public enum ChordExtended {
 	Major13 (Major, Arrays.asList("maj13", "M13", "13")),
 	
 	// weird ones
-	
 	AugmentedDominant7 (Major, Arrays.asList("7#5", "7(#5)")),
 	AugmentedMajor7 (Major, Arrays.asList("maj7#5", "maj7(#5)")),
-	
-	// TODO: I don't know what this one is - can't find it on wikipedia
-	Minor9 (Minor, Arrays.asList("min9", "m9","minor9")),
-	
-	
-	;
+	HalfDiminished7 (Minor, Arrays.asList("m7b5", "m7#5", "m7(b5)", "min7(b5)", "-7b5")),
+
+	Major7Add9 (Major, Arrays.asList("7/9","7(add9)", "7(9)")),
+	Minor7Add9 (Minor, Arrays.asList("m7/9", "min7(add9)", "m9", "minor9", "min9", "m7(add9)", "-7/9", "-7(add9)", "min7/9", "min7(add9)", "m7+9")),
+
 	/**
 	 * TODO: add additional seventh chords
 	 */
-	
+
+	;
+
 	private List<String> aliases;
 	private ChordQuality chordQuality;
 	

@@ -66,8 +66,8 @@ public class SaveFileHelper {
 		if (filesArray == null) {
 			return Collections.emptyList();
 		}
-		
-		List<File> files = new ArrayList<File>(Arrays.asList(filesArray));
+
+		List<File> files = removeCustomChordVariationsFileFromList(filesArray);
 		
 		Collections.sort(files, new Comparator<File>(){
 
@@ -85,11 +85,26 @@ public class SaveFileHelper {
 		return result;
 		
 	}
-	
+
+	private static ArrayList<File> removeCustomChordVariationsFileFromList (File[] initialFilesArray) {
+
+		ArrayList<File> tempArrayList = new ArrayList<File>();
+
+		for (File file : initialFilesArray) {
+			if (!file.getName().contains("customChordVariations_DO_NOT_EDIT.txt"))
+				tempArrayList.add(file);
+		}
+		return tempArrayList;
+	}
+
 	public static String openFile(String filename) {
 		
 		File baseDir = getBaseDirectory();
-		File logFile = new File(baseDir, filename);	
+		File logFile;
+		if (!(filename == null))
+			logFile = new File(baseDir, filename);
+		else
+			return "";
 		
 		StringBuilder result = new StringBuilder();
 		
