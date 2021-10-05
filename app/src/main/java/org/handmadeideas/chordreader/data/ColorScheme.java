@@ -35,8 +35,8 @@ public enum ColorScheme {
 	
 	private static Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
 	
-	private ColorScheme(int nameResource, int backgroundColorResource, int foregroundColorResource,
-			int bubbleColorResource, int linkColorResource, int selectorResource) {
+	ColorScheme(int nameResource, int backgroundColorResource, int foregroundColorResource,
+				int bubbleColorResource, int linkColorResource, int selectorResource) {
 		this.nameResource = nameResource;
 		this.backgroundColorResource = backgroundColorResource;
 		this.foregroundColorResource = foregroundColorResource;

@@ -2,6 +2,7 @@ package org.handmadeideas.chordreader.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.handmadeideas.chordreader.R;
 import org.handmadeideas.chordreader.chords.Chord;
@@ -22,19 +23,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ChordDictionary {
-
-	private static UtilLogger log = new UtilLogger(org.handmadeideas.chordreader.helper.ChordDictionary.class);
+	private static final String LOG_TAG = "ChordDictionary";
 
 	// maps chords to finger positions on guitar frets, e.g. 133211
 	private static Map<Chord, List<String>> chordsToGuitarChords = null;
 	private static String customChordVars;
 	
 	public static void initialize(Context context) {
-		Map<Chord, List<String>> dictionary = new HashMap<Chord, List<String>>();
+		Map<Chord, List<String>> dictionary = new HashMap<>();
 
 		// load custom chord variations
 		try {
-			customChordVars = SaveFileHelper.openFile("customChordVariations_DO_NOT_EDIT.txt");
+			customChordVars = SaveFileHelper.openFile("customChordVariations_DO_NOT_EDIT.crd");
 
 			if (!customChordVars.isEmpty()) {
 				loadIntoChordDictionary(context, -1, NoteNaming.English, dictionary);
@@ -42,21 +42,21 @@ public class ChordDictionary {
 				throw new IOException();
 
 		} catch (IOException e) {
-			//no customChordVariations_DO_NOT_EDIT.txt - ignore
-			log.e(e, "No customChordVariations file, load default");
+			//no customChordVariations_DO_NOT_EDIT.crd - ignore
+			Log.e(LOG_TAG, e + " - No customChordVariations file, load default");
 
 			try {
 				loadIntoChordDictionary(context, R.raw.chords1, NoteNaming.English, dictionary);
 				loadIntoChordDictionary(context, R.raw.chords2, NoteNaming.NorthernEuropean, dictionary);
 
 			} catch (IOException f) {
-				log.e(e, "unexpected exception, couldn't initialize ChordDictionary");
+				Log.e(LOG_TAG, f + " - unexpected exception, couldn't initialize ChordDictionary");
 			} catch (Exception f) {
-				log.e(e, "unknown exception, couldn't initialize ChordDictionary");
+				Log.e(LOG_TAG, f + " - unknown exception, couldn't initialize ChordDictionary");
 			}
 		}
 		if (!dictionary.isEmpty())
-			log.i("Chord Dictionary initialized");
+			Log.i(LOG_TAG, "Chord Dictionary initialized");
 		chordsToGuitarChords = dictionary;
 	}
 	
@@ -84,7 +84,7 @@ public class ChordDictionary {
 				Chord chord = ChordParser.parseChord(chordText, noteNaming);
 				
 				if (chord == null) {
-					log.w("Unable to parse chord text '%s'; skipping", chordText);
+					Log.w(LOG_TAG, "Unable to parse chord text - skipping:" + chordText);
 					continue;
 				}
 				
@@ -93,7 +93,7 @@ public class ChordDictionary {
 				// to play a G chord
 				List<String> existingValue = dictionary.get(chord);
 				if (existingValue == null) {
-					dictionary.put(chord, new ArrayList<String>(Collections.singleton(guitarChord)));
+					dictionary.put(chord, new ArrayList<>(Collections.singleton(guitarChord)));
 				} else if (!existingValue.contains(guitarChord)) {
 					existingValue.add(guitarChord);
 				}
@@ -112,7 +112,7 @@ public class ChordDictionary {
 
 	public static List<String> getGuitarChordsForChord(Chord chord) {
 		List<String> result = chordsToGuitarChords.get(chord);
-		return result != null ? result : Collections.<String>emptyList();
+		return result != null ? result : Collections.emptyList();
 	}
 
 	public static void setGuitarChordsForChord(Chord chord, List<String> newGuitarChords) {
@@ -139,20 +139,18 @@ public class ChordDictionary {
 						.append('\n');
 			}
 		}
+
 		final String result = stringBuilder.substring(0, stringBuilder.length() - 1); // cut off final newline
 
-
 		// do in background to avoid jankiness
-
 		AsyncTask<Void,Void,Boolean> saveTask = new AsyncTask<Void, Void, Boolean>(){
 
 			@Override
 			protected Boolean doInBackground(Void... params) {
-				return SaveFileHelper.saveFile(result, "customChordVariations_DO_NOT_EDIT.txt");
+				return SaveFileHelper.saveFile(result, "customChordVariations_DO_NOT_EDIT.crd");
 			}
 		};
 
 		saveTask.execute((Void)null);
-
 	}
 }

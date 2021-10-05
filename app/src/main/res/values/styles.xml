@@ -4,13 +4,13 @@
 	<style name="Animations" />
 
 	<style name="Animations.GrowFromBottom">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+		<item name="android:windowEnterAnimation">@anim/grow_from_bottom</item>
+		<item name="android:windowExitAnimation">@anim/shrink_from_top</item>
 	</style>
 
 	<style name="Animations.GrowFromTop">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_top</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottom</item>
+		<item name="android:windowEnterAnimation">@anim/grow_from_top</item>
+		<item name="android:windowExitAnimation">@anim/shrink_from_bottom</item>
 	</style>
 
 	<style name="TransparentTheme" parent="android:Theme.Dialog">

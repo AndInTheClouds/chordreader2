@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/main_activity_main_view"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:orientation="horizontal">
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="vertical">
+
+		<Button
+			android:id="@+id/button_web_search"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Web Search " />
+
+		<Button
+			android:id="@+id/button_local_songs"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:text="Songs" />
+
+		<Button
+			android:id="@+id/button_playlists"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Playlists" />
+	</LinearLayout>
+
+</LinearLayout>

@@ -3,33 +3,28 @@ package org.handmadeideas.chordreader.helper;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import org.handmadeideas.chordreader.util.StringUtil;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AutoScrollView extends ScrollView {
 
     private OnFlingListener mFlingListener;
-    private Runnable mScrollChecker;
+    private final Runnable mScrollChecker;
     private int mPreviousPosition;
     private static ObjectAnimator animator = null;
     private TextView targetView;
 
     private boolean isAutoScrollOn = false;
     private boolean isAutoScrollActive = false;
+
+    private boolean isTouched = false;
     private boolean isFlingActive = false;
     private float scrollVelocityCorrectionFactor = 1;
     private double autoScrollVelocity;
 
-    private static int bpm = 100;
+    private  int bpm = 100;
 
 
     public AutoScrollView(Context context) {
@@ -56,6 +51,27 @@ public class AutoScrollView extends ScrollView {
                 }
             }
         };
+
+        this.setOnFlingListener(new AutoScrollView.OnFlingListener() {
+
+            @Override
+            public void onFlingStarted() {
+                AutoScrollView.this.setFlingActive(true);
+            }
+
+            @Override
+            public void onFlingStopped() {
+                AutoScrollView.this.setFlingActive(false);
+                AutoScrollView.this.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
+                    @Override
+                    public void run() {
+                        if (!isTouched && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
+                            AutoScrollView.this.startAutoScroll();
+                        }
+                    }
+                }, 100);
+            }
+        });
     }
 
     public interface OnFlingListener {
@@ -74,71 +90,77 @@ public class AutoScrollView extends ScrollView {
     }
 
     public void setOnFlingListener(OnFlingListener mOnFlingListener) {
-        this.mFlingListener = mOnFlingListener;
+        mFlingListener = mOnFlingListener;
     }
 
     public void setTargetTextView(TextView textView) {
         targetView = textView;
     }
 
-    public boolean isAutoScrollOn() {
-        return isAutoScrollOn;
-    }
-
-    public boolean isAutoScrollActive() {
-        return isAutoScrollActive;
-    }
-
-    public boolean isFlingActive() {
-        return isFlingActive;
-    }
-
-    public String getScrollVelocityCorrectionFactor() {
-        return String.format(Locale.US,"%.1f", scrollVelocityCorrectionFactor);
-    }
-
-    public static int getBpm() {
-        return bpm;
+    public void setTouched(boolean touched) {
+        this.isTouched = touched;
     }
 
     public void setAutoScrollOn(boolean autoScrollOn) {
-        isAutoScrollOn = autoScrollOn;
+        this.isAutoScrollOn = autoScrollOn;
+    }
+
+    public boolean isAutoScrollOn() {
+        return this.isAutoScrollOn;
     }
 
     public void setAutoScrollActive(boolean autoScrollActive) {
-        isAutoScrollActive = autoScrollActive;
+        this.isAutoScrollActive = autoScrollActive;
+    }
+
+    public boolean isAutoScrollActive() {
+        return this.isAutoScrollActive;
     }
 
     public void setFlingActive(boolean flingActive) {
-        isFlingActive = flingActive;
+        this.isFlingActive = flingActive;
+    }
+
+    public boolean isFlingActive() {
+        return this.isFlingActive;
+    }
+
+    public String getScrollVelocityCorrectionFactor() {
+        return String.format(Locale.US,"%.1f", this.scrollVelocityCorrectionFactor);
+    }
+
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
+    }
+
+    public int getBpm() {
+        return this.bpm;
     }
 
     public void setScrollVelocityCorrectionFactor(float scrollVelocityCorrectionFactor) {
         this.scrollVelocityCorrectionFactor = scrollVelocityCorrectionFactor;
     }
 
-    public static void setBpm(int bpm) {
-        AutoScrollView.bpm = bpm;
-    }
-
     public void startAutoScroll() {
+        if (animator != null) {
+            animator.cancel();
+        }
+
+        animator = ObjectAnimator.ofInt(this, "scrollY", targetView.getBottom());
+        animator.setInterpolator(null);
+
         int duration = (int) calculateAnimDurationFrom(this.getScrollY());
-        if (animator == null) {
-            animator = ObjectAnimator.ofInt(this, "scrollY", targetView.getBottom());
-            animator.setInterpolator(null);
-            animator.setDuration(duration);
-        } else
-            animator.setDuration(duration);
+        animator.setDuration(duration);
 
         animator.start();
-        isAutoScrollActive = true;
+        this.isAutoScrollActive = true;
     }
 
     public void stopAutoScroll() {
         if (animator != null) {
             animator.cancel();
             animator = null;
-            isAutoScrollActive = false;
+            this.isAutoScrollActive = false;
         }
     }
 
@@ -151,32 +173,86 @@ public class AutoScrollView extends ScrollView {
     public void calculateAutoScrollVelocity() {
         int textViewLineCount = targetView.getLineCount();
         int totalBeatsPerSong = textViewLineCount / 2 * 16; // one text line (equals to 2 lines: with corresponding chord line) is assumed (in most cases) to have 4 bars = 16 bpm otherwise adjust factor is necessary
-        long totalDurationPerSong = (totalBeatsPerSong * 60 * 1000) / bpm; //in milliseconds
+        long totalDurationPerSong = ((long) totalBeatsPerSong * 60 * 1000) / this.bpm; //in milliseconds
         int totalScrollDistance = targetView.getHeight(); // height of view, in pixels
-        autoScrollVelocity = (double) totalScrollDistance / totalDurationPerSong; // in pixels / millisecond
+        this.autoScrollVelocity = (double) totalScrollDistance / totalDurationPerSong; // in pixels / millisecond
     }
 
     long calculateAnimDurationFrom(float startY) {
         double scrollDeltaY = targetView.getHeight() - (int)startY;
-        return (long) ((scrollDeltaY / autoScrollVelocity)/ (scrollVelocityCorrectionFactor * 2)); // (scrollVelocityCorrectionFactor * 2) seems to result in better velocity changes
+        return (long) ((scrollDeltaY / this.autoScrollVelocity)/ (this.scrollVelocityCorrectionFactor * 2)); // (scrollVelocityCorrectionFactor * 2) seems to result in better velocity changes
     }
 
     public void changeScrollVelocity(boolean acceleration) {
         if (!acceleration)
-            if (scrollVelocityCorrectionFactor >= 0.2f)
-                scrollVelocityCorrectionFactor -= 0.1f;
+            if (this.scrollVelocityCorrectionFactor >= 0.2f)
+                this.scrollVelocityCorrectionFactor -= 0.1f;
             else
-                scrollVelocityCorrectionFactor = 0.1f;
+                this.scrollVelocityCorrectionFactor = 0.1f;
         else
-            scrollVelocityCorrectionFactor += 0.1f;
+            this.scrollVelocityCorrectionFactor += 0.1f;
 
         calculateAutoScrollVelocity();
 
-        if (isAutoScrollOn) {
+        if (this.isAutoScrollOn) {
             stopAutoScroll();
             startAutoScroll();
         }
     }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+
+        final int action = event.getAction();
+
+        if (action == MotionEvent.ACTION_DOWN) {
+
+            this.isTouched = true;
+            if (this.isAutoScrollOn()) {
+                this.stopAutoScroll();
+            }
+//            return true;
+        }
+        super.onTouchEvent(event);
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent (MotionEvent event) {
+
+        final int action = event.getAction();
+
+        if (action == MotionEvent.ACTION_DOWN) {
+            this.isTouched = true;
+            if (this.isAutoScrollOn()) {
+                this.stopAutoScroll();
+            }
+            super.onTouchEvent(event);
+           return true;
+        }
+
+        if (action == MotionEvent.ACTION_MOVE) {
+            super.onTouchEvent(event);
+        }
+
+        if (action == MotionEvent.ACTION_UP) {
+            this.isTouched = false;
+            if (this.isAutoScrollOn()) {
+                this.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
+                    @Override
+                    public void run() {
+                        if (!AutoScrollView.this.isFlingActive() && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
+                            AutoScrollView.this.startAutoScroll();
+                        }
+                    }
+                }, 100);
+            }
+            super.onTouchEvent(event);
+        }
+        return false;
+    }
+
+
 
 
 }

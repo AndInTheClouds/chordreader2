@@ -5,8 +5,8 @@
      
 	      <shape xmlns:android="http://schemas.android.com/apk/res/android">
 		     <gradient
-		         android:startColor="@color/scheme_dark_bubble"
-		         android:endColor="@color/scheme_dark_bubble"
+				 android:startColor="@color/scheme_android_bubble"
+				 android:endColor="@color/scheme_android_bubble"
 		         android:angle="270" />
 		     <corners
 		         android:radius="3dp" />

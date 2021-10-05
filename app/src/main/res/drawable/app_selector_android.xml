@@ -3,7 +3,7 @@
  
      <item android:state_focused="false" android:state_pressed="false">
      
-	      <shape xmlns:android="http://schemas.android.com/apk/res/android">
+	      <shape>
 		     <gradient
 		         android:startColor="@color/scheme_android_bubble"
 		         android:endColor="@color/scheme_android_bubble"

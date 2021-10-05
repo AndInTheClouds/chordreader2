@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chords_viewing_main_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/chords_viewing_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <org.handmadeideas.chordreader.helper.AutoScrollView
+            android:id="@+id/chords_viewing_scroll_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/chords_viewing_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:linksClickable="true"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@android:color/primary_text_dark_nodisable"
+                android:textSize="@dimen/text_size_medium"
+                android:typeface="monospace" />
+        </org.handmadeideas.chordreader.helper.AutoScrollView>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+
+            <ImageButton
+                android:id="@+id/autoScrollSlower"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/round_button"
+                android:padding="1dp"
+                android:src="@drawable/ic_btn_autoscroll_slower"
+                android:contentDescription="@string/slower_auto_scroll" />
+
+            <ImageButton
+                android:id="@+id/autoScrollPlayButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@id/autoScrollSlower"
+                android:background="@drawable/round_button"
+                android:padding="1dp"
+                android:src="@drawable/ic_btn_autoscroll_play"
+                android:contentDescription="@string/start_auto_scroll" />
+
+            <ImageButton
+                android:id="@+id/autoScrollPauseButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@id/autoScrollSlower"
+                android:background="@drawable/round_button"
+                android:padding="1dp"
+                android:src="@drawable/ic_btn_autoscroll_pause"
+                android:visibility="invisible"
+                android:contentDescription="@string/stop_auto_scroll" />
+
+            <ImageButton
+                android:id="@+id/autoScrollFaster"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@id/autoScrollPlayButton"
+                android:background="@drawable/round_button"
+                android:padding="1dp"
+                android:src="@drawable/ic_btn_autoscroll_faster"
+                android:contentDescription="@string/faster_auto_scroll" />
+
+            <ImageView
+                android:id="@+id/playlist_next"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:src="@android:drawable/ic_media_next"
+                android:visibility="gone"
+                android:contentDescription="TODO" />
+
+            <ImageView
+                android:id="@+id/playlist_previous"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_above="@id/playlist_next"
+                android:layout_gravity="bottom"
+                android:src="@android:drawable/ic_media_previous"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

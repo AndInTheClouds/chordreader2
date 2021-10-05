@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Chord Reader</string>
-    <string name="about_chord_reader">À propos de Chord Reader</string>
+    <string name="about_chord_reader">À propos de Chord Reader 2</string>
     <string name="find_chords_intro_message">Pour commencer, cherchez des accords sur Internet.</string>
     <string name="find_chords_second_message">Une fois que vous avez trouvé les accords que vous cherchez, cliquez ici.</string>
     <string name="loading">Chargement…</string>
@@ -73,17 +72,16 @@
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader !</string>
     <string name="first_run_message">\
-<b>Quoi de neuf dans la version 1.1 ?</b>\n\
-&#160;&#160;&#160;- Fonction de défilement automatique\n\
-&#160;&#160;&#160;- Métronome au début du défilement automatique\n\
-&#160;&#160;&#160;- Demander quitter et enregistrer\n\
-&#160;&#160;&#160;- Enregistrer le BPM du morceau et le facteur de défilement automatique spécifique à l\'appareil dans un fichier TXT\n\
-&#160;&#160;&#160;- Plusieurs doigtés dans les pop-up.\n\
-&#160;&#160;&#160;- Suppression des publicités\n\
-&#160;&#160;&#160;- Moteur de recherche personnalisable\n\
-&#160;&#160;&#160;- Personnaliser les tables de variation d\'accords\n\
-&#160;&#160;&#160;- L\'application devient open-source\n\n\
-Chord Reader est un <b>logiciel libre</b>. Si vous souhaitez faire un don, rendez-vous sur <a href='http://nolanlawson.com'>le site web</a> !\
+<b>Quoi de neuf dans la version 1.0 ?</b>\n\
+<li>Fonction de défilement automatique</li>\n\
+<li>Métronome au début du défilement automatique</li>\n\
+<li>Demander quitter et enregistrer</li>\n\
+<li>Enregistrer le BPM et le facteur de défilement automatique dans un fichier TXT</li>\n\
+<li>Plusieurs doigtés dans les pop-up.</li>\n\
+<li>Suppression des publicités</li>\n\
+<li>Moteur de recherche personnalisable</li>\n\
+<li>Personnaliser les tables de variation d\'accords</li>\n\
+Chord Reader 2 est un <b>logiciel libre</b>.\
 </string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
@@ -98,5 +96,10 @@ Chord Reader est un <b>logiciel libre</b>. Si vous souhaitez faire un don, rende
     <string name="new_file">Nouveau fichier</string>
     <string name="chord_variation_editing">"Édition de variation d'accord: "</string>
     <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
+    <string name="new_playlist">Nouveau liste de lecture</string>
+    <string name="manage_saved_playlists">"Gérer les listes de lecture "</string>
+    <string name="enter_text_to_filter">"Entrer le texte du filtre "</string>
+    <string name="drawer_close">"Fermer navigation "</string>
+    <string name="drawer_open">"navigation ouverte "</string>
 
 </resources>

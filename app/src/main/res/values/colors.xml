@@ -9,17 +9,17 @@
 	<color name="yellow2">#FFffc600</color>
 	
 	<color name="scheme_dark_foreground">@android:color/darker_gray</color>
-	<color name="scheme_dark_background">@android:color/background_dark</color>
+	<color name="scheme_dark_background">#0C0C0C</color>
 	<color name="scheme_dark_bubble">#FF333333</color>
 	<color name="scheme_dark_link">#0099dd</color>
 	
 	<color name="scheme_light_foreground">@android:color/primary_text_light_nodisable</color>
-	<color name="scheme_light_background">@android:color/background_light</color>
+	<color name="scheme_light_background">#F3F3F3</color>
 	<color name="scheme_light_bubble">#330000BB</color>
 	<color name="scheme_light_link">#0099dd</color>
 	
 	
-	<color name="scheme_android_bubble">#33000000</color>
+	<color name="scheme_android_bubble">#C1C1C1</color>
 	<color name="scheme_android_background">#FFA4C639</color>
 	<color name="scheme_android_foreground">@android:color/black</color>
 	<color name="scheme_android_link">#FF007799</color>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_save_chords"
+        android:alphabeticShortcut="@string/save_chords"
+        android:icon="@drawable/ic_menu_save"
+        android:orderInCategory="3"
+        android:title="@string/save_chords"
+        android:showAsAction="ifRoom|withText"
+        tools:ignore="AppCompatResource" />
+
+    <item
+        android:id="@+id/menu_edit_file"
+        android:alphabeticShortcut="@string/edit"
+        android:icon="@drawable/ic_menu_edit"
+        android:orderInCategory="2"
+        android:title="@string/edit"
+        android:showAsAction="ifRoom|withText"
+        tools:ignore="AppCompatResource"/>
+
+    <item
+        android:id="@+id/menu_transpose"
+        android:alphabeticShortcut="@string/transpose"
+        android:icon="@drawable/ic_menu_music_up"
+        android:orderInCategory="1"
+        android:title="@string/transpose"
+        android:showAsAction="ifRoom|withText"
+        tools:ignore="AppCompatResource"/>
+
+</menu>

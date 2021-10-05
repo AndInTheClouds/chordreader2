@@ -25,7 +25,8 @@ public enum ChordExtended {
 	Major13 (Major, Arrays.asList("maj13", "M13", "13")),
 	
 	// weird ones
-	AugmentedDominant7 (Major, Arrays.asList("7#5", "7(#5)")),
+	AugmentedDominant7 (Major, Arrays.asList("7#5", "7(#5)", "7+5")), //TODO: Rename to AugmentedDominant7Sharp5
+	//AugmentedDominant7Flat5 (Major, Arrays.asList("7b5", "7(b5)", "7-5")), //TODO: integrate
 	AugmentedMajor7 (Major, Arrays.asList("maj7#5", "maj7(#5)")),
 	HalfDiminished7 (Minor, Arrays.asList("m7b5", "m7#5", "m7(b5)", "min7(b5)", "-7b5")),
 

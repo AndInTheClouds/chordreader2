@@ -1,9 +1,8 @@
 package org.handmadeideas.chordreader;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -12,10 +11,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ListAdapter;
-import android.widget.NumberPicker;
 
 import org.handmadeideas.chordreader.adapter.BasicTwoLineAdapter;
 import org.handmadeideas.chordreader.helper.PreferenceHelper;
@@ -27,7 +23,6 @@ public class SettingsActivity extends PreferenceActivity
 		implements OnPreferenceChangeListener, OnPreferenceClickListener {
 	
 	public static final String EXTRA_NOTE_NAMING_CHANGED = "noteNamingChanged";
-	private static final String SEARCH_ENGINE = "searchEngineURL";
 
 	private ListPreference textSizePreference, themePreference;
 	private Preference noteNamingPreference;
@@ -37,6 +32,10 @@ public class SettingsActivity extends PreferenceActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		getActionBar().setDisplayShowHomeEnabled(true);
+		getActionBar().setLogo(R.mipmap.chord_reader_icon);
+		getActionBar().setDisplayUseLogoEnabled(true);
 		
 		addPreferencesFromResource(R.xml.settings);
 		
@@ -126,17 +125,14 @@ public class SettingsActivity extends PreferenceActivity
 		new AlertDialog.Builder(this)
 			.setTitle(noteNamingPreference.getTitle())
 			.setNegativeButton(android.R.string.cancel, null)
-			.setSingleChoiceItems(adapter, currentValueIndex, new DialogInterface.OnClickListener(){
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+			.setSingleChoiceItems(adapter, currentValueIndex, (dialog, which) -> {
 				PreferenceHelper.setNoteNaming(SettingsActivity.this, noteNameValues.get(which));
 				PreferenceHelper.clearCache();
 				noteNamingPreference.setSummary(noteNameDisplays.get(which));
 				noteNamingChanged = true;
 				dialog.dismiss();
 
-			}})
+			})
 			.show();
 
 		return true;

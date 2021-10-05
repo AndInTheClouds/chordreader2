@@ -26,17 +26,14 @@ import java.util.regex.Pattern;
 
 public class ChordDictionaryEditActivity extends Activity implements View.OnClickListener {
 
-    private Button saveButton, cancelButton;
-    private ImageButton addChordVarButton;
     private TableLayout chordVarEditView;
     private TextView chordTitleTextView;
 
     private Chord CHORD;
-    private NoteNaming NOTENAMING;
     private int TOTAL_VAR_NO = 0;
 
-    private Map<Integer, ArrayList<Spinner>> allChordVarSpinnersMap = new LinkedHashMap<Integer, ArrayList<Spinner>>();
-    private Map<Integer, TableRow> allChordVarTableRows = new LinkedHashMap<Integer, TableRow>();
+    private final Map<Integer, ArrayList<Spinner>> allChordVarSpinnersMap = new LinkedHashMap<Integer, ArrayList<Spinner>>();
+    private final Map<Integer, TableRow> allChordVarTableRows = new LinkedHashMap<Integer, TableRow>();
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -48,11 +45,11 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
         chordVarEditView = (TableLayout) findViewById(R.id.chord_var_view);
         chordTitleTextView = (TextView) findViewById(R.id.chord_edit_chord_TextView);
 
-        addChordVarButton = (ImageButton) findViewById(R.id.add_chord_var_button);
+        ImageButton addChordVarButton = (ImageButton) findViewById(R.id.add_chord_var_button);
         addChordVarButton.setOnClickListener(this);
-        saveButton = (Button) findViewById(R.id.chord_edit_save_button);
+        Button saveButton = (Button) findViewById(R.id.chord_edit_save_button);
         saveButton.setOnClickListener(this);
-        cancelButton = (Button) findViewById(R.id.chord_edit_cancel_button);
+        Button cancelButton = (Button) findViewById(R.id.chord_edit_cancel_button);
         cancelButton.setOnClickListener(this);
 
         initializeChordEditView();
@@ -62,23 +59,21 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.chord_edit_save_button:
-                updateChordDictionary();
-                finish();
-            case R.id.chord_edit_cancel_button:
-                finish();
-                break;
-            case R.id.add_chord_var_button:
-                addChordVar();
-                break;
+        int id = view.getId();
+        if (id == R.id.chord_edit_save_button) {
+            updateChordDictionary();
+            finish();
+        } else if (id == R.id.chord_edit_cancel_button) {
+            finish();
+        } else if (id == R.id.add_chord_var_button) {
+            addChordVar();
         }
 
     }
 
     private void initializeChordEditView() {
         CHORD = (Chord) getIntent().getSerializableExtra("CHORD");
-        NOTENAMING = (NoteNaming) getIntent().getSerializableExtra("NOTENAMING");
+        NoteNaming NOTENAMING = (NoteNaming) getIntent().getSerializableExtra("NOTENAMING");
 
         chordTitleTextView.setText(new StringBuilder().append("* * *  ").append(CHORD.toPrintableString(NOTENAMING)).append("  * * *").toString());
 
@@ -112,7 +107,7 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
         tableRow.addView(textView);
 
         //keep spinner objects temporarily for later saving
-        ArrayList<Spinner> spinnersList = new ArrayList<Spinner>();
+        ArrayList<Spinner> spinnersList = new ArrayList<>();
 
         if (chord.isEmpty()) {
             for (int i = 0; i < 6; i++) {
@@ -158,12 +153,7 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
         ImageButton chordVarDeleteButton = new ImageButton(this);
         chordVarDeleteButton.setImageResource(R.drawable.ic_btn_delete);
         chordVarDeleteButton.setBackgroundColor(Color.TRANSPARENT); //R.drawable.popup_background
-        chordVarDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeChordVar(varNo);
-            }
-        });
+        chordVarDeleteButton.setOnClickListener(view -> removeChordVar(varNo));
         chordVarDeleteButton.setId(varNo);
         chordVarDeleteButton.setScaleX(0.5f);
         chordVarDeleteButton.setScaleY(0.5f);
@@ -179,9 +169,9 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
     }
 
     private void updateChordDictionary() {
-        List<String> newGuitarChords = new ArrayList<String>();
+        List<String> newGuitarChords = new ArrayList<>();
 
-        for (Object key : allChordVarSpinnersMap.keySet()) {
+        for (Integer key : allChordVarSpinnersMap.keySet()) {
             ArrayList<Spinner> spinnersList = allChordVarSpinnersMap.get(key);
             StringBuilder stringBuilder = new StringBuilder();
             for (Spinner spinner : spinnersList) {

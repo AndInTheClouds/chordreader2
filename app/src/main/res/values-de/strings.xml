@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Chord Reader</string>
-    <string name="about_chord_reader">Über Chord Reader</string>
+    <string name="about_chord_reader">Über Chord Reader 2</string>
     <string name="find_chords_intro_message">Zuerst im Internet suchen um Akkorde zu finden.</string>
     <string name="find_chords_second_message">Wenn die gesuchten Akkorde gefunden sind, hier klicken.</string>
     <string name="loading">Lädt…</string>
@@ -73,14 +72,14 @@
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
     <string name="first_run_title">Willkommen zu Chord Reader!</string>
     <string name="first_run_message">\
-<b>Was ist neu in 1.1?</b>\n\
-&#160;&#160;&#160;- Auto-Scroll Funktion \n\
-&#160;&#160;&#160;- Metronome während Auto-Scroll\n\
-&#160;&#160;&#160;- Exit- und Speicherdialog\n\
-&#160;&#160;&#160;- Anpassbare Suchmaschine\n\
-&#160;&#160;&#160;- Anpassbare Akkordvariationen\n\
-&#160;&#160;&#160;- Speichern von BPM des Liedes und gerätespeziefischen Auto-Scroll Factor in TXT-Datei\n\n\
-Chord Reader ist eine <b>freie Software</b>. Wenn du spenden möchtest, besuche die <a href='http://nolanlawson.com'>Website</a>!\
+<b>Was ist neu in Version 1.0?</b>\n\
+<li>Auto-Scroll Funktion </li>\n\
+<li>Metronome während Auto-Scroll </li>\n\
+<li>Dialog zum Speichern </li>\n\
+<li>Anpassbare Suchmaschine </li>\n\
+<li>Anpassbare Akkordvariationen </li>\n\
+<li>Speichern von BPM und Auto-Scroll Factor in TXT-Datei </li>\n\
+ChordReader 2 ist eine <b>freie Software</b>.\
 </string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
@@ -95,5 +94,10 @@ Chord Reader ist eine <b>freie Software</b>. Wenn du spenden möchtest, besuche 
     <string name="new_file">Neue Datei</string>
     <string name="chord_variation_editing">"Bearbeitung Akkord-Varianten: "</string>
     <string name="no_chord_available_add">Keine Gitarrengriffe verfügbar. Bitte hinzufügen.</string>
+    <string name="new_playlist">Neue Playlist</string>
+    <string name="manage_saved_playlists">Playlists verwalten</string>
+    <string name="enter_text_to_filter">Filtertext eingeben</string>
+    <string name="drawer_close">Schließe Navigation</string>
+    <string name="drawer_open">Navigation öffnen</string>
 
 </resources>

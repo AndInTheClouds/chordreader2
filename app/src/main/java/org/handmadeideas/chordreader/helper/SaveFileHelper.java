@@ -1,6 +1,8 @@
 package org.handmadeideas.chordreader.helper;
 
 import android.os.Environment;
+import android.text.TextUtils;
+
 import org.handmadeideas.chordreader.util.UtilLogger;
 
 import java.io.*;
@@ -19,6 +21,9 @@ public class SaveFileHelper {
 	}
 	
 	public static boolean fileExists(String filename) {
+
+		filename = rectifyFilename(filename);
+
 		File catlogDir = getBaseDirectory();
 		
 		File file = new File(catlogDir, filename);
@@ -27,7 +32,9 @@ public class SaveFileHelper {
 	}
 	
 	public static void deleteFile(String filename) {
-		
+
+		filename = rectifyFilename(filename);
+
 		File catlogDir = getBaseDirectory();
 		
 		File file = new File(catlogDir, filename);
@@ -39,6 +46,8 @@ public class SaveFileHelper {
 	}
 	
 	public static Date getLastModifiedDate(String filename) {
+
+		filename = rectifyFilename(filename);
 		
 		File catlogDir = getBaseDirectory();
 		
@@ -67,7 +76,7 @@ public class SaveFileHelper {
 			return Collections.emptyList();
 		}
 
-		List<File> files = removeCustomChordVariationsFileFromList(filesArray);
+		List<File> files = removeUnwantedFilesFromList(filesArray);
 		
 		Collections.sort(files, new Comparator<File>(){
 
@@ -79,28 +88,59 @@ public class SaveFileHelper {
 		List<String> result = new ArrayList<String>();
 		
 		for (File file : files) {
-			result.add(file.getName());
+			String fileName = file.getName().replace("_"," ").replace(".txt", "");
+			result.add(fileName);
 		}
 		
 		return result;
 		
 	}
 
-	private static ArrayList<File> removeCustomChordVariationsFileFromList (File[] initialFilesArray) {
+	private static ArrayList<File> removeUnwantedFilesFromList(File[] initialFilesArray) {
 
 		ArrayList<File> tempArrayList = new ArrayList<File>();
 
 		for (File file : initialFilesArray) {
-			if (!file.getName().contains("customChordVariations_DO_NOT_EDIT.txt"))
+			String fileName = file.getName();
+			if (fileName.endsWith(".txt"))
 				tempArrayList.add(file);
 		}
 		return tempArrayList;
 	}
 
+	public static boolean isInvalidFilename(CharSequence filename) {
+
+		String filenameAsString;
+
+		return TextUtils.isEmpty(filename)
+				|| (filenameAsString = filename.toString()).contains("/")
+				|| filenameAsString.contains(":")
+				|| filenameAsString.contains("\\")
+				|| filenameAsString.contains("*")
+				|| filenameAsString.contains("|")
+				|| filenameAsString.contains(":")
+				|| filenameAsString.contains("<")
+				|| filenameAsString.contains(">")
+				|| filenameAsString.contains("?");
+
+	}
+
+	public static String rectifyFilename(String filename) {
+		if (!filename.endsWith(".txt") && !filename.endsWith(".crd")) // songs as .txt, customChordVariations as .crd
+			filename = filename.concat(".txt");
+
+		filename = filename.replace(" ", "_");
+
+		return filename;
+	}
+
 	public static String openFile(String filename) {
-		
+
+		filename = rectifyFilename(filename);
+
 		File baseDir = getBaseDirectory();
 		File logFile;
+
 		if (!(filename == null))
 			logFile = new File(baseDir, filename);
 		else
@@ -134,7 +174,9 @@ public class SaveFileHelper {
 	}
 	
 	public static boolean saveFile(String filetext, String filename) {
-		
+
+		filename = rectifyFilename(filename);
+
 		File baseDir = getBaseDirectory();
 		
 		File newFile = new File(baseDir, filename);
@@ -179,5 +221,5 @@ public class SaveFileHelper {
 		return baseDir;
 		
 	}
-	
+
 }
