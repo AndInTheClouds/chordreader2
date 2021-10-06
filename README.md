@@ -16,3 +16,9 @@ This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Kleh
 [GNU GPLv3][1]
 
 [1]: https://opensource.org/licenses/GPL-3.0
+
+# Donation
+If you would like to donate, visit 
+[Flattr][2]. 
+
+[2]: https://flattr.com/@AndInTheClouds
