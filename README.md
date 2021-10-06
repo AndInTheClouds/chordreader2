@@ -8,16 +8,16 @@ It's an app that:
 - transposes the identified chords up or down, or you can add a capo,
 - provides common chord variations.
 
-# Status
+## Status
 This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Klehr respectively. It's still under development, e.g. playlists are planned to be implementend.
 > It's my first project at all. Every comment or support is welcomed.
 
-# License
+## License
 [GNU GPLv3][1]
 
 [1]: https://opensource.org/licenses/GPL-3.0
 
-# Donation
+## Donation
 If you would like to donate, visit 
 [Flattr][2]. 
 
