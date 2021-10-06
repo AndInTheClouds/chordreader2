@@ -12,6 +12,6 @@ It's an app that:
 This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Klehr respectively. It's still under development, e.g. playlists are planned to be implementend.
 
 # License
-[GNU LGPLv3][1]
+[GNU GPLv3][1]
 
-[1]: https://opensource.org/licenses/LGPL-3.0
+[1]: https://opensource.org/licenses/GPL-3.0
