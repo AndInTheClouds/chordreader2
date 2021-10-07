@@ -13,7 +13,7 @@ This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Kleh
 > It's my first project at all. Every comment or support is welcomed.
 
 ## License
-[GNU GPLv3][1]
+[GNU GPLv3+][1]
 
 [1]: https://opensource.org/licenses/GPL-3.0
 
