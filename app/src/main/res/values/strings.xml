@@ -96,16 +96,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader!</string>
-    <string name="first_run_message">\
-<b>What\'s new in version 2.0?</b> \n\
-    <li>Auto-scroll feature</li>\n\
-    <li>Metronome while auto-scroll </li>\n\
-    <li>Quit and save prompt </li>\n\
-    <li>Customizable search engine </li>\n\
-    <li>Customize chord variation charts </li>\n\
-    <li>Save BPM and auto-scroll factor to TXT-file </li>\n\
-Chord Reader 2 is <b>free software</b>. \
-</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.0?</b> \n\n    <li>Auto-scroll feature</li>\n    <li>Metronome while auto-scroll </li>\n    <li>Quit and save prompt </li>\n    <li>Customizable search engine </li>\n    <li>Customize chord variation charts </li>\n    <li>Save BPM and auto-scroll factor to TXT-file </li>\n\nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>
@@ -125,6 +116,7 @@ Chord Reader 2 is <b>free software</b>. \
     <string name="enter_text_to_filter">Enter text to filter</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
+    <string name="web_search">Web Search</string>
 
 
 </resources>

@@ -17,7 +17,7 @@
 			android:id="@+id/button_web_search"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Web Search " />
+			android:text="@string/web_search" />
 
 		<Button
 			android:id="@+id/button_local_songs"
