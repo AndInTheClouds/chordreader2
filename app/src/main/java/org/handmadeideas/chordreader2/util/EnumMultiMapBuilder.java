@@ -11,13 +11,14 @@ import java.util.List;
  */
 public class EnumMultiMapBuilder<E extends Enum<E>,T> {
 
-	private EnumMap<E, List<T>> map;
+	private final EnumMap<E, List<T>> map;
 	
 	public EnumMultiMapBuilder(Class<E> clazz) {
 		map = new EnumMap<E,List<T>>(clazz);
 	}
 	
-	public org.handmadeideas.chordreader2.util.EnumMultiMapBuilder<E,T> put(E key, T... values) {
+	@SafeVarargs
+	public final org.handmadeideas.chordreader2.util.EnumMultiMapBuilder<E,T> put(E key, T... values) {
 		map.put(key, Arrays.asList(values));
 		return this;
 	}

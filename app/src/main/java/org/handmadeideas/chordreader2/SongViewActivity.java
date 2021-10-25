@@ -131,7 +131,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
         setUpWidgets();
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager != null ? powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getPackageName()) : null;
+        wakeLock = powerManager != null ? powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getPackageName()) : null;
 
         PreferenceHelper.clearCache();
         viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferenceHelper.getTextSizePreference(this));
@@ -177,7 +177,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
         if (!wakeLock.isHeld()) {
             Log.d(LOG_TAG,"Acquiring wakelock");
-            wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
+            wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         }
     }
 

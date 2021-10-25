@@ -39,7 +39,6 @@ public class DrawerBaseActivity extends Activity {
     private ListView mDrawerList;
     private SmoothActionBarDrawerToggle mDrawerToggle;
 
-    private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mAppActivities;
 
@@ -47,8 +46,6 @@ public class DrawerBaseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_n_activity);
-
-//        mTitle = mDrawerTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -169,7 +166,8 @@ public class DrawerBaseActivity extends Activity {
     }
 
     public void selectItem(int position) {
-        mDrawerList.setItemChecked(position, true);
+        if (position < 3) // Nav drawer item select not for Settings and About
+            mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 

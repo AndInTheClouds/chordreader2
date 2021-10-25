@@ -220,10 +220,10 @@ public class WebViewActivity extends DrawerBaseActivity implements TextView.OnEd
             performSearch();
         } else if (id == R.id.find_chords_message_secondary_view) {
             analyzeHtml();
-        } else if (id == R.id.find_chords_edit_text) {// I think it's intuitive to select the whole text when you click here
-            if (!TextUtils.isEmpty(searchEditText.getText())) {
-                searchEditText.setSelection(0, searchEditText.getText().length());
-            }
+// TODO: remove evtl.       } else if (id == R.id.find_chords_edit_text) {// I think it's intuitive to select the whole text when you click here
+//            if (!TextUtils.isEmpty(searchEditText.getText())) {
+//                searchEditText.setSelection(0, searchEditText.getText().length());
+//            }
         }
     }
 
