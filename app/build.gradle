@@ -7,7 +7,7 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "org.handmadeideas.chordreader"
+        applicationId "org.handmadeideas.chordreader2"
         minSdkVersion 19
         targetSdkVersion 30
     }
