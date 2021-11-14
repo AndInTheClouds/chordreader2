@@ -91,5 +91,8 @@
     <string name="drawer_close">"Fermer navigation "</string>
     <string name="drawer_open">"navigation ouverte "</string>
     <string name="web_search">"Recherche Internet "</string>
+    <string name="cancel">Annuler</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="delete">Supprimer</string>
 
 </resources>

@@ -114,7 +114,7 @@ public class DrawerBaseActivity extends Activity {
                         @Override
                         public void run() {
 
-                            Intent intent = new Intent(DrawerBaseActivity.this, MainBaseActivity.class);
+                            Intent intent = new Intent(DrawerBaseActivity.this, StartActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         }

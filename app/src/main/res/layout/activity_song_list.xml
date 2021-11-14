@@ -15,9 +15,8 @@
         android:hint="@string/enter_text_to_filter"
         android:padding="10dp"
         android:singleLine="true"
-        android:textColorHint="#808080"
         android:textColor="@android:color/primary_text_light_nodisable"
-        />
+        android:textColorHint="#808080" />
 
     <ListView
         android:id="@+id/file_list"

@@ -19,25 +19,25 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.handmadeideas.chordreader2.adapter.FileAdapter;
-import org.handmadeideas.chordreader2.adapter.SearchableAdapter;
+import org.handmadeideas.chordreader2.adapter.SelectableFilterAdapter;
 import org.handmadeideas.chordreader2.data.ColorScheme;
 import org.handmadeideas.chordreader2.helper.PreferenceHelper;
 import org.handmadeideas.chordreader2.helper.SaveFileHelper;
@@ -53,9 +53,12 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
     private LinearLayout songListMainView;
     private EditText filterEditText;
     private ListView fileList;
-    SearchableAdapter fileListAdapter;
+    SelectableFilterAdapter fileListAdapter;
+    private Menu menu;
 
     private int indexCurrentPosition, top;
+    private boolean IsSelectionModeActive;
+
     //private static UtilLogger log = new UtilLogger(SongListActivity.class);
 
     @Override
@@ -90,9 +93,10 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         super.onResume();
         setUpWidgets();
 
+        filterEditText.setText("");
+
         //Update drawer selection
         super.selectItem(2);
-
 
         // restore index and position
         fileList.setSelectionFromTop(indexCurrentPosition, top);
@@ -103,6 +107,8 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.song_list_menu, menu);
 
+        this.menu = menu;
+
         return true;
     }
 
@@ -111,15 +117,25 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         int itemId = item.getItemId();
         if (itemId == R.id.menu_manage_files) {
-            startDeleteSavedFilesDialog();
+            startSelectionMode(0);
             return true;
         } else if (itemId == R.id.menu_new_file) {
             startChordViewActivity(null);
+            return true;
+        } else if (itemId == R.id.menu_cancel_selection) {
+            cancelSelectionMode();
+            return true;
+        } else if (itemId == R.id.menu_select_all) {
+            fileListAdapter.selectAll();
+            return true;
+        } else if (itemId == R.id.menu_delete) {
+            verifyDelete();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
     @Override
@@ -170,7 +186,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         Collections.sort(filenames, (Comparator<CharSequence>) (first, second) -> first.toString().toLowerCase().compareTo(second.toString().toLowerCase()));
 
-        fileListAdapter = new SearchableAdapter(this, filenames){
+        fileListAdapter = new SelectableFilterAdapter(this, filenames){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
@@ -181,12 +197,55 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         fileList.setAdapter(fileListAdapter);
 
-        fileList.setOnItemClickListener((adapterView, view, i, l) -> {
-            String filename = (String) adapterView.getAdapter().getItem(i);
-            startChordViewActivity(filename);
+
+        fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String filename = (String) adapterView.getAdapter().getItem(i);
+
+                if (SongListActivity.this.IsSelectionModeActive) {
+                    fileListAdapter.switchSelectionForIndex(i);
+                } else
+                    startChordViewActivity(filename);
+            }
+        });
+
+        fileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long arg3) {
+                startSelectionMode(pos);
+                fileListAdapter.switchSelectionForIndex(pos);
+                return true;
+            }
         });
 
         filterEditText.addTextChangedListener(this);
+    }
+
+    private void startSelectionMode(int pos) {
+        IsSelectionModeActive = true;
+        fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        menu.findItem(R.id.menu_manage_files).setVisible(false);
+        menu.findItem(R.id.menu_new_file).setVisible(false);
+        menu.findItem(R.id.menu_delete).setVisible(true);
+        menu.findItem(R.id.menu_cancel_selection).setVisible(true);
+        menu.findItem(R.id.menu_select_all).setVisible(true);
+    }
+
+
+    private void cancelSelectionMode() {
+        IsSelectionModeActive = false;
+        fileList.setChoiceMode(ListView.CHOICE_MODE_NONE);
+
+        menu.findItem(R.id.menu_manage_files).setVisible(true);
+        menu.findItem(R.id.menu_new_file).setVisible(true);
+        menu.findItem(R.id.menu_delete).setVisible(false);
+        menu.findItem(R.id.menu_cancel_selection).setVisible(false);
+        menu.findItem(R.id.menu_select_all).setVisible(false);
+
+        fileListAdapter.unselectAll();
     }
 
     private boolean checkSdCard() {
@@ -199,59 +258,19 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         return result;
     }
 
-    private void startDeleteSavedFilesDialog() {
+
+
+    protected void verifyDelete() {
 
         if (!checkSdCard()) {
             return;
         }
 
-        List<CharSequence> filenames = new ArrayList<>(SaveFileHelper.getSavedFilenames());
-
-        if (filenames.isEmpty()) {
-            super.showToastShort(getResources().getString(R.string.no_saved_files));
-            return;
-        }
-
-        final CharSequence[] filenameArray = filenames.toArray(new CharSequence[0]);
-
-        final FileAdapter dropdownAdapter = new FileAdapter(
-                this, filenames, -1, true);
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(R.string.select_files_to_delete)
-                .setCancelable(true)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.delete_all, (dialog, which) -> {
-                    boolean[] allChecked = new boolean[dropdownAdapter.getCount()];
-
-                    Arrays.fill(allChecked, true);
-                    verifyDelete(filenameArray, allChecked, dialog);
-
-                })
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> verifyDelete(filenameArray, dropdownAdapter.getCheckedItems(), dialog))
-//                .setView(messageTextView)
-                .setSingleChoiceItems(dropdownAdapter, 0, (dialog, which) -> dropdownAdapter.checkOrUncheck(which));
-
-        builder.show();
-
-    }
-
-
-    protected void verifyDelete(final CharSequence[] filenameArray,
-                                final boolean[] checkedItems, final DialogInterface parentDialog) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        int deleteCount = 0;
-
-        for (boolean checkedItem : checkedItems) {
-            if (checkedItem) {
-                deleteCount++;
-            }
-        }
-        final int finalDeleteCount = deleteCount;
+        final CharSequence[] filenameArray = fileListAdapter.getSelectedFiles();
+        Log.d("SongListActivity",Arrays.toString(filenameArray));
+        final int finalDeleteCount = filenameArray.length;
 
         if (finalDeleteCount > 0) {
 
@@ -261,10 +280,8 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         // ok, delete
 
-                        for (int i = 0; i < checkedItems.length; i++) {
-                            if (checkedItems[i]) {
-                                SaveFileHelper.deleteFile(filenameArray[i].toString());
-                            }
+                        for (CharSequence charSequence : filenameArray) {
+                            SaveFileHelper.deleteFile(charSequence.toString());
                         }
                         setUpWidgets();
 
@@ -272,7 +289,6 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
                         super.showToastShort(toastText);
 
                         dialog.dismiss();
-                        parentDialog.dismiss();
 
                     });
             builder.setNegativeButton(android.R.string.cancel, null);

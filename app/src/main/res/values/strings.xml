@@ -89,7 +89,7 @@
     <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa, etc.</string>
     <string name="pref_note_naming_default" translatable="false">@string/pref_note_naming_value_english</string>
     <string name="pref_search_engine" translatable="false">searchEngineURL</string>
-    <string name="pref_search_engine_default" translatable="false">https://www.ecosia.org/search?q=</string>
+    <string name="pref_search_engine_default" translatable="false">https://www.startpage.com/sp/search?q=</string>
     <string name="settings">Settings</string>
     
     <string name="pref_first_run" translatable="false">first_run3</string>
@@ -117,6 +117,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="web_search">Web Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_all">Select all</string>
+    <string name="delete">Delete</string>
 
 
 </resources>

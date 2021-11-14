@@ -212,7 +212,7 @@ public class SaveFileHelper {
 	private static File getBaseDirectory() {
 		File sdcardDir = Environment.getExternalStorageDirectory();
 		
-		File baseDir = new File(sdcardDir, "chord_reader");
+		File baseDir = new File(sdcardDir, "chord_reader_2");
 		
 		if (!baseDir.exists()) {
 			baseDir.mkdir();
