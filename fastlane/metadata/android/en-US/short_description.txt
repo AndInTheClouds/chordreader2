@@ -1,1 +1,1 @@
-A open-source digital music book to fetch online and store locally chords and lyrics
+A digital music book to fetch online and store locally chords and lyrics
