@@ -23,13 +23,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import java.util.Locale;
 
 public class AutoScrollView extends ScrollView {
 
     private OnFlingListener mFlingListener;
     private final Runnable mScrollChecker;
-    private int mPreviousPosition;
+    private OnActiveAutoScrollListener mActiveAutoScrollListener;
+    private final Runnable mActiveAutoScrollChecker;
+
+    private int mPreviousFlingPosition;
+    private int mPreviousAutoScrollPosition;
     private static ObjectAnimator animator = null;
     private TextView targetView;
 
@@ -59,12 +64,26 @@ public class AutoScrollView extends ScrollView {
             @Override
             public void run() {
                 int position = getScrollY();
-                if (mPreviousPosition - position == 0) { //has stopped
+                if (mPreviousFlingPosition - position == 0) { //has stopped
                     mFlingListener.onFlingStopped();
                     removeCallbacks(mScrollChecker);
                 } else { // check until stopped
-                    mPreviousPosition = getScrollY();
+                    mPreviousFlingPosition = getScrollY();
                     postDelayed(mScrollChecker, 100);
+                }
+            }
+        };
+
+        mActiveAutoScrollChecker = new Runnable() {
+            @Override
+            public void run() {
+                int position = getScrollY();
+                if (mPreviousAutoScrollPosition - position == 0) { //has stopped
+                    mActiveAutoScrollListener.onAutoScrollInactive();
+                    removeCallbacks(mActiveAutoScrollChecker);
+                } else { // check until stopped
+                    mPreviousAutoScrollPosition = getScrollY();
+                    postDelayed(mActiveAutoScrollChecker, 1000);
                 }
             }
         };
@@ -96,6 +115,11 @@ public class AutoScrollView extends ScrollView {
         void onFlingStopped();
     }
 
+    public interface OnActiveAutoScrollListener {
+        void onAutoScrollActive();
+        void onAutoScrollInactive();
+    }
+
     @Override
     public void fling(int velocityY) {
         super.fling(velocityY); // Pass through fling to parent
@@ -108,6 +132,10 @@ public class AutoScrollView extends ScrollView {
 
     public void setOnFlingListener(OnFlingListener mOnFlingListener) {
         mFlingListener = mOnFlingListener;
+    }
+
+    public void setOnActiveAutoScrollListener(OnActiveAutoScrollListener mActiveAutoScrollListener) {
+        this.mActiveAutoScrollListener = mActiveAutoScrollListener;
     }
 
     public void setTargetTextView(TextView textView) {
@@ -124,10 +152,6 @@ public class AutoScrollView extends ScrollView {
 
     public boolean isAutoScrollOn() {
         return this.isAutoScrollOn;
-    }
-
-    public void setAutoScrollActive(boolean autoScrollActive) {
-        this.isAutoScrollActive = autoScrollActive;
     }
 
     public boolean isAutoScrollActive() {
@@ -168,23 +192,24 @@ public class AutoScrollView extends ScrollView {
 
         int duration = (int) calculateAnimDurationFrom(this.getScrollY());
         animator.setDuration(duration);
-
         animator.start();
+
         this.isAutoScrollActive = true;
+        mPreviousAutoScrollPosition = 99999;
+
+        if (mActiveAutoScrollListener != null) {
+            mActiveAutoScrollListener.onAutoScrollActive();
+            post(mActiveAutoScrollChecker);
+        }
     }
 
     public void stopAutoScroll() {
         if (animator != null) {
             animator.cancel();
             animator = null;
+
             this.isAutoScrollActive = false;
         }
-    }
-
-    public void resetAutoScrollView() {
-        this.isAutoScrollOn = false;
-        this.stopAutoScroll();
-        this.scrollTo(0,0);
     }
 
     public void calculateAutoScrollVelocity() {

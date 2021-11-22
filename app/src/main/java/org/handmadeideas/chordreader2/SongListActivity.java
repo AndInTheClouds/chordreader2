@@ -20,6 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -88,7 +89,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         top = (v == null) ? 0 : (v.getTop() - fileList.getPaddingTop());
     }
 
-        @Override
+    @Override
     protected void onResume() {
         super.onResume();
         setUpWidgets();
@@ -109,6 +110,8 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         this.menu = menu;
 
+        if (fileListAdapter == null)
+            menu.findItem(R.id.menu_manage_files).setVisible(false);
         return true;
     }
 
@@ -137,7 +140,6 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -147,7 +149,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         setUpWidgets();
     }
-    
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         //do nothing
@@ -169,7 +171,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         ColorScheme colorScheme = PreferenceHelper.getColorScheme(this);
         songListMainView.setBackgroundColor(colorScheme.getBackgroundColor(this));
         final int foregroundColor = colorScheme.getForegroundColor(this);
-        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, new int[]{0,foregroundColor});
+        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, new int[]{0, foregroundColor});
         gradientDrawable.setAlpha(120);
         fileList.setDivider(gradientDrawable);
         fileList.setDividerHeight(1);
@@ -186,7 +188,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         Collections.sort(filenames, (Comparator<CharSequence>) (first, second) -> first.toString().toLowerCase().compareTo(second.toString().toLowerCase()));
 
-        fileListAdapter = new SelectableFilterAdapter(this, filenames){
+        fileListAdapter = new SelectableFilterAdapter(this, filenames) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
@@ -197,11 +199,11 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
 
         fileList.setAdapter(fileListAdapter);
 
-
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String filename = (String) adapterView.getAdapter().getItem(i);
+                view.setBackgroundColor(Color.GRAY);
 
                 if (SongListActivity.this.IsSelectionModeActive) {
                     fileListAdapter.switchSelectionForIndex(i);
@@ -259,7 +261,6 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
     }
 
 
-
     protected void verifyDelete() {
 
         if (!checkSdCard()) {
@@ -269,7 +270,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         final CharSequence[] filenameArray = fileListAdapter.getSelectedFiles();
-        Log.d("SongListActivity",Arrays.toString(filenameArray));
+        Log.d("SongListActivity", Arrays.toString(filenameArray));
         final int finalDeleteCount = filenameArray.length;
 
         if (finalDeleteCount > 0) {
@@ -299,7 +300,7 @@ public class SongListActivity extends DrawerBaseActivity implements TextWatcher 
     private void startChordViewActivity(String filename) {
         Intent intent = new Intent(this, SongViewActivity.class);
         Bundle b = new Bundle();
-        b.putString("filename",filename);
+        b.putString("filename", filename);
         intent.putExtras(b);
         startActivity(intent);
     }

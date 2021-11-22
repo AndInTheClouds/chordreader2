@@ -17,6 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,9 +30,12 @@ import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.Settings;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +59,7 @@ public class StartActivity extends DrawerBaseActivity implements OnClickListener
 
     private static final int STORAGE_PERMISSION_CODE = 100;
 
-    private Context context = this;
+    private final Context context = this;
     private MediaPlayer mediaPlayer;
     private TextureView textureView;
     Surface surface;
@@ -84,12 +89,13 @@ public class StartActivity extends DrawerBaseActivity implements OnClickListener
 
         videoUri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bgrd_vid);
 
-        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
 
         initializeChordDictionary();
 
         showInitialMessage();
 
+        if (!areStoragePermissionsGranted())
+            requestPermission();
     }
 
 
@@ -263,12 +269,33 @@ public class StartActivity extends DrawerBaseActivity implements OnClickListener
         }
     }
 
-    private void checkPermission(String permission, int requestCode)
-    {
-        if (ContextCompat.checkSelfPermission(StartActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(StartActivity.this, new String[] { permission }, requestCode);
+    private boolean areStoragePermissionsGranted() {
+        if (SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(StartActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(StartActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
         }
+    }
 
+    private void requestPermission()
+    {
+        if (SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", getApplicationContext().getPackageName())));
+                startActivityForResult(intent, 2296);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2296);
+            }
+        } else {
+            //below android 11
+            ActivityCompat.requestPermissions(StartActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
     }
 
 
@@ -301,5 +328,6 @@ public class StartActivity extends DrawerBaseActivity implements OnClickListener
         };
         asyncHandler.post(runnable);
     }
+
 
 }

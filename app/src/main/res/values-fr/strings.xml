@@ -71,7 +71,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader !</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 1.0 ?</b>\n\n<li>Fonction de défilement automatique</li>\n<li>Métronome au début du défilement automatique</li>\n<li>Demander quitter et enregistrer</li>\n<li>Enregistrer le BPM et le facteur de défilement automatique dans un fichier TXT</li>\n<li>Plusieurs doigtés dans les pop-up.</li>\n<li>Suppression des publicités</li>\n<li>Moteur de recherche personnalisable</li>\n<li>Personnaliser les tables de variation d\'accords</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.0 ?</b>\n\n<li>Fonction de défilement automatique</li>\n<li>Métronome au début du défilement automatique</li>\n<li>Demander quitter et enregistrer</li>\n<li>Enregistrer le BPM et le facteur de défilement automatique dans un fichier TXT</li>\n<li>Plusieurs doigtés dans les pop-up.</li>\n<li>Suppression des publicités</li>\n<li>Moteur de recherche personnalisable</li>\n<li>Personnaliser les tables de variation d\'accords</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>

@@ -26,11 +26,11 @@ import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.os.PowerManager;
 import android.text.InputType;
 import android.text.Layout;
 import android.text.Spannable;
@@ -98,15 +98,13 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
     private static float lastXCoordinate, lastYCoordinate;
 
-    private PowerManager.WakeLock wakeLock;
-
-
     private String filename, searchText;
     private volatile String chordText;
     private List<ChordInText> chordsInText;
     public int capoFret = 0;
     protected int transposeHalfSteps = 0;
 
+    private boolean doubleTapExcecuted = false;
     private boolean isEditedTextToSave = false;
 
     private LinearLayout chordsViewingMainView;
@@ -118,6 +116,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
     private GestureDetector mDetector;
     private final Handler metronomeHandler = new Handler();
     private Timer metronomeTimer;
+    private CountDownTimer releaseWakeLockCountDownTimer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,8 +129,20 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
         mDrawerLayout.addView(contentView, 0);
 
         setUpWidgets();
-        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager != null ? powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getPackageName()) : null;
+
+        viewingScrollView.setOnActiveAutoScrollListener(new AutoScrollView.OnActiveAutoScrollListener() {
+
+            @Override
+            public void onAutoScrollActive() {
+                acquireWakeLock();
+            }
+
+            @Override
+            public void onAutoScrollInactive() {
+                releaseWakeLock();
+            }
+        });
+
 
         PreferenceHelper.clearCache();
         viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferenceHelper.getTextSizePreference(this));
@@ -175,21 +186,13 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
         resetDataExceptChordTextAndFilename();
         analyzeChordsEtcAndShowChordView();
 
-        if (!wakeLock.isHeld()) {
-            Log.d(LOG_TAG,"Acquiring wakelock");
-            wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if (wakeLock.isHeld()) {
-            Log.d(LOG_TAG,"Releasing wakelock");
-            wakeLock.release();
-        }
-
+        releaseWakeLock();
     }
 
     @Override
@@ -276,6 +279,8 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
             final int action = event.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
 
+                doubleTapExcecuted = false;
+
                 if (viewingScrollView.isAutoScrollOn()) {
                     viewingScrollView.stopAutoScroll();
                 }
@@ -283,7 +288,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
             if (action == MotionEvent.ACTION_UP) {
                 viewingScrollView.setTouched(false);
-                if (viewingScrollView.isAutoScrollOn()) {
+                if (viewingScrollView.isAutoScrollOn() && !doubleTapExcecuted) {
                     startAutoscroll();
                 }
             }
@@ -292,7 +297,6 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
         viewingTextView.setOnTouchListener(touchListener);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -317,6 +321,36 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
             changeAutoScrollFactor(true);
             //TODO: Add playlist buttons
         }
+
+    }
+
+    private void acquireWakeLock() {
+
+        //Log.d(LOG_TAG,"Acquiring wakelock");
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (releaseWakeLockCountDownTimer != null) {
+            releaseWakeLockCountDownTimer.cancel();
+        }
+
+    }
+
+    private void releaseWakeLock() {
+
+        //Log.d(LOG_TAG,"Releasing wakelock in 3min");
+
+        releaseWakeLockCountDownTimer = new CountDownTimer(180000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                //Log.d(LOG_TAG,"Wakelock released");
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        }.start();
+
 
     }
 
@@ -618,7 +652,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
             if (searchText != null) {
                 newFilename = searchText; // coming from web search
             } else {
-                newFilename = "filename";
+                newFilename = getString(R.string.new_file);
             }
         }
 
@@ -1017,7 +1051,6 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
         if (!viewingScrollView.isAutoScrollOn()) {
             animationSwitch(autoScrollPlayButton, autoScrollPauseButton);
             viewingScrollView.setAutoScrollOn(true);
-            viewingScrollView.setAutoScrollActive(true);
 
             startAnimationMetronome();
             Handler handler = new Handler();
@@ -1025,7 +1058,7 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
                 if (!viewingScrollView.isAutoScrollOn())
                     return;
                 viewingScrollView.startAutoScroll();
-            }, (long) (60d / viewingScrollView.getBpm() * 1000 * 4)); // delay of autoScroll start, to watch metronom firstly
+            }, (long) (60d / viewingScrollView.getBpm() * 1000 * 4)); // delay of autoScroll start, to watch metronome firstly
 
         } else {
             if (!viewingScrollView.isFlingActive() && !viewingScrollView.isAutoScrollActive()) {
@@ -1038,11 +1071,13 @@ public class SongViewActivity extends DrawerBaseActivity implements OnClickListe
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+
             if (viewingScrollView.isAutoScrollOn())
                 stopAutoscroll();
             else
                 startAutoscroll();
 
+            doubleTapExcecuted = true;
             return true;
         }
 
