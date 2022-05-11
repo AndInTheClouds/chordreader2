@@ -1,0 +1,41 @@
+Categories:
+  - Multimedia
+  - Science & Education
+License: GPL-3.0-only
+AuthorName: AndInTheClouds
+SourceCode: https://github.com/AndInTheClouds/chordreader2
+IssueTracker: https://github.com/AndInTheClouds/chordreader2/issues
+Donate: https://flattr.com/@AndInTheClouds
+
+AutoName: ChordReader2
+
+RepoType: git
+Repo: https://github.com/AndInTheClouds/chordreader2
+
+Builds:
+  - versionName: 2.0.4
+    versionCode: 1
+    commit: v2.0.4
+    subdir: app
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 2.0.5
+      versionCode: 205
+      commit: v2.0.5
+      subdir: app
+      sudo:
+        - apt-get update || apt-get update
+        - apt-get install -y openjdk-11-jdk-headless
+        - update-alternatives --auto java
+      gradle:
+        - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 2.0.5
+CurrentVersionCode: 205
