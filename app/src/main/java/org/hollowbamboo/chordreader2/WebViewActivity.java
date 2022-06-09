@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -542,7 +543,10 @@ public class WebViewActivity extends DrawerBaseActivity implements TextView.OnEd
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            handler.post(() -> loadUrl(url));
+            if (Uri.parse(url).getScheme().equals("market") || url.contains("play.google.com"))  {
+                log.d("Playstore request blocked: " + url);
+            } else
+                handler.post(() -> loadUrl(url));
 
             return true;
         }
