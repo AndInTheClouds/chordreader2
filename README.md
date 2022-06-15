@@ -8,6 +8,11 @@ It's an app that:
 - transposes the identified chords up or down, or you can add a capo,
 - provides common chord variations.
 
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/org.hollowbamboo.chordreader2/)
+
 ## Status
 This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Klehr respectively. It's still under development, e.g. playlists are planned to be implementend.
 > It's my first project at all. Every comment or support is welcomed.
