@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="webViewModel"
+            type="org.hollowbamboo.chordreader2.model.WebSearchViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/find_chords_finding_view"
+            android:layout_width="fill_parent"
+            android:layout_height="0px"
+            android:layout_weight="1.0"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/find_chords_message_main_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="0dp">
+
+                <LinearLayout
+                    android:id="@+id/find_chords_message_secondary_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/title_bar"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:selectable="true">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <ImageView
+                            android:id="@+id/find_chords_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="10dp"
+                            android:src="@drawable/ic_dialog_info" />
+
+                        <ProgressBar
+                            android:id="@+id/find_chords_progress_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:indeterminate="true"
+                            android:paddingRight="10dp"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:layout_width="0px"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0">
+
+                            <TextView
+                                android:id="@+id/find_chords_message_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/find_chords_intro_message"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/find_chords_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/edit_text"
+                    android:completionThreshold="1"
+                    android:hint="@string/chord_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:textColor="@android:color/primary_text_light_nodisable"
+                    android:textColorHint="#808080" />
+
+                <ImageButton
+                    android:id="@+id/find_chords_search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/find_chords_edit_text"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/ic_btn_search"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <WebView
+                android:id="@+id/find_chords_web_view"
+                android:layout_width="fill_parent"
+                android:layout_height="0px"
+                android:layout_weight="1.0"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

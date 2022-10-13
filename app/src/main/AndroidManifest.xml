@@ -1,41 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.hollowbamboo.chordreader2"
-	android:versionCode="1"
-	android:versionName="2.0.4">
+    package="org.hollowbamboo.chordreader2"
+    android:versionCode="2"
+    android:versionName="2.1">
 
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-	<application
-		android:icon="@mipmap/chord_reader_icon"
-		android:label="@string/app_name"
-		android:requestLegacyExternalStorage="true" >
+    <application
+        android:icon="@mipmap/chord_reader_icon"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true">
 
-		<activity
-			android:name="org.hollowbamboo.chordreader2.StartActivity"
-			android:configChanges="keyboard|keyboardHidden|orientation"
-			android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+        <activity
+            android:name="org.hollowbamboo.chordreader2.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-		</activity>
+        </activity>
 
-		<activity android:name="org.hollowbamboo.chordreader2.WebViewActivity" android:label="Web Search"/>
-		<activity android:name="org.hollowbamboo.chordreader2.SongListActivity" android:label="Songs"/>
-		<activity android:name="org.hollowbamboo.chordreader2.PlayListsActivity" android:label="Play Lists"/>
-		<activity android:name="org.hollowbamboo.chordreader2.SongViewActivity"
-			android:configChanges="orientation|screenSize"
-			android:label="Song View"/>
-
-		<activity android:name="org.hollowbamboo.chordreader2.AboutActivity" android:theme="@android:style/Theme.Dialog" />
-		<activity android:name="org.hollowbamboo.chordreader2.SettingsActivity" android:label="@string/settings"/>
-		<activity android:name="org.hollowbamboo.chordreader2.ChordDictionaryEditActivity" android:theme="@style/TransparentTheme" />
-
-	</application>
+    </application>
 
 </manifest> 

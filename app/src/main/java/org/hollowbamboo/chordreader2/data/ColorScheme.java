@@ -51,14 +51,14 @@ public enum ColorScheme {
 	}	
 	
 	public int getBackgroundColor(Context context) {
-		if (backgroundColor == -1) {
+		if(backgroundColor == -1) {
 			backgroundColor = context.getResources().getColor(backgroundColorResource);
 		}
 		return backgroundColor;
 	}
 	
 	public int getForegroundColor(Context context) {
-		if (foregroundColor == -1) {
+		if(foregroundColor == -1) {
 			foregroundColor = context.getResources().getColor(foregroundColorResource);
 		}
 		return foregroundColor;
@@ -66,14 +66,14 @@ public enum ColorScheme {
 	
 	
 	public int getLinkColor(Context context) {
-		if (linkColor == -1) {
+		if(linkColor == -1) {
 			linkColor = context.getResources().getColor(linkColorResource);
 		}
 		return linkColor;
 	}
 	
 	public int getBubbleColor(Context context) {
-		if (bubbleColor == -1) {
+		if(bubbleColor == -1) {
 			bubbleColor = context.getResources().getColor(bubbleColorResource);
 		}
 		return bubbleColor;
@@ -84,7 +84,7 @@ public enum ColorScheme {
 	}
 
 	public static ColorScheme findByPreferenceName(String name, Context context) {
-		if (preferenceNameToColorScheme.isEmpty()) {
+		if(preferenceNameToColorScheme.isEmpty()) {
 			// initialize map
 			for (ColorScheme colorScheme : values()) {
 				preferenceNameToColorScheme.put(context.getText(colorScheme.getNameResource()).toString(), colorScheme);

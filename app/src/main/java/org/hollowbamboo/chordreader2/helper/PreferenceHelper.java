@@ -20,7 +20,7 @@ public class PreferenceHelper {
 		
 	public static float getTextSizePreference(Context context) {
 		
-		if (textSize == -1) {
+		if(textSize == -1) {
 		
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			
@@ -28,17 +28,17 @@ public class PreferenceHelper {
 					context.getText(R.string.pref_text_size).toString(), 
 					context.getText(R.string.text_size_medium_value).toString());
 
-			if (textSizePref.equals(context.getText(R.string.text_size_xsmall_value))) {
+			if(textSizePref.equals(context.getText(R.string.text_size_xsmall_value))) {
 				cacheTextsize(context, R.dimen.text_size_xsmall);
-			} else if (textSizePref.equals(context.getText(R.string.text_size_small_value))) {
+			} else if(textSizePref.equals(context.getText(R.string.text_size_small_value))) {
 				cacheTextsize(context, R.dimen.text_size_small);
-			} else if (textSizePref.equals(context.getText(R.string.text_size_medium_value))) {
+			} else if(textSizePref.equals(context.getText(R.string.text_size_medium_value))) {
 				cacheTextsize(context, R.dimen.text_size_medium);
-			} else if (textSizePref.equals(context.getText(R.string.text_size_large_value))) {
+			} else if(textSizePref.equals(context.getText(R.string.text_size_large_value))) {
 				cacheTextsize(context, R.dimen.text_size_large);
-			} else if (textSizePref.equals(context.getText(R.string.text_size_xlarge_value))) {
+			} else if(textSizePref.equals(context.getText(R.string.text_size_xlarge_value))) {
 				cacheTextsize(context, R.dimen.text_size_xlarge);
-			} else if (textSizePref.equals(context.getText(R.string.text_size_xxlarge_value))) {
+			} else if(textSizePref.equals(context.getText(R.string.text_size_xxlarge_value))) {
 				cacheTextsize(context, R.dimen.text_size_xxlarge);
 			} else { // xxxlarge
 				cacheTextsize(context, R.dimen.text_size_xxxlarge);
@@ -84,7 +84,7 @@ public class PreferenceHelper {
 	
 	public static ColorScheme getColorScheme(Context context) {
 		
-		if (colorScheme == null) {
+		if(colorScheme == null) {
 		
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			String colorSchemeName = sharedPrefs.getString(
@@ -112,7 +112,7 @@ public class PreferenceHelper {
 
 	public static NoteNaming getNoteNaming(Context context) {
 		
-		if (noteNaming == null) {
+		if(noteNaming == null) {
 		
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			String pref = sharedPrefs.getString(context.getString(R.string.pref_note_naming), 
@@ -133,7 +133,7 @@ public class PreferenceHelper {
 
 	public static String getSearchEngineURL(Context context) {
 
-		if (searchEngineURL == null) {
+		if(searchEngineURL == null) {
 
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			searchEngineURL = sharedPrefs.getString(

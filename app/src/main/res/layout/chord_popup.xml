@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:background="@drawable/popup_background"
-	android:gravity="left|center_vertical"
+	android:gravity="center"
 	android:orientation="vertical"
 	android:paddingLeft="10dp"
 	android:paddingTop="5dp"
 	android:paddingRight="10dp"
 	android:paddingBottom="10dp">
 
-	<TextView
-		android:id="@android:id/text1"
-		android:layout_width="fill_parent"
+
+	<RelativeLayout
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center_horizontal"
-		android:paddingLeft="2dp"
-		android:paddingRight="2dp"
-		android:text="text"
-		android:textColor="@android:color/primary_text_light_nodisable"
-		android:textSize="24sp" />
+		android:orientation="horizontal">
 
-	<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+		<ImageButton
+			android:id="@+id/previous_chord_button"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:layout_alignParentStart="true"
+			android:background="@drawable/ic_media_previous"
+			android:visibility="invisible" />
 
-		<LinearLayout
-			android:layout_width="match_parent"
+		<TextView
+			android:id="@+id/chord_visualisation_text_view"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal">
+			android:layout_centerVertical="true"
+			android:layout_toStartOf="@id/next_chord_button"
+			android:layout_toEndOf="@id/previous_chord_button"
+			android:gravity="center_horizontal" />
 
-			<TextView
-				android:id="@android:id/text2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="left|center_vertical"
-				android:paddingLeft="2dp"
-				android:paddingRight="5dp"
-				android:text="text"
-				android:textColor="@android:color/primary_text_light_nodisable"
-				android:textSize="18sp" />
+		<ImageButton
+			android:id="@+id/next_chord_button"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:layout_alignParentEnd="true"
+			android:background="@drawable/ic_media_next"
+			android:visibility="invisible" />
+	</RelativeLayout>
 
-			<ImageButton
-				android:id="@+id/chord_var_edit_button"
-				style="@android:style/Widget.ImageButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom"
-				android:src="@android:drawable/ic_menu_edit" />
-		</LinearLayout>
-	</ScrollView>
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/popup_background"
+		android:orientation="horizontal">
+
+		<view
+			class="org.hollowbamboo.chordreader2.ui.SongViewFragment$WrapContentViewPager"
+			android:id="@+id/chord_visualisation_view_pager"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="18dp"
+			/>
+	</LinearLayout>
 
 
 </LinearLayout>

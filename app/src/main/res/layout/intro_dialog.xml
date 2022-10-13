@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_background"
     android:paddingStart="12dip"
     android:paddingTop="2dp"
     android:paddingEnd="7dip"
@@ -17,6 +16,5 @@
         android:paddingLeft="8dip"
         android:paddingEnd="8dip"
         android:paddingRight="8dip"
-        android:textColor="@android:color/black"
         android:textSize="16sp" />
 </ScrollView>

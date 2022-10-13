@@ -70,7 +70,7 @@
 
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
-    <string name="first_run_title">Bienvenue dans Chord Reader !</string>
+    <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
     <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.0 ?</b>\n\n<li>Fonction de défilement automatique</li>\n<li>Métronome au début du défilement automatique</li>\n<li>Demander quitter et enregistrer</li>\n<li>Enregistrer le BPM et le facteur de défilement automatique dans un fichier TXT</li>\n<li>Plusieurs doigtés dans les pop-up.</li>\n<li>Suppression des publicités</li>\n<li>Moteur de recherche personnalisable</li>\n<li>Personnaliser les tables de variation d\'accords</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
@@ -83,7 +83,7 @@
     <string name="text_size_xxxlarge_name">Très³ grand (30pt)</string>
     <string name="pref_search_engine_title">Moteur de recherche URL</string>
     <string name="new_file">Nouveau fichier</string>
-    <string name="chord_variation_editing">"Édition de variation d'accord: "</string>
+    <string name="chord_variation_editing">"Édition de variation d'accord"</string>
     <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
     <string name="new_playlist">Nouveau liste de lecture</string>
     <string name="manage_saved_playlists">"Gérer les listes de lecture "</string>
@@ -94,5 +94,10 @@
     <string name="cancel">Annuler</string>
     <string name="select_all">Tout sélectionner</string>
     <string name="delete">Supprimer</string>
+    <string name="of">sur</string>
+    <string name="help">Aide</string>
+    <string name="file_selection_for_playlist">Sélectionner des chansons pour la liste de lecture</string>
+    <string name="no_local_songs">Aucune chanson trouvée sur votre appareil. Effectuez une recherche sur le Web.</string>
+    <string name="no_playlists">Aucune liste de lecture trouvée sur votre appareil. Créez-en une nouvelle.</string>
 
 </resources>

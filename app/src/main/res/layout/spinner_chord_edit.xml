@@ -3,6 +3,4 @@
     android:id="@+id/chord_edit_spinner_textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/scheme_light_foreground"
-    android:textColor="@color/scheme_light_background"
-    android:textSize="16sp" />
+    android:textSize="15sp" />

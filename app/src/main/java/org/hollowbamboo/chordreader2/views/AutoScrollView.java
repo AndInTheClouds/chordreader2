@@ -1,4 +1,4 @@
-package org.hollowbamboo.chordreader2.helper;
+package org.hollowbamboo.chordreader2.views;
 
 /*
 Chord Reader 2 - fetch and display chords for your favorite songs from the Internet
@@ -64,7 +64,7 @@ public class AutoScrollView extends ScrollView {
             @Override
             public void run() {
                 int position = getScrollY();
-                if (mPreviousFlingPosition - position == 0) { //has stopped
+                if(mPreviousFlingPosition - position == 0) { //has stopped
                     mFlingListener.onFlingStopped();
                     removeCallbacks(mScrollChecker);
                 } else { // check until stopped
@@ -78,7 +78,7 @@ public class AutoScrollView extends ScrollView {
             @Override
             public void run() {
                 int position = getScrollY();
-                if (mPreviousAutoScrollPosition - position == 0) { //has stopped
+                if(mPreviousAutoScrollPosition - position == 0) { //has stopped
                     mActiveAutoScrollListener.onAutoScrollInactive();
                     removeCallbacks(mActiveAutoScrollChecker);
                 } else { // check until stopped
@@ -88,7 +88,7 @@ public class AutoScrollView extends ScrollView {
             }
         };
 
-        this.setOnFlingListener(new AutoScrollView.OnFlingListener() {
+        this.setOnFlingListener(new OnFlingListener() {
 
             @Override
             public void onFlingStarted() {
@@ -101,7 +101,7 @@ public class AutoScrollView extends ScrollView {
                 AutoScrollView.this.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
                     @Override
                     public void run() {
-                        if (!isTouched && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
+                        if(!isTouched && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
                             AutoScrollView.this.startAutoScroll();
                         }
                     }
@@ -124,7 +124,7 @@ public class AutoScrollView extends ScrollView {
     public void fling(int velocityY) {
         super.fling(velocityY); // Pass through fling to parent
 
-        if (mFlingListener != null) {
+        if(mFlingListener != null) {
             mFlingListener.onFlingStarted();
             post(mScrollChecker);
         }
@@ -183,7 +183,7 @@ public class AutoScrollView extends ScrollView {
     }
 
     public void startAutoScroll() {
-        if (animator != null) {
+        if(animator != null) {
             animator.cancel();
         }
 
@@ -197,14 +197,14 @@ public class AutoScrollView extends ScrollView {
         this.isAutoScrollActive = true;
         mPreviousAutoScrollPosition = 99999;
 
-        if (mActiveAutoScrollListener != null) {
+        if(mActiveAutoScrollListener != null) {
             mActiveAutoScrollListener.onAutoScrollActive();
             post(mActiveAutoScrollChecker);
         }
     }
 
     public void stopAutoScroll() {
-        if (animator != null) {
+        if(animator != null) {
             animator.cancel();
             animator = null;
 
@@ -226,8 +226,8 @@ public class AutoScrollView extends ScrollView {
     }
 
     public void changeScrollVelocity(boolean acceleration) {
-        if (!acceleration)
-            if (this.scrollVelocityCorrectionFactor >= 0.2f)
+        if(!acceleration)
+            if(this.scrollVelocityCorrectionFactor >= 0.2f)
                 this.scrollVelocityCorrectionFactor -= 0.1f;
             else
                 this.scrollVelocityCorrectionFactor = 0.1f;
@@ -236,7 +236,7 @@ public class AutoScrollView extends ScrollView {
 
         calculateAutoScrollVelocity();
 
-        if (this.isAutoScrollOn) {
+        if(this.isAutoScrollOn) {
             stopAutoScroll();
             startAutoScroll();
         }
@@ -247,14 +247,14 @@ public class AutoScrollView extends ScrollView {
 
         final int action = event.getAction();
 
-        if (action == MotionEvent.ACTION_DOWN) {
+        if(action == MotionEvent.ACTION_DOWN) {
 
             this.isTouched = true;
-            if (this.isAutoScrollOn()) {
+            if(this.isAutoScrollOn()) {
                 this.stopAutoScroll();
             }
-//            return true;
         }
+
         super.onTouchEvent(event);
         return false;
     }
@@ -264,26 +264,26 @@ public class AutoScrollView extends ScrollView {
 
         final int action = event.getAction();
 
-        if (action == MotionEvent.ACTION_DOWN) {
+        if(action == MotionEvent.ACTION_DOWN) {
             this.isTouched = true;
-            if (this.isAutoScrollOn()) {
+            if(this.isAutoScrollOn()) {
                 this.stopAutoScroll();
             }
             super.onTouchEvent(event);
            return true;
         }
 
-        if (action == MotionEvent.ACTION_MOVE) {
+        if(action == MotionEvent.ACTION_MOVE) {
             super.onTouchEvent(event);
         }
 
-        if (action == MotionEvent.ACTION_UP) {
+        if(action == MotionEvent.ACTION_UP) {
             this.isTouched = false;
-            if (this.isAutoScrollOn()) {
+            if(this.isAutoScrollOn()) {
                 this.postDelayed(new Runnable() { //wait a moment to check if a fling was caused
                     @Override
                     public void run() {
-                        if (!AutoScrollView.this.isFlingActive() && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
+                        if(!AutoScrollView.this.isFlingActive() && AutoScrollView.this.isAutoScrollOn() && !AutoScrollView.this.isAutoScrollActive()) {
                             AutoScrollView.this.startAutoScroll();
                         }
                     }

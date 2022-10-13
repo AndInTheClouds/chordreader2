@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="songViewModel"
+            type="org.hollowbamboo.chordreader2.model.SongViewFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chords_viewing_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <org.hollowbamboo.chordreader2.views.AutoScrollView
+            android:id="@+id/chords_viewing_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/chords_viewing_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:linksClickable="true"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@android:color/primary_text_dark_nodisable"
+                android:textSize="@dimen/text_size_medium"
+                android:typeface="monospace" />
+        </org.hollowbamboo.chordreader2.views.AutoScrollView>
+
+        <ImageButton
+            android:id="@+id/autoScrollSlower"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/slower_auto_scroll"
+            android:padding="1dp"
+            android:src="@drawable/ic_btn_autoscroll_slower"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/autoScrollPlayButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/start_auto_scroll"
+            android:padding="1dp"
+            android:src="@drawable/ic_btn_autoscroll_play"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoScrollSlower" />
+
+        <ImageButton
+            android:id="@+id/autoScrollPauseButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/stop_auto_scroll"
+            android:padding="1dp"
+            android:src="@drawable/ic_btn_autoscroll_pause"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoScrollSlower" />
+
+        <ImageButton
+            android:id="@+id/autoScrollFaster"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/faster_auto_scroll"
+            android:padding="1dp"
+            android:src="@drawable/ic_btn_autoscroll_faster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoScrollPlayButton" />
+
+        <ImageView
+            android:id="@+id/playlist_next"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="42dp"
+            android:background="@drawable/round_button"
+            android:contentDescription=""
+            android:src="@drawable/ic_btn_next_song"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/playlist_previous"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/round_button"
+            android:src="@drawable/ic_btn_previous_song"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

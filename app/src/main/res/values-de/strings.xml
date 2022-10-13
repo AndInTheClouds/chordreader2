@@ -70,7 +70,7 @@
 
     <string name="pref_first_run_title">Einführung zurücksetzen</string>
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
-    <string name="first_run_title">Willkommen zu Chord Reader!</string>
+    <string name="first_run_title">Willkommen zu Chord Reader 2!</string>
     <string name="first_run_message">\n<b>Was ist neu in Version 2.0?</b>\n\n<li>Auto-Scroll Funktion </li>\n<li>Metronome während Auto-Scroll </li>\n<li>Dialog zum Speichern </li>\n<li>Anpassbare Suchmaschine </li>\n<li>Anpassbare Akkordvariationen </li>\n<li>Speichern von BPM und Auto-Scroll Factor in TXT-Datei </li>\n\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
@@ -83,7 +83,7 @@
     <string name="text_size_xxxlarge_name">Extra³ Groß (30pt)</string>
     <string name="pref_search_engine_title">Suchmaschine URL</string>
     <string name="new_file">Neue Datei</string>
-    <string name="chord_variation_editing">"Bearbeitung Akkord-Varianten: "</string>
+    <string name="chord_variation_editing">"Bearbeitung Akkord-Varianten"</string>
     <string name="no_chord_available_add">Keine Gitarrengriffe verfügbar. Bitte hinzufügen.</string>
     <string name="new_playlist">Neue Playlist</string>
     <string name="manage_saved_playlists">Playlists verwalten</string>
@@ -94,5 +94,10 @@
     <string name="cancel">Abbrechen</string>
     <string name="select_all">Alles auswählen</string>
     <string name="delete">Löschen</string>
+    <string name="of">von</string>
+    <string name="help">Hilfe</string>
+    <string name="file_selection_for_playlist">Songauswahl für Playlist</string>
+    <string name="no_local_songs">Keine Lieder auf deinem Gerät gefunden. Führe eine Web Suche durch.</string>
+    <string name="no_playlists">Keine Playlists auf deinem Gerät gefunden. Erstelle eine Neue.</string>
 
 </resources>

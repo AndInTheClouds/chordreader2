@@ -7,8 +7,8 @@ public class ArrayUtil {
 	// copied from Java 6 source
 	
 	 public static int[] copyOfRange(int[] original, int start, int end) {
-         if (start <= end) {
-             if (original.length >= start && 0 <= start) {
+         if(start <= end) {
+             if(original.length >= start && 0 <= start) {
                  int length = end - start;
                  int copyLength = Math.min(length, original.length - start);
                  int[] copy = new int[length];
@@ -94,7 +94,7 @@ public class ArrayUtil {
     
     public static boolean contains(int[] arr, int value) {
     	for (int i = 0; i < arr.length; i++) {
-    		if (arr[i] == value) {
+    		if(arr[i] == value) {
     			return true;
     		}
     	}

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,10 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 	private static final String COLUMN_CAPO = "capo";
 	private static final String COLUMN_TRANSPOSE = "transpose";
 	private static final String COLUMN_FILENAME = "filename";
-	
+
+	private static final String TABLE_TEXTSIZES = "Textsizes";
+	private static final String COLUMN_TEXTSIZE = "textSize";
+
 	
 	// private variables
 	private SQLiteDatabase db;
@@ -64,13 +68,24 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 		createSecondTable = String.format(createSecondTable, TABLE_TRANSPOSITIONS, COLUMN_ID, COLUMN_FILENAME, COLUMN_TRANSPOSE, COLUMN_CAPO);
 		db.execSQL(createSecondTable);
 		db.execSQL("create unique index index_filename on " + TABLE_TRANSPOSITIONS + " ( " + COLUMN_FILENAME + ");");
+
+		String createThirdTable = "create table %s " +
+				"(" +
+				"%s integer not null primary key autoincrement, " +
+				"%s text not null, " +
+				"%s float not null " +
+				");";
+
+		createThirdTable = String.format(createThirdTable, TABLE_TEXTSIZES, COLUMN_ID, COLUMN_FILENAME, COLUMN_TEXTSIZE);
+		db.execSQL(createThirdTable);
+		db.execSQL("create unique index index_filename_textsizes on " + TABLE_TEXTSIZES + " ( " + COLUMN_FILENAME + ");");
 	}
 	
 
 	@Override
 	public void close() {
 		super.close();
-		if (db != null && db.isOpen()) { // just to be safe
+		if(db != null && db.isOpen()) { // just to be safe
 			db.close();
 		}
 	}
@@ -91,7 +106,7 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 						new String[]{filename.toString()}, 
 						null, null, null);
 				
-				if (cursor.moveToNext()) {
+				if(cursor.moveToNext()) {
 					Transposition transposition = new Transposition();
 					
 					transposition.setId(cursor.getInt(0));
@@ -118,11 +133,54 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 			
 			int updated = db.update(TABLE_TRANSPOSITIONS, contentValues, COLUMN_FILENAME + "=?", new String[]{filename.toString()});
 			
-			if (updated == 0) { // needs to be inserted
+			if(updated == 0) { // needs to be inserted
 				String sql = "insert into " + TABLE_TRANSPOSITIONS + " (" + COLUMN_FILENAME + "," + COLUMN_TRANSPOSE + ", " + COLUMN_CAPO
 					+ ") values (?," + transpose + "," + capo + ");";
 			
 				db.execSQL(sql, new String[]{filename.toString()});				
+			}
+		}
+	}
+
+	public float findTextSizeByFilename(CharSequence filename) {
+		synchronized (org.hollowbamboo.chordreader2.db.ChordReaderDBHelper.class) {
+			Cursor cursor = null;
+			try {
+				cursor = db.query(TABLE_TEXTSIZES,
+						new String[]{COLUMN_ID, COLUMN_FILENAME, COLUMN_TEXTSIZE},
+						COLUMN_FILENAME + "=?",
+						new String[]{filename.toString()},
+						null, null, null);
+
+				if(cursor.moveToNext()) {
+					Log.d("ChordReaderDBHelper"," - " + cursor.getFloat(2));
+					return cursor.getFloat(2);
+				} else {
+					return 0;
+				}
+
+			} catch (Exception exception) {
+				return 0;
+			} finally {
+				if(cursor != null)
+					cursor.close();
+			}
+		}
+	}
+
+	public void saveTextSize(CharSequence filename, float textSize) {
+		synchronized (org.hollowbamboo.chordreader2.db.ChordReaderDBHelper.class) {
+
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(COLUMN_TEXTSIZE, textSize);
+
+			int updated = db.update(TABLE_TEXTSIZES, contentValues, COLUMN_FILENAME + "=?", new String[]{filename.toString()});
+
+			if(updated == 0) { // needs to be inserted
+				String sql = "insert into " + TABLE_TEXTSIZES + " (" + COLUMN_FILENAME + "," + COLUMN_TEXTSIZE
+						+ ") values (?," + textSize + ");";
+
+				db.execSQL(sql, new String[]{filename.toString()});
 			}
 		}
 	}
@@ -148,7 +206,7 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 				
 				return result;
 			} finally {
-				if (cursor != null) {
+				if(cursor != null) {
 					cursor.close();
 				}
 			}
@@ -170,7 +228,7 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 			contentValues.put(COLUMN_QUERY_TIMESTAMP, currentTime);
 			int updated = db.update(TABLE_QUERY, contentValues, COLUMN_QUERY_TEXT + "=?", new String[]{queryText});
 			
-			if (updated == 0) { // needs to be inserted
+			if(updated == 0) { // needs to be inserted
 				String insertSql = "insert into " + TABLE_QUERY + " (" + COLUMN_QUERY_TEXT + ", " + COLUMN_QUERY_TIMESTAMP
 					+ ") values (?," + currentTime + ");";
 				

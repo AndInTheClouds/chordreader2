@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="listViewModel"
+            type="org.hollowbamboo.chordreader2.model.ListFragmentViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/song_list_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/list_filter_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:hint="@string/enter_text_to_filter"
+            android:inputType="textFilter"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@android:color/primary_text_light_nodisable"
+            android:textColorHint="#808080"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/search_the_web_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/focused_shape"
+            android:text="@string/web_search"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_filter_text_view" />
+
+        <ImageButton
+            android:id="@+id/delete_filter_text_button"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="delete search text"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/list_filter_text_view"
+            app:layout_constraintEnd_toEndOf="@id/list_filter_text_view"
+            app:layout_constraintTop_toTopOf="@id/list_filter_text_view"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <ListView
+            android:id="@+id/file_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/list_view_ok_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_the_web_button" />
+
+        <Button
+            android:id="@+id/list_view_ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/listView_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_the_web_button" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

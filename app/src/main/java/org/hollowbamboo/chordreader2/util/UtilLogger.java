@@ -23,25 +23,25 @@ public class UtilLogger {
 	}
 	
 	public void i(String format, Object... more) {
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			Log.i(tag, smartFormat(format,more));
 		}
 	}
 	
 	public void i(Exception e, String format, Object... more) {
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			Log.i(tag, smartFormat(format,more), e);
 		}
 	}
 	
 	public void w(Exception e, String format, Object... more) {
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			Log.w(tag, smartFormat(format,more), e);
 		}
 	}
 	
 	public void w(String format, Object... more) {
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			Log.w(tag, smartFormat(format,more));
 		}
 	}	
@@ -55,11 +55,11 @@ public class UtilLogger {
 	}
 	
 	public void d(String format, Object... more) {	
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			for (int i = 0; i < more.length; i++) {
-				if (more[i] instanceof int[]) {
+				if(more[i] instanceof int[]) {
 					more[i] = Arrays.toString((int[])more[i]);
-				} else if (more[i] instanceof String[]) {
+				} else if(more[i] instanceof String[]) {
 					more[i] = Arrays.toString((String[])more[i]);
 				}
 			}
@@ -68,11 +68,11 @@ public class UtilLogger {
 	}	
 	
 	public void d(Exception e, String format, Object... more) {
-		if (DEBUG_MODE) {
+		if(DEBUG_MODE) {
 			for (int i = 0; i < more.length; i++) {
-				if (more[i] instanceof int[]) {
+				if(more[i] instanceof int[]) {
 					more[i] = Arrays.toString((int[])more[i]);
-				} else if (more[i] instanceof String[]) {
+				} else if(more[i] instanceof String[]) {
 					more[i] = Arrays.toString((String[])more[i]);
 				}
 			}

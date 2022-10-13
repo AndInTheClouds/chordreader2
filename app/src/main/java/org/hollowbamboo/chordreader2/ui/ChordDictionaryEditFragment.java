@@ -1,4 +1,4 @@
-package org.hollowbamboo.chordreader2;
+package org.hollowbamboo.chordreader2.ui;
 
 /*
 Chord Reader 2 - fetch and display chords for your favorite songs from the Internet
@@ -17,11 +17,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import android.app.Activity;
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,9 +31,19 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
+import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.Chord;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
+import org.hollowbamboo.chordreader2.databinding.FragmentChordDictionaryEditBinding;
 import org.hollowbamboo.chordreader2.helper.ChordDictionary;
+import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,7 +52,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChordDictionaryEditActivity extends Activity implements View.OnClickListener {
+public class ChordDictionaryEditFragment extends Fragment implements View.OnClickListener {
 
     private TableLayout chordVarEditView;
     private TextView chordTitleTextView;
@@ -52,52 +63,64 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
     private final Map<Integer, ArrayList<Spinner>> allChordVarSpinnersMap = new LinkedHashMap<>();
     private final Map<Integer, TableRow> allChordVarTableRows = new LinkedHashMap<>();
 
-    public void onCreate(Bundle savedInstanceState) {
+    private FragmentChordDictionaryEditBinding binding;
 
-        super.onCreate(savedInstanceState);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.chord_var_edit);
+        binding = FragmentChordDictionaryEditBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        chordVarEditView = (TableLayout) findViewById(R.id.chord_var_view);
-        chordTitleTextView = (TextView) findViewById(R.id.chord_edit_chord_TextView);
+        chordVarEditView = binding.chordVarView;
+        chordTitleTextView = binding.chordEditChordTextView;
 
-        ImageButton addChordVarButton = (ImageButton) findViewById(R.id.add_chord_var_button);
+        ImageButton addChordVarButton = binding.addChordVarButton;
         addChordVarButton.setOnClickListener(this);
-        Button saveButton = (Button) findViewById(R.id.chord_edit_save_button);
+        Button saveButton = binding.chordEditSaveButton;
         saveButton.setOnClickListener(this);
-        Button cancelButton = (Button) findViewById(R.id.chord_edit_cancel_button);
+        Button cancelButton = binding.chordEditCancelButton;
         cancelButton.setOnClickListener(this);
 
         initializeChordEditView();
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setTitle(R.string.chord_variation_editing);
+
+        return root;
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.chord_edit_save_button) {
+        if(id == R.id.chord_edit_save_button) {
             updateChordDictionary();
-            finish();
-        } else if (id == R.id.chord_edit_cancel_button) {
-            finish();
-        } else if (id == R.id.add_chord_var_button) {
+            Navigation.findNavController(getParentFragment().getView()).popBackStack();
+        } else if(id == R.id.chord_edit_cancel_button) {
+            Navigation.findNavController(getParentFragment().getView()).popBackStack();
+        } else if(id == R.id.add_chord_var_button) {
             addChordVar();
         }
 
     }
 
     private void initializeChordEditView() {
-        CHORD = (Chord) getIntent().getSerializableExtra("CHORD");
-        NoteNaming NOTENAMING = (NoteNaming) getIntent().getSerializableExtra("NOTENAMING");
+        CHORD = ChordDictionaryEditFragmentArgs.fromBundle(getArguments()).getChord();
+        NoteNaming noteNaming = PreferenceHelper.getNoteNaming(requireContext());
 
-        chordTitleTextView.setText(new StringBuilder().append("* * *  ").append(CHORD.toPrintableString(NOTENAMING)).append("  * * *").toString());
+        chordTitleTextView.setText(new StringBuilder().append("* * *  ").append(CHORD.toPrintableString(noteNaming)).append("  * * *").toString());
 
         List<String> guitarChords = ChordDictionary.getGuitarChordsForChord(CHORD);
 
-        if (guitarChords.size() == 0) {
-            TextView textView = new TextView(this);
+        if(guitarChords.size() == 0) {
+            TextView textView = new TextView(requireContext());
             textView.setText(R.string.no_chord_available_add);
             chordVarEditView.addView(textView);
             chordVarEditView.addView(createChordVar("", 1));
@@ -115,18 +138,17 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
     }
 
     private TableRow createChordVar(String chord, int varNo) {
-        final TableRow tableRow = new TableRow(this);
+        final TableRow tableRow = new TableRow(requireContext());
         tableRow.setId(varNo);
-        TextView textView = new TextView(this);
+        TextView textView = new TextView(requireContext());
         textView.setText(new StringBuilder().append(getString(R.string.variation)).append(varNo).toString());
-        textView.setTextColor(getResources().getColor(R.color.scheme_light_foreground) );
         textView.setPadding(5,0,5,0);
         tableRow.addView(textView);
 
         //keep spinner objects temporarily for later saving
         ArrayList<Spinner> spinnersList = new ArrayList<>();
 
-        if (chord.isEmpty()) {
+        if(chord.isEmpty()) {
             for (int i = 0; i < 6; i++) {
                 Spinner spinner = createSpinner("");
                 spinnersList.add(spinner);
@@ -137,7 +159,7 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
             Pattern chordTabsPattern = Pattern.compile("(\\d{1,2}|x)-(\\d{1,2}|x)-(\\d{1,2}|x)-(\\d{1,2}|x)-(\\d{1,2}|x)-(\\d{1,2}|x)");
             Matcher matcher = chordTabsPattern.matcher(chord);
 
-            if (matcher.find()) {
+            if(matcher.find()) {
                 for (int i = 0; i < 6; i++) {
                     Spinner spinner = createSpinner(matcher.group(i + 1));
                     spinnersList.add(spinner);
@@ -155,11 +177,11 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
     }
 
     private Spinner createSpinner(String initialTab) {
-        Spinner spinner = (Spinner) View.inflate(this, R.layout.spinner_custom_style, null);
-        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(this, R.array.chord_tabs, android.R.layout.simple_spinner_item);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        Spinner spinner = (Spinner) View.inflate(requireContext(), R.layout.spinner_custom_style, null);
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.chord_tabs, R.layout.spinner_chord_edit);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_chord_edit);
         spinner.setAdapter(spinnerArrayAdapter);
-        if (initialTab.isEmpty() || initialTab.equals("x"))
+        if(initialTab.isEmpty() || initialTab.equals("x"))
             spinner.setSelection(0);
         else
             spinner.setSelection(Integer.parseInt(initialTab)+1);
@@ -167,9 +189,9 @@ public class ChordDictionaryEditActivity extends Activity implements View.OnClic
     }
 
     private ImageButton createDeleteButton(final int varNo) {
-        ImageButton chordVarDeleteButton = new ImageButton(this);
+        ImageButton chordVarDeleteButton = new ImageButton(requireContext());
         chordVarDeleteButton.setImageResource(R.drawable.ic_btn_delete);
-        chordVarDeleteButton.setBackgroundColor(Color.TRANSPARENT); //R.drawable.popup_background
+        chordVarDeleteButton.setBackgroundColor(Color.TRANSPARENT);
         chordVarDeleteButton.setOnClickListener(view -> removeChordVar(varNo));
         chordVarDeleteButton.setId(varNo);
         chordVarDeleteButton.setScaleX(0.5f);

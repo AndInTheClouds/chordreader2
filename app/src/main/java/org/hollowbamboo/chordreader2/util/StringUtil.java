@@ -17,7 +17,7 @@ public class StringUtil {
 	 */
 	public static String padLeft(String input, int size) {
 		
-		if (input.length() > size) {
+		if(input.length() > size) {
 			throw new IllegalArgumentException("input must be shorter than or equal to the number of spaces: " + size);
 		}
 		
@@ -74,7 +74,7 @@ public class StringUtil {
 
     public static String join(String delimiter, String[] strings) {
         
-        if (strings.length == 0) {
+        if(strings.length == 0) {
             return "";
         }
 
@@ -92,7 +92,7 @@ public class StringUtil {
 
         int commonPrefixLength = findCommonPrefixLength(str1, str2);
 
-        if (commonPrefixLength == str1.length() && commonPrefixLength == str2.length()) {
+        if(commonPrefixLength == str1.length() && commonPrefixLength == str2.length()) {
             return 0; // same exact string
         }
 
@@ -131,7 +131,7 @@ public class StringUtil {
 
         int length = (Math.min(str1.length(), str2.length()));
         for (int i = 0; i < length; i++) {
-            if (str1.charAt(i) != str2.charAt(i)) {
+            if(str1.charAt(i) != str2.charAt(i)) {
                 return i;
             }
         }
@@ -143,7 +143,7 @@ public class StringUtil {
     private static int findCommonSuffixLength(CharSequence str1, CharSequence str2, int commonPrefixLength) {
         int length = (Math.min(str1.length(), str2.length()));
         for (int i = 0; i < length - commonPrefixLength; i++) {
-            if (str1.charAt(str1.length() - i - 1) != str2.charAt(str2.length() - i - 1)) {
+            if(str1.charAt(str1.length() - i - 1) != str2.charAt(str2.length() - i - 1)) {
                 return i;
             }
         }
@@ -157,7 +157,7 @@ public class StringUtil {
     
     public static String join(int[] arr, String delimiter) {
     	
-    	if (arr.length == 0) {
+    	if(arr.length == 0) {
     		return "";
     	}
 
@@ -176,7 +176,7 @@ public class StringUtil {
     	StringBuilder sb = new StringBuilder(str);
     	
     	for (int i = 0; i < sb.length(); i++) {
-    		if (i == 0 || Character.isWhitespace(sb.charAt(i - 1))) {
+    		if(i == 0 || Character.isWhitespace(sb.charAt(i - 1))) {
     			sb.replace(i, i + 1, Character.toString(Character.toUpperCase(sb.charAt(i))));
     		}
     	}
@@ -186,7 +186,7 @@ public class StringUtil {
     
     public static boolean isAllWhitespace(CharSequence str) {
     	for (int i = 0; i < str.length(); i++) {
-    		if (!Character.isWhitespace(str.charAt(i))) {
+    		if(!Character.isWhitespace(str.charAt(i))) {
     			return false;
     		}
     	}

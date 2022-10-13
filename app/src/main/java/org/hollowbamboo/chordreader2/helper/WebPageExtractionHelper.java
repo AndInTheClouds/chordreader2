@@ -22,7 +22,7 @@ public class WebPageExtractionHelper {
             "|" + // OR
             "<\\s*script.*?>.*?<\\s*/script\\s*>" + // script span
             "|" + // OR
-            "<\\s*head[.*?&&[\\W]].*?>.*?<\\s*/head\\s*>" + // head span
+            "<\\s*head[.*?&&\\W].*?>.*?<\\s*/head\\s*>" + // head span
             "|" + // OR
             "<[^>]++>" + // html tag, such as '<br/>' or '<a href="www.duckduckgo.com">'
             "|" + // OR
@@ -54,10 +54,10 @@ public class WebPageExtractionHelper {
 		}
 		Matcher matcher = pattern.matcher(html);
 
-		if (matcher.find()) {
+		if(matcher.find()) {
 			String chordHtml = matcher.group(1);
 			String chordTxt = convertHtmlToText(chordHtml);
-			if (ChordParser.containsLineWithChords(chordTxt, noteNaming)) {
+			if(ChordParser.containsLineWithChords(chordTxt, noteNaming)) {
 				return cleanUpText(chordTxt);
 			}
 		}
@@ -77,7 +77,7 @@ public class WebPageExtractionHelper {
 		while (matcher.find()) {
 			String preHtml = matcher.group(1);
 			String preTxt = convertHtmlToText(preHtml);
-			if (ChordParser.containsLineWithChords(preTxt, noteNaming)) {
+			if(ChordParser.containsLineWithChords(preTxt, noteNaming)) {
 				return cleanUpText(preTxt);
 			}
 		}
@@ -99,20 +99,20 @@ public class WebPageExtractionHelper {
             String htmlObject = matcher.group();
 
             String replacementString;
-            if (htmlText.charAt(start) == '&') { // html escaped character
+            if(htmlText.charAt(start) == '&') { // html escaped character
 
-                if (htmlObject.equalsIgnoreCase("&nbsp;")) {
+                if(htmlObject.equalsIgnoreCase("&nbsp;")) {
                     replacementString = " "; // apache replaces nbsp with unicode \xc2\xa0, but we prefer just " "
                 } else {
                     replacementString = Html.fromHtml(htmlObject).toString();
                 }
 
-                if (TextUtils.isEmpty(replacementString)) { // ensure non-empty - otherwise offsets would be screwed up
+                if(TextUtils.isEmpty(replacementString)) { // ensure non-empty - otherwise offsets would be screwed up
                     log.i("Warning: couldn't escape html string: '" + htmlObject + "'");
                     replacementString = " ";
                 }
-            } else if (htmlNewlinePattern.matcher(htmlObject).matches()) { // newline tag
-                if (htmlObject.toLowerCase().contains("p")) { // paragraph break
+            } else if(htmlNewlinePattern.matcher(htmlObject).matches()) { // newline tag
+                if(htmlObject.toLowerCase().contains("p")) { // paragraph break
                     replacementString = "\n\n";
                 } else { // 'br' (carriage return)
                     replacementString = "\n";
@@ -136,7 +136,7 @@ public class WebPageExtractionHelper {
 
 	private static String cleanUpText(String text) {
 
-		if (text == null) {
+		if(text == null) {
 			return text;
 		}
 
