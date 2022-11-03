@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,8 +8,7 @@
             type="org.hollowbamboo.chordreader2.model.WebSearchViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
@@ -76,7 +76,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/find_chords_intro_message"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp" />
+                                android:textSize="@dimen/text_size_small" />
 
                         </LinearLayout>
 
@@ -102,9 +102,11 @@
                     android:completionThreshold="1"
                     android:hint="@string/chord_search_hint"
                     android:imeOptions="actionSearch"
+                    android:inputType="text"
                     android:singleLine="true"
                     android:textColor="@android:color/primary_text_light_nodisable"
-                    android:textColorHint="#808080" />
+                    android:textColorHint="#808080"
+                    android:textSize="@dimen/text_size" />
 
                 <ImageButton
                     android:id="@+id/find_chords_search_button"

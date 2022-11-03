@@ -66,8 +66,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -98,7 +101,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SongViewFragment extends Fragment implements View.OnClickListener, Preference.OnPreferenceChangeListener {
+public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private static final String LOG_TAG = "SongViewFragment";
     private static final int PROGRESS_DIALOG_MIN_TIME = 600;
@@ -142,7 +145,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
 
         binding = FragmentSongViewBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        setHasOptionsMenu(true);
 
         setInstanceData();
 
@@ -150,15 +152,22 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
 
         setUpWidgets();
 
+        setUpMenu();
+
         setObserversForLiveData();
 
         setTextSize();
 
-        applyColorScheme();
-
         handleBackButton();
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        applyColorScheme();
     }
 
     @Override
@@ -167,31 +176,46 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
         binding = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.song_view_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    private void setUpMenu() {
+        MenuHost menuHost = requireActivity();
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.song_view_menu, menu);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
 
-        int itemId = item.getItemId();
-        if(itemId == R.id.menu_save_chords) {
-            showSaveChordTextDialog("");
-            return true;
-        } else if(itemId == R.id.menu_edit_file) {
-            showEditChordTextDialog();
-            return true;
-        } else if(itemId == R.id.menu_transpose) {
-            createTransposeDialog();
-            return true;
-        } else if(itemId == android.R.id.home && songViewFragmentViewModel.isEditedTextToSave) {
-            showSavePromptDialog("onHomePressed");
-            return true;
-        }
+                if(itemId == R.id.menu_save_chords) {
+                    showSaveChordTextDialog("");
+                    return true;
+                } else if(itemId == R.id.menu_edit_file) {
+                    showEditChordTextDialog();
+                    return true;
+                } else if(itemId == R.id.menu_transpose) {
+                    createTransposeDialog();
+                    return true;
+                } else if(itemId == android.R.id.home) {
+                    if(songViewFragmentViewModel.isEditedTextToSave) {
+                        if (songViewFragmentViewModel.autoSave) {
+                            saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
+                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                        } else {
+                            showSavePromptDialog("onHomePressed");
+                        }
+                    } else
+                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
 
-        return super.onOptionsItemSelected(item);
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     @Override
@@ -212,17 +236,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
         } else if(id == R.id.playlist_previous) {
             openNextSong(false);
         }
-    }
-
-    @Override
-    public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-        // update fragment if a preference changed
-        getParentFragmentManager()
-                .beginTransaction()
-                .detach(this)
-                .attach(this)
-                .commit();
-        return false;
     }
 
     private void setUpWidgets() {
@@ -345,8 +358,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void onChanged(Float textSize) {
                 if(textSize == 0) {
-                    PreferenceHelper.clearCache();
-                    textSize = PreferenceHelper.getTextSizePreference(requireContext());
+                    return;
                 }
 
                 viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
@@ -400,6 +412,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
                 filename = filename.replace(" ", "_");
                 chordText = SaveFileHelper.openFile(filename.concat(".txt"));
                 transposition = getTransposition(filename);
+                songViewFragmentViewModel.autoSave = true;
             }
             songTitle = Character.toUpperCase(songTitle.charAt(0)) + songTitle.substring(1);
 
@@ -431,9 +444,15 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void handleOnBackPressed() {
                 if(songViewFragmentViewModel.isEditedTextToSave) {
-                    showSavePromptDialog("onBackPressed");
-                } else
-                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    if (songViewFragmentViewModel.autoSave)
+                        saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
+                    else {
+                        showSavePromptDialog("onBackPressed");
+                        return;
+                    }
+                }
+
+                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -481,11 +500,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void proceedAfterSaving(String callingMethod) {
-        if(callingMethod.equals("onBackPressed")) {
+        if (callingMethod.equals("onBackPressed") || callingMethod.equals("onHomePressed"))
             Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-        } else if(callingMethod.equals("onHomePressed")) {
-            //TODO: super.mDrawerLayout.openDrawer(GravityCompat.START);
-        }
     }
 
     private boolean checkSdCard() {
@@ -535,9 +551,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
 
     private void releaseWakeLock() {
 
-        //Log.d(LOG_TAG,"Releasing wakelock in 3min");
+        //Log.d(LOG_TAG,"Releasing wakelock in 5min");
 
-        releaseWakeLockCountDownTimer = new CountDownTimer(180000, 1000) {
+        releaseWakeLockCountDownTimer = new CountDownTimer(300000, 1000) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -571,8 +587,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
         dbHelper.close();
 
         if(textSize == 0) {
-            PreferenceHelper.clearCache();
-            textSize = (int) PreferenceHelper.getTextSizePreference(requireContext());
+            return;
         }
 
         viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
@@ -803,18 +818,22 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
         editText.setSingleLine();
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editText.setOnEditorActionListener((v, actionId, event) -> {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            if(event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
-                // dismiss soft keyboard
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                assert imm != null;
-                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                return true;
+                if (v.requestFocus())
+                    editText.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    });
+                else
+                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
-
-            return false;
         });
 
         editText.setText(songViewFragmentViewModel.getFragmentTitle().getValue());
@@ -867,7 +886,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
                 .setView(editText);
 
         builder.show();
-
+        editText.requestFocus();
     }
 
     private void showChordPopup(final Chord chord) {
@@ -1040,7 +1059,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
             else if(scaleFactor < 1.0f)
                 textSizeDelta = -1;
 
-            float textSizeMin = getResources().getDimension(R.dimen.text_size_xsmall);
+            float textSizeMin = getResources().getDimension(R.dimen.text_size_min);
             float textSizeMax = 40f;
 
             textSize += textSizeDelta;
@@ -1182,7 +1201,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener, 
 
             editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
             editText.setText(chordText);
-            editText.setTypeface(Typeface.MONOSPACE);
             editText.setBackgroundColor(PreferenceHelper.getColorScheme(requireContext()).getBackgroundColor(requireContext()));
             editText.setTextColor(PreferenceHelper.getColorScheme(requireContext()).getForegroundColor(requireContext()));
 

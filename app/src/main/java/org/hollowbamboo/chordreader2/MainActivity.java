@@ -111,8 +111,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MobileNavigationDirections.ActionDrawerToListFragment action =
                     MobileNavigationDirections.actionDrawerToListFragment("Playlists");
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
-        } else if(itemId == R.id.nav_help) {
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_help);
+//        TODO: Add help
+//        } else if(itemId == R.id.nav_help) {
+//            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_help);
         } else if(itemId == R.id.nav_settings) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_settings);
         } else if(itemId == R.id.nav_about) {
@@ -122,14 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
-    }
-
-    public void setLocale(String language) {
-        Resources resources = getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = new Locale(language);
-        resources.updateConfiguration(configuration, metrics);
     }
 
     private void showInitialMessage() {

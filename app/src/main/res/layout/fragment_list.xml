@@ -22,12 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/edit_text"
+            android:focusableInTouchMode="true"
             android:hint="@string/enter_text_to_filter"
             android:inputType="textFilter"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@android:color/primary_text_light_nodisable"
             android:textColorHint="#808080"
+            android:textSize="@dimen/text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +40,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/focused_shape"
             android:text="@string/web_search"
+            android:textSize="@dimen/text_size"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_the_web_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>

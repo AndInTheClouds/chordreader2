@@ -1,24 +1,5 @@
 <resources>
-	<string-array name="text_size_values">
-		<item>@string/text_size_xsmall_value</item>
-		<item>@string/text_size_small_value</item>
-		<item>@string/text_size_medium_value</item>
-		<item>@string/text_size_large_value</item>
-		<item>@string/text_size_xlarge_value</item>
-		<item>@string/text_size_xxlarge_value</item>
-		<item>@string/text_size_xxxlarge_value</item>
-	</string-array>
-		
-	<string-array name="text_sizes">
-		<item>@string/text_size_xsmall_name</item>
-		<item>@string/text_size_small_name</item>
-		<item>@string/text_size_medium_name</item>
-		<item>@string/text_size_large_name</item>
-		<item>@string/text_size_xlarge_name</item>
-		<item>@string/text_size_xxlarge_name</item>
-		<item>@string/text_size_xxxlarge_name</item>
-	</string-array>
-	
+
 	<string-array name="color_schemes">
 		<item>@string/pref_scheme_dark</item>
 		<item>@string/pref_scheme_light</item>

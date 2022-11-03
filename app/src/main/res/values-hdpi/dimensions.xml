@@ -1,11 +1,7 @@
 <resources>
-	<dimen name="text_size_xsmall">4dp</dimen>
-	<dimen name="text_size_small">6dp</dimen>
-	<dimen name="text_size_medium">8dp</dimen>
-	<dimen name="text_size_large">10dp</dimen>
-	<dimen name="text_size_xlarge">12dp</dimen>
-	<dimen name="text_size_xxlarge">14dp</dimen>
-	<dimen name="text_size_xxxlarge">16dp</dimen>
-	<dimen name="popup_height">90dp</dimen>
-	<dimen name="popup_text_height">70dp</dimen>
+	<dimen name="drawer_text_size">22dp</dimen>
+	<dimen name="text_size">16sp</dimen>
+	<dimen name="text_size_small">12dp</dimen>
+	<dimen name="padding">5dp</dimen>
+	<dimen name="song_view_button_size">32dp</dimen>
 </resources>

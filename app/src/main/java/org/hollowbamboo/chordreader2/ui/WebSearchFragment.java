@@ -53,8 +53,11 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -110,9 +113,8 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         binding = FragmentWebSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        setHasOptionsMenu(true);
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         mainView = binding.findChordsFindingView;
         searchEditText = binding.findChordsEditText;
@@ -143,9 +145,9 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         handleBackButton();
         prepareQuerySaver();
         setUpInstanceData();
+        setUpMenu();
 
         setObserversForLiveData();
-        applyColorScheme();
 
         return root;
     }
@@ -157,24 +159,44 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.web_view_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onResume() {
+        super.onResume();
+
+        applyPreferences();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onPause() {
+        super.onPause();
 
-        int itemId = item.getItemId();
-        if(itemId == R.id.menu_stop) {
-            stopWebView();
-            return true;
-        } else if(itemId == R.id.menu_refresh) {
-            refreshWebView();
-            return true;
-        }
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void setUpMenu() {
+        MenuHost menuHost = requireActivity();
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.web_view_menu, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
+                if(itemId == R.id.menu_stop) {
+                    stopWebView();
+                    return true;
+                } else if(itemId == R.id.menu_refresh) {
+                    refreshWebView();
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     @Override
@@ -303,9 +325,6 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             searchText = WebSearchFragmentArgs.fromBundle(getArguments()).getSearchText();
         } catch (Exception ignored) { }
 
-        webSearchViewModel.setSearchEngineURL(PreferenceHelper.getSearchEngineURL(requireContext()));
-        webSearchViewModel.setNoteNaming(PreferenceHelper.getNoteNaming(requireContext()));
-
         if(!(searchText == null)) {
             searchEditText.setText(searchText);
             performSearch();
@@ -426,7 +445,10 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     }
 
-    private void applyColorScheme() {
+    private void applyPreferences() {
+
+        webSearchViewModel.setSearchEngineURL(PreferenceHelper.getSearchEngineURL(requireContext()));
+        webSearchViewModel.setNoteNaming(PreferenceHelper.getNoteNaming(requireContext()));
 
         ColorScheme colorScheme = PreferenceHelper.getColorScheme(getActivity());
 

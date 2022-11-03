@@ -47,12 +47,6 @@
 
     <string name="pref_text_size_title">Text Größe</string>
 
-    <string name="text_size_xsmall_name">Extra Klein (8pt)</string>
-	<string name="text_size_small_name">Klein (10pt)</string>
-    <string name="text_size_medium_name">Medium (12pt)</string>
-    <string name="text_size_large_name">Groß (16pt)</string>
-    <string name="text_size_xlarge_name">Extra Groß (20pt)</string>
-
     <string name="pref_scheme_title">Farbschema</string>
 
     <string name="pref_category_appearance">Erscheinung</string>
@@ -71,7 +65,7 @@
     <string name="pref_first_run_title">Einführung zurücksetzen</string>
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
     <string name="first_run_title">Willkommen zu Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Was ist neu in Version 2.0?</b>\n\n<li>Auto-Scroll Funktion </li>\n<li>Metronome während Auto-Scroll </li>\n<li>Dialog zum Speichern </li>\n<li>Anpassbare Suchmaschine </li>\n<li>Anpassbare Akkordvariationen </li>\n<li>Speichern von BPM und Auto-Scroll Factor in TXT-Datei </li>\n\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
+    <string name="first_run_message">\n<b>Was ist neu in Version 2.1?</b>\n\n<li>Playlist Funktion hinzugefügt</li>\n<li>Wechsel der UI Architektur zum Fragment Model</li>\n<li>Verschiedene Bugfixes und Optimierungen</li>\n\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
     <string name="closing_chordreader">ChordReader schließen</string>
@@ -79,8 +73,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="No_BPM_found">Keine BPM-Angabe gefunden. Bitte gewünschten Wert in der ersten Zeile anpassen.</string>
-    <string name="text_size_xxlarge_name">Extra² Groß (25pt)</string>
-    <string name="text_size_xxxlarge_name">Extra³ Groß (30pt)</string>
     <string name="pref_search_engine_title">Suchmaschine URL</string>
     <string name="new_file">Neue Datei</string>
     <string name="chord_variation_editing">"Bearbeitung Akkord-Varianten"</string>

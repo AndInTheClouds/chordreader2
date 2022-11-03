@@ -47,12 +47,6 @@
 
     <string name="pref_text_size_title">Taille du texte</string>
 
-    <string name="text_size_xsmall_name">Très petit (8pt)</string>
-    <string name="text_size_small_name">Petit (10pt)</string>
-    <string name="text_size_medium_name">Moyen (12pt)</string>
-    <string name="text_size_large_name">Grand (16pt)</string>
-    <string name="text_size_xlarge_name">Très grand (20pt)</string>
-
     <string name="pref_scheme_title">Thème</string>
 
     <string name="pref_category_appearance">Apparence</string>
@@ -71,7 +65,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.0 ?</b>\n\n<li>Fonction de défilement automatique</li>\n<li>Métronome au début du défilement automatique</li>\n<li>Demander quitter et enregistrer</li>\n<li>Enregistrer le BPM et le facteur de défilement automatique dans un fichier TXT</li>\n<li>Plusieurs doigtés dans les pop-up.</li>\n<li>Suppression des publicités</li>\n<li>Moteur de recherche personnalisable</li>\n<li>Personnaliser les tables de variation d\'accords</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1 ?</b>\n\n<li>Fonction de liste de lecture</li>\n<li>Passage de l\'architecture de l\'interface utilisateur au modèle de fragment</li>\n<li>Corrections d\'erreurs et optimisations diverse</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>
@@ -79,8 +73,6 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="No_BPM_found">Aucune valeur BPM trouvée. Veuillez ajuster la valeur souhaitée dans la première ligne.</string>
-    <string name="text_size_xxlarge_name">Très² grand (25pt)</string>
-    <string name="text_size_xxxlarge_name">Très³ grand (30pt)</string>
     <string name="pref_search_engine_title">Moteur de recherche URL</string>
     <string name="new_file">Nouveau fichier</string>
     <string name="chord_variation_editing">"Édition de variation d'accord"</string>

@@ -23,10 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/blue_glow"
-        android:paddingStart="25dp"
-        android:paddingTop="30dp"
-        android:paddingEnd="25dp"
-        android:paddingBottom="30dp">
+        android:padding="45dp">
 
         <Button
             android:id="@+id/button_web_search"
@@ -34,8 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="@android:drawable/progress_horizontal"
-            android:padding="10dp"
+            android:padding="25dp"
             android:text="@string/web_search"
+            android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,10 +43,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_web_search"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:background="@android:drawable/progress_horizontal"
-            android:padding="10dp"
+            android:padding="25dp"
             android:text="Songs"
+            android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_web_search" />
@@ -58,10 +57,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_local_songs"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:background="@android:drawable/progress_horizontal"
-            android:padding="10dp"
+            android:padding="25dp"
             android:text="Playlists"
+            android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_local_songs" />

@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -116,6 +117,7 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         NoteNaming noteNaming = PreferenceHelper.getNoteNaming(requireContext());
 
         chordTitleTextView.setText(new StringBuilder().append("* * *  ").append(CHORD.toPrintableString(noteNaming)).append("  * * *").toString());
+        //chordTitleTextView.setTextSize(R.dimen.drawer_text_size);
 
         List<String> guitarChords = ChordDictionary.getGuitarChordsForChord(CHORD);
 
@@ -141,8 +143,8 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         final TableRow tableRow = new TableRow(requireContext());
         tableRow.setId(varNo);
         TextView textView = new TextView(requireContext());
-        textView.setText(new StringBuilder().append(getString(R.string.variation)).append(varNo).toString());
-        textView.setPadding(5,0,5,0);
+        textView.setText(new StringBuilder().append(getString(R.string.variation)).append(varNo).append(":").toString());
+        textView.setPadding(5,0,15,0);
         tableRow.addView(textView);
 
         //keep spinner objects temporarily for later saving
@@ -179,7 +181,7 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
     private Spinner createSpinner(String initialTab) {
         Spinner spinner = (Spinner) View.inflate(requireContext(), R.layout.spinner_custom_style, null);
         ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.chord_tabs, R.layout.spinner_chord_edit);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_chord_edit);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
         if(initialTab.isEmpty() || initialTab.equals("x"))
             spinner.setSelection(0);

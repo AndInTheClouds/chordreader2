@@ -41,7 +41,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     public static final String EXTRA_NOTE_NAMING_CHANGED = "noteNamingChanged";
 
-    private ListPreference textSizePreference, themePreference;
+    private ListPreference themePreference;
     private Preference noteNamingPreference;
     private EditTextPreference searchEnginePreference;
     private boolean noteNamingChanged;
@@ -61,10 +61,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
 
     private void setUpPreferences() {
-
-        textSizePreference = findPreference(getString(R.string.pref_text_size));
-        textSizePreference.setSummary(textSizePreference.getEntry());
-        textSizePreference.setOnPreferenceChangeListener(this);
 
         themePreference = findPreference(getString(R.string.pref_scheme));
         themePreference.setOnPreferenceChangeListener(this);
@@ -86,14 +82,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public boolean onPreferenceChange(@NonNull androidx.preference.Preference preference, Object newValue) {
-        if(preference.getKey().equals(getString(R.string.pref_text_size))) { // text size pref
 
-            int index = Arrays.asList(textSizePreference.getEntryValues()).indexOf(newValue);
-            CharSequence newEntry = textSizePreference.getEntries()[index];
-
-            textSizePreference.setSummary(newEntry);
-            return true;
-        } else if(preference.getKey().equals(getString(R.string.pref_scheme))) {
+        if(preference.getKey().equals(getString(R.string.pref_scheme))) {
             themePreference.setSummary(newValue.toString());
             return true;
         } else if(preference.getKey().equals(getString(R.string.pref_search_engine))) {

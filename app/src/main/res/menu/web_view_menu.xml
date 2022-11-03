@@ -9,7 +9,7 @@
         android:alphabeticShortcut="@string/refresh"
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/refresh"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom|withText"
         tools:ignore="AppCompatResource" />
 
     <item
@@ -17,7 +17,7 @@
         android:alphabeticShortcut="@string/stop"
         android:icon="@drawable/ic_menu_stop"
         android:title="@string/stop"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom|withText"
         tools:ignore="AppCompatResource" />
 
 </menu>

@@ -17,37 +17,6 @@ public class PreferenceHelper {
 	private static String searchEngineURL = null;
 
 	private static UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
-		
-	public static float getTextSizePreference(Context context) {
-		
-		if(textSize == -1) {
-		
-			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-			
-			String textSizePref = sharedPrefs.getString(
-					context.getText(R.string.pref_text_size).toString(), 
-					context.getText(R.string.text_size_medium_value).toString());
-
-			if(textSizePref.equals(context.getText(R.string.text_size_xsmall_value))) {
-				cacheTextsize(context, R.dimen.text_size_xsmall);
-			} else if(textSizePref.equals(context.getText(R.string.text_size_small_value))) {
-				cacheTextsize(context, R.dimen.text_size_small);
-			} else if(textSizePref.equals(context.getText(R.string.text_size_medium_value))) {
-				cacheTextsize(context, R.dimen.text_size_medium);
-			} else if(textSizePref.equals(context.getText(R.string.text_size_large_value))) {
-				cacheTextsize(context, R.dimen.text_size_large);
-			} else if(textSizePref.equals(context.getText(R.string.text_size_xlarge_value))) {
-				cacheTextsize(context, R.dimen.text_size_xlarge);
-			} else if(textSizePref.equals(context.getText(R.string.text_size_xxlarge_value))) {
-				cacheTextsize(context, R.dimen.text_size_xxlarge);
-			} else { // xxxlarge
-				cacheTextsize(context, R.dimen.text_size_xxxlarge);
-			}
-		}
-		
-		return textSize;
-		
-	}
 	
 	public static void clearCache() {
 		textSize = -1;

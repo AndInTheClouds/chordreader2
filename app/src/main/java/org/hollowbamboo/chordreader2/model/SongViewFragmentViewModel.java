@@ -47,6 +47,7 @@ public class SongViewFragmentViewModel extends ViewModel {
     private FragmentResultListener fragmentResultListener;
 
     public boolean isEditedTextToSave = false;
+    public boolean autoSave = false;
 
     private final MutableLiveData<String> fragmentTitle = new MutableLiveData<>();
     private final MutableLiveData<Spannable> chordTextMLD = new MutableLiveData<>();
@@ -307,6 +308,7 @@ public class SongViewFragmentViewModel extends ViewModel {
                 public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                     if(requestKey.equals("EditChordTextDialog")) {
                         setChordText(result.getString("NewChordText"));
+                        isEditedTextToSave = true;
                     }
                 }
             };

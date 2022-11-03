@@ -42,13 +42,14 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
     private final LayoutInflater mInflater;
     private final ItemFilter mFilter = new ItemFilter();
     private final ArrayList<String> selectedItems = new ArrayList<>();
-    ColorScheme colorScheme = PreferenceHelper.getColorScheme(context);
+    private final ColorScheme colorScheme;
 
     public SelectableFilterAdapter(Context context, List<String> data) {
         this.filteredData = data;
         this.originalData = data;
         this.context = context;
         mInflater = LayoutInflater.from(context);
+        colorScheme = PreferenceHelper.getColorScheme(context);
     }
 
     public int getIndexOfFile(String filename) {

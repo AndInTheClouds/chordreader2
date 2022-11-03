@@ -25,6 +25,7 @@
         android:paddingTop="8dp"
         android:text="Chord Reader 2"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/scheme_android_foreground" />
+        android:textColor="@color/scheme_android_foreground"
+        android:textSize="@dimen/drawer_text_size" />
 
 </LinearLayout>

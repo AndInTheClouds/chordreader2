@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:singleLine="true"
-        android:textSize="24sp"
+        android:textSize="@dimen/drawer_text_size"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,49 +56,64 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_E"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
+                        android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:text="E" />
+                        android:text="E"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_A"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
                         android:gravity="center"
-                        android:text="A" />
+                        android:text="A"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_D"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
                         android:gravity="center"
-                        android:text="D" />
+                        android:text="D"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_G"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
                         android:gravity="center"
-                        android:text="G" />
+                        android:text="G"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_B"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
                         android:gravity="center"
-                        android:text="B" />
+                        android:text="B"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/string_e2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/padding"
                         android:gravity="center"
-                        android:text="e" />
+                        android:text="e"
+                        android:textSize="@dimen/text_size" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

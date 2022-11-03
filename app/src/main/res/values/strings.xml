@@ -50,22 +50,6 @@
     
 	<string name="pref_text_size" translatable="false">text_size</string>
 	<string name="pref_text_size_title">Text Size</string>
-	
-	<string name="text_size_xsmall_value" translatable="false">XS</string>
-	<string name="text_size_small_value" translatable="false">S</string>
-    <string name="text_size_medium_value" translatable="false">M</string>
-    <string name="text_size_large_value" translatable="false">L</string>
-    <string name="text_size_xlarge_value" translatable="false">XL</string>
-    <string name="text_size_xxlarge_value" translatable="false">XXL</string>
-    <string name="text_size_xxxlarge_value" translatable="false">XXXL</string>
-
-	<string name="text_size_xsmall_name">Extra Small (8pt)</string>
-	<string name="text_size_small_name">Small (10pt)</string>
-    <string name="text_size_medium_name">Medium (12pt)</string>
-    <string name="text_size_large_name">Large (16pt)</string>
-    <string name="text_size_xlarge_name">Extra Large (20pt)</string>
-    <string name="text_size_xxlarge_name">Extra² Large (25pt)</string>
-    <string name="text_size_xxxlarge_name">Extra³ Large (30pt)</string>
 
     <string name="pref_scheme" translatable="false">color_scheme</string>
     <string name="pref_scheme_title">Color Scheme</string>
@@ -96,7 +80,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.0?</b> \n\n    <li>Auto-scroll feature</li>\n    <li>Metronome while auto-scroll </li>\n    <li>Quit and save prompt </li>\n    <li>Customizable search engine </li>\n    <li>Customize chord variation charts </li>\n    <li>Save BPM and auto-scroll factor to TXT-file </li>\n\nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.1?</b> \n\n    <li>Playlist feature</li>\n    <li>Switch UI architecture to fragment model</li>\n    <li>Miscellaneous bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>

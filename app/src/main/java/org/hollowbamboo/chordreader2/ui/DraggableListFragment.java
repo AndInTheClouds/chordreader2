@@ -28,7 +28,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -65,8 +68,6 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         binding = FragmentDraggableListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        setHasOptionsMenu(true);
-
         recyclerView = binding.recyclerView;
 
         setTitle(dataViewModel.getPlaylistMLD().getValue().replace(".pl",""));
@@ -79,6 +80,8 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         });
 
         setupRecyclerView();
+
+        setUpMenu();
 
         return root;
     }
@@ -125,23 +128,29 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         toolbar.setTitle(titleText);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.list_view_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    private void setUpMenu() {
+        MenuHost menuHost = requireActivity();
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.list_view_menu, menu);
+                menu.findItem(R.id.menu_new_file).setVisible(true);
+            }
 
-        menu.findItem(R.id.menu_new_file).setVisible(true);
-    }
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+                if(itemId == R.id.menu_new_file) {
+                    startListView();
+                    return true;
+                }
 
-        int itemId = item.getItemId();
-        if(itemId == R.id.menu_new_file) {
-            startListView();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+                return false;
+            }
+        };
+
+        menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     private void startSongView(String filename) {

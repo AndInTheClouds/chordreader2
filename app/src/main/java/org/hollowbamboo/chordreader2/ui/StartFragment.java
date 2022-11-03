@@ -82,11 +82,15 @@ public class StartFragment extends Fragment implements View.OnClickListener, Tex
         super.onDestroyView();
         binding = null;
 
-        if(mediaPlayer != null) {
-            // Make sure we stop video and release resources when activity is destroyed.
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
+        try {
+            if(mediaPlayer != null) {
+                // Make sure we stop video and release resources when activity is destroyed.
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+        } catch (Exception e) {
+            //do nothing
         }
     }
 

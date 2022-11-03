@@ -2,12 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<PreferenceCategory android:title="@string/pref_category_appearance">
-		
-		<ListPreference android:key="@string/pref_text_size"
-			android:title="@string/pref_text_size_title" android:persistent="true"
-			android:entries="@array/text_sizes" android:entryValues="@array/text_size_values"
-			android:defaultValue="@string/text_size_medium_value" />
-			
+
 		<ListPreference android:key="@string/pref_scheme"
 			android:title="@string/pref_scheme_title" android:persistent="true"
 			android:entries="@array/color_schemes" android:entryValues="@array/color_schemes"

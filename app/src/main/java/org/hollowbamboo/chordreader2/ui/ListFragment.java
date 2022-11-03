@@ -87,14 +87,13 @@ public class ListFragment extends Fragment implements TextWatcher {
     private Button okButton;
     private ListView fileList;
     private TextView textView;
+    private int foregroundColor;
 
     private SelectableFilterAdapter fileListAdapter;
     private static Menu menu;
 
     private DataViewModel dataViewModel;
     private FragmentListBinding binding;
-
-    private MenuProvider menuProvider;
 
     private boolean IsSelectionModeActive;
 
@@ -107,7 +106,6 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        setHasOptionsMenu(true);
 
         handleBackButton();
 
@@ -149,11 +147,21 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         super.onResume();
 
+        applyColorScheme();
+
         //restore filter
         String filterText = filterEditText.getText().toString();
         if(!(filterEditText.getText().toString().equals("")))
             this.fileListAdapter.getFilter().filter(filterText);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(filterEditText.getWindowToken(), 0);
     }
 
     @Override
@@ -166,7 +174,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void setUpMenu() {
         MenuHost menuHost = requireActivity();
-        menuProvider = new MenuProvider() {
+        MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.list_view_menu, menu);
@@ -216,6 +224,18 @@ public class ListFragment extends Fragment implements TextWatcher {
         menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
+    private void applyColorScheme() {
+        //apply color scheme
+        ColorScheme colorScheme = PreferenceHelper.getColorScheme(requireContext());
+        songListMainView.setBackgroundColor(colorScheme.getBackgroundColor(requireContext()));
+        foregroundColor = colorScheme.getForegroundColor(requireContext());
+        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, new int[]{0, foregroundColor});
+        gradientDrawable.setAlpha(120);
+        fileList.setDivider(gradientDrawable);
+        fileList.setDividerHeight(1);
+
+    }
+
     private void newPlaylistDialog() {
 
         if(!checkSdCard()) {
@@ -228,26 +248,21 @@ public class ListFragment extends Fragment implements TextWatcher {
         editText.setSingleLine();
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(v == editText) {
-                    if(hasFocus) {
-                        // Open keyboard
-                        editText.post( new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(imm != null) {
-                                            imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
-                                        }
-                                    }
-                                });
-                    } else {
-                        // Close keyboard
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                    }
-                }
+                InputMethodManager imm = (InputMethodManager)
+                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (v.requestFocus())
+                    editText.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    });
+                else
+                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         });
 
@@ -334,15 +349,6 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
     protected void setUpInstance() {
-
-        //apply color scheme
-        ColorScheme colorScheme = PreferenceHelper.getColorScheme(requireContext());
-        songListMainView.setBackgroundColor(colorScheme.getBackgroundColor(requireContext()));
-        final int foregroundColor = colorScheme.getForegroundColor(requireContext());
-        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, new int[]{0, foregroundColor});
-        gradientDrawable.setAlpha(120);
-        fileList.setDivider(gradientDrawable);
-        fileList.setDividerHeight(1);
 
         dataViewModel.mode = ListFragmentArgs.fromBundle(getArguments()).getMode();
 
