@@ -65,7 +65,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1 ?</b>\n\n<li>Fonction de liste de lecture</li>\n<li>Passage de l\'architecture de l\'interface utilisateur au modèle de fragment</li>\n<li>Corrections d\'erreurs et optimisations diverse</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1 ?</b>\n\n<li>Fonction de setliste</li>\n<li>Passage de l\'architecture de l\'interface utilisateur au modèle de fragment</li>\n<li>Corrections d\'erreurs et optimisations diverse</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>
@@ -77,19 +77,19 @@
     <string name="new_file">Nouveau fichier</string>
     <string name="chord_variation_editing">"Édition de variation d'accord"</string>
     <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
-    <string name="new_playlist">Nouveau liste de lecture</string>
-    <string name="manage_saved_playlists">"Gérer les listes de lecture "</string>
-    <string name="enter_text_to_filter">"Entrer le texte du filtre "</string>
-    <string name="drawer_close">"Fermer navigation "</string>
-    <string name="drawer_open">"navigation ouverte "</string>
-    <string name="web_search">"Recherche Internet "</string>
+    <string name="new_playlist">Nouveau setlist</string>
+    <string name="manage_saved_playlists">Gérer les setlists</string>
+    <string name="enter_text_to_filter">Entrer le texte du filtre</string>
+    <string name="drawer_close">Fermer navigation</string>
+    <string name="drawer_open">navigation ouverte</string>
+    <string name="web_search">Recherche Internet</string>
     <string name="cancel">Annuler</string>
     <string name="select_all">Tout sélectionner</string>
     <string name="delete">Supprimer</string>
     <string name="of">sur</string>
     <string name="help">Aide</string>
-    <string name="file_selection_for_playlist">Sélectionner des chansons pour la liste de lecture</string>
+    <string name="file_selection_for_playlist">Sélectionner des chansons pour la setlist</string>
     <string name="no_local_songs">Aucune chanson trouvée sur votre appareil. Effectuez une recherche sur le Web.</string>
-    <string name="no_playlists">Aucune liste de lecture trouvée sur votre appareil. Créez-en une nouvelle.</string>
+    <string name="no_playlists">Aucune setlist trouvée sur votre appareil. Créez-en une nouvelle.</string>
 
 </resources>

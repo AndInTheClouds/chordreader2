@@ -368,7 +368,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                 textView.setText(R.string.no_local_songs);
                 break;
             case MODE_PLAYLIST:
-                setTitle("Playlists");
+                setTitle("Setlists");
                 filenames = new ArrayList<>(SaveFileHelper.getSavedPlayListNames());
                 textView.setText(R.string.no_playlists);
                 break;

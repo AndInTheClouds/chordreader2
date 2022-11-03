@@ -80,7 +80,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.1?</b> \n\n    <li>Playlist feature</li>\n    <li>Switch UI architecture to fragment model</li>\n    <li>Miscellaneous bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.1?</b> \n\n    <li>Setlist feature</li>\n    <li>Switch UI architecture to fragment model</li>\n    <li>Miscellaneous bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>
@@ -89,10 +89,10 @@
     <string name="no">No</string>
     <string name="No_BPM_found">No BPM value found. Please adjust desired value in first line.</string>
     <string name="pref_search_engine_title">Search engine URL</string>
-    <string name="chord_variation_editing">"Chord variation editing"</string>
+    <string name="chord_variation_editing">Chord variation editing</string>
     <string name="no_chord_available_add">No guitar fingering available. Please add.</string>
-    <string name="new_playlist">New Playlist</string>
-    <string name="manage_saved_playlists">Manage Playlists</string>
+    <string name="new_playlist">New Setlist</string>
+    <string name="manage_saved_playlists">Manage Setlists</string>
     <string name="slower_auto_scroll" translatable="false">slower auto scroll</string>
     <string name="start_auto_scroll" translatable="false">start auto-scroll</string>
     <string name="stop_auto_scroll" translatable="false">stop auto-scroll</string>
@@ -106,8 +106,8 @@
     <string name="delete">Delete</string>
     <string name="of" > of </string>
     <string name="help">Help</string>
-    <string name="file_selection_for_playlist">Select songs for playlist</string>
+    <string name="file_selection_for_playlist">Select songs for setlist</string>
     <string name="no_local_songs">No songs found on your device. Perform a web search.</string>
-    <string name="no_playlists">No playlists stored on your device. Create a new one.</string>
+    <string name="no_playlists">No setlists stored on your device. Create a new one.</string>
 
 </resources>
