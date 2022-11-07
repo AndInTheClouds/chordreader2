@@ -494,6 +494,12 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_cancel_selection).setVisible(true);
         menu.findItem(R.id.menu_select_all).setVisible(true);
+
+        if (dataViewModel.mode.equals(MODE_SONGS))
+            setTitle(getString(R.string.manage_saved_files));
+        else if (dataViewModel.mode.equals(MODE_PLAYLIST))
+            setTitle(getString(R.string.manage_saved_playlists));
+
     }
 
 
@@ -508,6 +514,11 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_select_all).setVisible(false);
 
         fileListAdapter.unselectAll();
+
+        if (dataViewModel.mode.equals(MODE_SONGS))
+            setTitle("Songs");
+        else if (dataViewModel.mode.equals(MODE_PLAYLIST))
+            setTitle("Setlists");
     }
 
     private boolean checkSdCard() {

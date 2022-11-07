@@ -1,0 +1,21 @@
+Chord Reader 2 ist eine weiterentwickelte Version von Chord Reader, entwickelt von Nolan Lawson.
+
+<b>Es ist eine App, die:</b>
+<ul>
+<li>Akkordtabellen und Tabulaturen für Ihre Lieblingssongs aus dem Internet abruft,</li>
+<li>sie in einer lokalen Datei speichert,</li>
+<li>sie in einem einfach zu lesenden Format mit hervorgehobenen Akkorden in einer Autoscroll-Ansicht anzeigt,</li>
+<li>die identifizierten Akkorde nach oben oder unten transponiert, oder einen Kapodaster berücksichtigt,</li>
+<li>gängige Akkordvariationen bietet,</li>
+<li>einen Setlist-Modus bietet, um deine Songs in einer vordefinierten Reihenfolge abzuspielen.</li>
+</ul>
+
+<b>Lizenz:</b>
+Chord Reader 2 ist eine kostenlose Open-Source App unter GPLv3+ Lizenz.
+
+<b>Quell Code:</b>
+Der Quellcode ist <a href="https://github.com/AndInTheClouds/chordreader2">hier</a> verfügbar.
+Jedwede Fehler können mittels dem <a href="https://github.com/AndInTheClouds/chordreader2/issues" >Issue Tracker</a> mitgeteilt werden.
+
+<b>Spenden:</b>
+Wenn du etwas spenden möchtest, besuche <a href="https://flattr.com/@AndInTheClouds">Flattr</a>.

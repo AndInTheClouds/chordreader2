@@ -1,11 +1,14 @@
 Chord Reader 2 is an enhanced version of Chord Reader, developed by Nolan Lawson.
 
 <b>It's an app that:</b>
+<ul>
 <li>fetches chord charts and tabulatures for your favorite songs from the Internet,</li>
 <li>saves them to a local file,</li>
 <li>displays them in an easy-to-read format with the chords highlighted in an autoscroll view,</li>
 <li>transposes the identified chords up or down, or you can add a capo,</li>
-<li>provides common chord variations.</li>
+<li>provides common chord variations,</li>
+<li>provides a setlist mode to play your songs subsequently in a predefined order.</li>
+</ul>
 
 <b>License:</b>
 Chord Reader 2 is a free and open-source app under GPLv3+ license.

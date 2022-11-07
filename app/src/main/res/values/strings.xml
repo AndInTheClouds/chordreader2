@@ -20,7 +20,7 @@
     <string name="about">About</string>
     <string name="new_file">New File</string>
     <string name="open_file">Open File</string>
-    <string name="manage_saved_files">Manage Files</string>
+    <string name="manage_saved_files">Manage Songs</string>
     <string name="no_saved_files">No saved files found.</string>
     <string name="search_for_chords">Search</string>
     <string name="save_chords">Save</string>
