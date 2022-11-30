@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.text.InputType;
 import android.text.Layout;
@@ -471,14 +472,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 super.handleMessage(msg);
                 Boolean successfullySavedLog = (Boolean) msg.obj;
                 if(successfullySavedLog) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToastInUiThread(requireContext(),R.string.file_saved);
 
-                    saveTextSize(viewingTextView.getTextSize());
                     songViewFragmentViewModel.isEditedTextToSave = false;
                     songViewFragmentViewModel.filename = filename;
 
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.unable_to_save_file), Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToastInUiThread(requireContext(),R.string.unable_to_save_file);
                 }
                 handlerThread.quit();
             }
@@ -497,6 +497,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             asyncHandler.sendMessage(message);
         };
         asyncHandler.post(runnable);
+
+        saveTextSize(viewingTextView.getTextSize());
     }
 
     private void proceedAfterSaving(String callingMethod) {
@@ -1301,4 +1303,19 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             protected String chordText;
         }
     }
+    public static class ToastUtils {
+
+        public static void showToastInUiThread(final Context ctx,
+                                               final int stringRes) {
+
+            Handler mainThread = new Handler(Looper.getMainLooper());
+            mainThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ctx, ctx.getString(stringRes), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
 }
