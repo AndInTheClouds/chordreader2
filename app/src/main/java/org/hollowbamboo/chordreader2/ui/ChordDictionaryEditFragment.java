@@ -103,9 +103,9 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         int id = view.getId();
         if(id == R.id.chord_edit_save_button) {
             updateChordDictionary();
-            Navigation.findNavController(getParentFragment().getView()).popBackStack();
+            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
         } else if(id == R.id.chord_edit_cancel_button) {
-            Navigation.findNavController(getParentFragment().getView()).popBackStack();
+            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
         } else if(id == R.id.add_chord_var_button) {
             addChordVar();
         }

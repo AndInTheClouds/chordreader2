@@ -7,8 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.Settings;
 import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -29,10 +26,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -42,8 +42,6 @@ import org.hollowbamboo.chordreader2.databinding.ActivityMainBinding;
 import org.hollowbamboo.chordreader2.helper.ChordDictionary;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
 import org.hollowbamboo.chordreader2.model.DataViewModel;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -107,13 +105,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MobileNavigationDirections.ActionDrawerToListFragment action =
                     MobileNavigationDirections.actionDrawerToListFragment("Songs");
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
-        } else if(itemId == R.id.nav_list_view_playlists) {
+        } else if(itemId == R.id.nav_list_view_setlists) {
             MobileNavigationDirections.ActionDrawerToListFragment action =
-                    MobileNavigationDirections.actionDrawerToListFragment("Playlists");
+                    MobileNavigationDirections.actionDrawerToListFragment("Setlists");
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
-//        TODO: Add help
-//        } else if(itemId == R.id.nav_help) {
-//            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_help);
+        } else if(itemId == R.id.nav_help) {
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+
+            String sectionID = "";
+
+            Fragment f = navHostFragment.getChildFragmentManager().getFragments().get(0);
+            String tag = f.toString();
+
+            if (tag.contains("List")) {
+                if (tag.contains("DraggableList"))
+                    sectionID = ". Setlists";
+                else {
+                    Bundle bundle = f.getArguments();
+                    if (bundle != null) {
+                        String mode = bundle.getString("mode");
+                        if (mode.equals("Songs"))
+                            sectionID = ". Song";
+                        else if (mode.equals("Setlists") ||
+                                mode.equals("SetlistSongsSelection"))
+                            sectionID = ". Setlists";
+                    }
+                }
+            } else if (tag.contains("SongView"))
+                sectionID = ". Song";
+            else if (tag.contains("WebSearch"))
+                sectionID = ". " + getString(R.string.web_search);
+
+            MobileNavigationDirections.ActionDrawerToHelpFragment action =
+                    MobileNavigationDirections.actionDrawerToHelpFragment(sectionID);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
         } else if(itemId == R.id.nav_settings) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_settings);
         } else if(itemId == R.id.nav_about) {

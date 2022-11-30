@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_new_play_list"
-        android:alphabeticShortcut="@string/new_playlist"
+        android:id="@+id/menu_new_set_list"
+        android:alphabeticShortcut="@string/new_setlist"
         android:icon="@drawable/ic_menu_add"
-        android:title="@string/new_playlist"
+        android:title="@string/new_setlist"
         app:showAsAction="ifRoom|withText" />
 
     <item
-        android:id="@+id/menu_manage_playlists"
-        android:alphabeticShortcut="@string/manage_saved_playlists"
+        android:id="@+id/menu_manage_setlists"
+        android:alphabeticShortcut="@string/manage_saved_setlists"
         android:icon="@drawable/ic_menu_manage"
-        android:title="@string/manage_saved_playlists"
+        android:title="@string/manage_saved_setlists"
         app:showAsAction="ifRoom|withText" />
 
 

@@ -2,21 +2,27 @@ package org.hollowbamboo.chordreader2.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 
 import org.hollowbamboo.chordreader2.ChordWebpage;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
 import org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper;
+import org.hollowbamboo.chordreader2.ui.WebSearchFragmentDirections;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -40,13 +46,13 @@ public class WebSearchViewModel extends ViewModel {
     private NoteNaming noteNaming;
 
     private final CustomWebViewClient client;
+    private FragmentResultListener fragmentResultListener;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private final MutableLiveData<String> urlMLD = new MutableLiveData<>();
     private final MutableLiveData<String> htmlUrlMLD = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isUrlLoadingMLD = new MutableLiveData<>();
-    private final MutableLiveData<String> showConfirmChordChartDialogMLD = new MutableLiveData<>();
 
     public WebSearchViewModel() {
         client = new CustomWebViewClient();
@@ -60,9 +66,6 @@ public class WebSearchViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsUrlLoadingMLD() {return isUrlLoadingMLD;}
 
-    public MutableLiveData<String > getShowConfirmChordChartDialogMLD() {
-        return showConfirmChordChartDialogMLD;
-    }
 
     public CustomWebViewClient getClient() {
         return client;
@@ -83,8 +86,6 @@ public class WebSearchViewModel extends ViewModel {
     public String getSearchEngineURL() {
         return searchEngineURL;
     }
-
-    public String getChordText() { return chordText; }
 
     public void setSearchText(String searchText) {
         this.searchText = searchText;
@@ -119,7 +120,7 @@ public class WebSearchViewModel extends ViewModel {
 
     }
 
-    public void analyzeHtml() {
+    public String analyzeHtml() {
 //removed section for known webpage as html structure may change -> chordie pattern doesn't work anymore
 /*		if(chordWebpage != null) {
 			// known webpage
@@ -146,7 +147,7 @@ public class WebSearchViewModel extends ViewModel {
         }
 //		}
 
-        showConfirmChordChartDialogMLD.setValue(chordText);
+        return chordText;
     }
 
     public boolean checkHtmlOfUnknownWebpage() {
@@ -198,7 +199,7 @@ public class WebSearchViewModel extends ViewModel {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            if(Uri.parse(url).getScheme().equals("market") || url.contains("play.google.com"))  {
+            if (Uri.parse(url).getScheme().equals("market") || url.contains("play.google.com")) {
                 Log.d("WebView", "Playstore request blocked: " + url);
             } else
                 handler.post(() -> loadUrl(url));
@@ -209,9 +210,9 @@ public class WebSearchViewModel extends ViewModel {
         @Override
         public void onPageFinished(WebView view, final String url) {
             super.onPageFinished(view, url);
-            Log.d(LOG_TAG,"onPageFinished()　" + url);
+            Log.d(LOG_TAG, "onPageFinished()　" + url);
 
-            if(url.contains(searchEngineURL)) {
+            if (url.contains(searchEngineURL)) {
                 // trust google to only load once
                 urlLoaded(url);
             } else { // don't trust other websites
@@ -233,7 +234,7 @@ public class WebSearchViewModel extends ViewModel {
                         super.handleMessage(msg);
                         int id = (int) msg.obj;
 
-                        if(id == taskCounter.get()) {
+                        if (id == taskCounter.get()) {
                             urlLoaded(url);
                         }
                         handlerThread.quit();
@@ -248,7 +249,8 @@ public class WebSearchViewModel extends ViewModel {
                     }
 
                     Message message = new Message();
-                    message.obj = taskCounter.incrementAndGet();;
+                    message.obj = taskCounter.incrementAndGet();
+                    ;
 
                     asyncHandler.sendMessage(message);
                 };
@@ -260,7 +262,7 @@ public class WebSearchViewModel extends ViewModel {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d(LOG_TAG,"onPageStarted()");
+            Log.d(LOG_TAG, "onPageStarted()");
             taskCounter.incrementAndGet();
             isUrlLoadingMLD.setValue(isUrlLoading = true);
         }

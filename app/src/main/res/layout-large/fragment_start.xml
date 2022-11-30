@@ -53,14 +53,14 @@
             app:layout_constraintTop_toBottomOf="@id/button_web_search" />
 
         <Button
-            android:id="@+id/button_playlists"
+            android:id="@+id/button_set_lists"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_local_songs"
             android:layout_marginTop="10dp"
             android:background="@android:drawable/progress_horizontal"
             android:padding="25dp"
-            android:text="Playlists"
+            android:text="Setlists"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -34,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item_playlist_songs, viewGroup, false);
+                .inflate(R.layout.list_item_setlist_songs, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -108,10 +108,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             rowView = itemView;
 
-            listItemDeleteImageView = itemView.findViewById(R.id.playlist_item_delete);
-            listItemCountTextView = itemView.findViewById(R.id.playlist_song_count_text_view);
-            songFileNameTextView = itemView.findViewById(R.id.playlist_song_filename_text_view);
-            listItemDragHandleImageView = itemView.findViewById(R.id.playlist_item_drag_handle);
+            listItemDeleteImageView = itemView.findViewById(R.id.setlist_item_delete);
+            listItemCountTextView = itemView.findViewById(R.id.setlist_song_count_text_view);
+            songFileNameTextView = itemView.findViewById(R.id.setlist_song_filename_text_view);
+            listItemDragHandleImageView = itemView.findViewById(R.id.setlist_item_drag_handle);
         }
 
         public TextView getListItemCountTextView() {

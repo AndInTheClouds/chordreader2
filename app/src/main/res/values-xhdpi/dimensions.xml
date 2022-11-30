@@ -1,7 +1,7 @@
 <resources>
 	<dimen name="drawer_text_size">22dp</dimen>
 	<dimen name="text_size">16sp</dimen>
-	<dimen name="text_size_small">12dp</dimen>
+	<dimen name="text_size_small">14dp</dimen>
 	<dimen name="padding">5dp</dimen>
 	<dimen name="song_view_button_size">32dp</dimen>
 </resources>

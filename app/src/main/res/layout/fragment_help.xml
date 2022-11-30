@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ScrollView android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                >
+
+                <TextView
+                    android:id="@+id/help_page_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dip"
+                    android:text="@string/help_page"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+        </ScrollView>
+</layout>

@@ -65,7 +65,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1 ?</b>\n\n<li>Fonction de setliste</li>\n<li>Passage de l\'architecture de l\'interface utilisateur au modèle de fragment</li>\n<li>Corrections d\'erreurs et optimisations diverse</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.1 ?</b>\n\n<li>Ajouter une chanson active à une setlist via le menu</li>\n<li>Ajout d\'une page d\'aide</li>\n<li>Corrections d\'erreurs et optimisations mineures</li>\n\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>
@@ -77,8 +77,8 @@
     <string name="new_file">Nouveau fichier</string>
     <string name="chord_variation_editing">"Édition de variation d'accord"</string>
     <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
-    <string name="new_playlist">Nouveau setlist</string>
-    <string name="manage_saved_playlists">Gérer les setlists</string>
+    <string name="new_setlist">Nouveau setlist</string>
+    <string name="manage_saved_setlists">Gérer les setlists</string>
     <string name="enter_text_to_filter">Entrer le texte du filtre</string>
     <string name="drawer_close">Fermer navigation</string>
     <string name="drawer_open">navigation ouverte</string>
@@ -88,8 +88,14 @@
     <string name="delete">Supprimer</string>
     <string name="of">sur</string>
     <string name="help">Aide</string>
-    <string name="file_selection_for_playlist">Sélectionner des chansons pour la setlist</string>
+    <string name="file_selection_for_setlist">Sélectionner des chansons pour la setlist</string>
     <string name="no_local_songs">Aucune chanson trouvée sur votre appareil. Effectuez une recherche sur le Web.</string>
-    <string name="no_playlists">Aucune setlist trouvée sur votre appareil. Créez-en une nouvelle.</string>
+    <string name="no_setlists">Aucune setlist trouvée sur votre appareil. Créez-en une nouvelle.</string>
+    <string name="add_to_setlist">Ajouter à une setlist</string>
+    <string name="help_page"><![CDATA[<h2>1. Concept de base</h2><p>Chordreader 2 doit servir de livre de chansons digital. Tu peux utiliser cette application pour rechercher des accords et des paroles de chansons sur Internet ou pour en créer toi-même. Ceux-ci sont ensuite enregistrés localement sur ton appareil sous forme de fichier texte dans le dossier de fichiers chord_reader_2 du dossier de base. Tu peux ainsi adapter les textes des chansons à tes besoins et partager ou imprimer tes versions individuelles des chansons. Les setlists sont également enregistrées sous forme de fichier texte et peuvent être utilisées de la même manière.</p><p>Pour la navigation, le Nav Slider est toujours disponible en glissant du bord gauche de l\'écran vers la droite.</p><p>Avec des apps supplémentaires, comme Syncthing ou Nextcloud, tu peux facilement synchroniser tes versions personnelles de chansons sur plusieurs appareils ou les partager avec d\'autres.</p>
+    <h2>2. Recherche Internet</h2><p>La recherche Internet te permet de rechercher des accords et des paroles de chansons sur Internet à l\'aide de ton moteur de recherche préféré (voir paramètres). Dès que tu as trouvé la bonne page avec les accords, Chord Reader 2 extrait les accords et les paroles de la chanson. En appuyant sur le bouton devenu bleu au-dessus du navigateur Internet encadré de bleu, le résultat s\'affiche. En confirmant, le morceau s\'affiche dans l\'affichage des morceaux et peut alors être enregistré.</p>
+    <h2>3. Songs</h2><p>Dans l\'affichage des morceaux, tu peux ajuster la taille du texte en zoomant avec deux doigts. La taille du texte est ensuite enregistrée pour chaque chanson dans la base de données interne de l\'application.</p><p>L\'affichage des morceaux offre une fonction de défilement automatique. La vitesse de défilement est calculée à l\'aide de la valeur BPM (battements par minute) et du facteur de correction du défilement automatique, qui sont enregistrés dans l\'en-tête du fichier. Pour cela, on part de l\'hypothèse de base suivante: <i>Pour deux lignes (ligne de texte + accords au-dessus), on suppose 4 mesures.</i><br> La valeur BPM détermine également la vitesse de clignotement du métronome (bouton de lecture bleu clignotant). Le facteur de correction du défilement automatique adapte la vitesse de défilement et peut être modifié de manière dynamique à l\'aide des boutons plus et moins. Cela peut être nécessaire, par exemple, lorsqu\'un fichier de chanson a été créé sur un smartphone et doit ensuite être affiché sur une tablette. Le défilement automatique est lancé et arrêté avec le bouton de lecture. Celui-ci peut également être démarré et arrêté en tapant deux fois sur l\'écran.</p><p>Le style de couleur de l\'affichage des morceaux peut être modifié dans les paramètres entre clair et foncé.</p><p>La fonction de transposition offre d\'une part la possibilité d\'adapter la tonalité des accords à la tessiture du chant grâce au curseur de transposition. D\'autre part, on peut utiliser le curseur du capodastre pour modifier les accords comme si l\'on utilisait un capodastre sur la frette sélectionnée. Cela est utile par exemple pour jouer avec deux guitares, l\'une avec capo et l\'autre avec des accords adaptés mais sans capo.</p>
+    <h2>4. Setlists</h2><p>Les setlists servent à afficher les chansons enregistrées sous forme de fichier sur l\'appareil dans un ordre prédéfini et à passer directement de l\'une à l\'autre.</p><p>Après avoir créé une nouvelle setlist, on peut ajouter des chansons dans un écran de sélection. L\'ordre peut ensuite être adapté par glisser-déposer (double trait bleu). Des chansons individuelles peuvent être supprimées de la setlist correspondante à l\'aide du bouton de suppression (poubelle bleue). Depuis l\'affichage des morceaux, il est également possible d\'ajouter le morceau actuel à une setlist via le menu.</p><p>Lorsqu\'un morceau est ouvert depuis l\'affichage de la setlist, deux autres boutons (flèches gauche/droite) sont disponibles dans l\'affichage des morceaux. Ils permettent de passer directement d\'un morceau à l\'autre en fonction de l\'ordre de la setlist.</p>]]>
+    </string>
 
 </resources>

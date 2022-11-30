@@ -18,4 +18,4 @@ The source code is available <a href="https://github.com/AndInTheClouds/chordrea
 Any bugs can be reported at the <a href="https://github.com/AndInTheClouds/chordreader2/issues" >Issue Tracker</a>.
 
 <b>Donation:</b>
-If you would like to donate, visit <a href="https://flattr.com/@AndInTheClouds">Flattr</a>.
+If you would like to donate, visit <a href="https://paypal.me/hollowbamboo">paypal.me/hollowbamboo</a>.

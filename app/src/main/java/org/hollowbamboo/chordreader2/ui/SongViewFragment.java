@@ -26,7 +26,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -41,7 +40,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +51,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -75,10 +72,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.preference.Preference;
 import androidx.viewpager.widget.ViewPager;
 
 import org.hollowbamboo.chordreader2.R;
+import org.hollowbamboo.chordreader2.adapter.BasicTwoLineAdapter;
 import org.hollowbamboo.chordreader2.adapter.ChordPagerAdapter;
 import org.hollowbamboo.chordreader2.chords.Chord;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
@@ -96,6 +93,8 @@ import org.hollowbamboo.chordreader2.model.SongViewFragmentViewModel;
 import org.hollowbamboo.chordreader2.views.AutoScrollView;
 import org.hollowbamboo.chordreader2.views.ChordVisualisationView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -128,7 +127,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private float lastXCoordinate, lastYCoordinate;
     private boolean doubleTapExecuted = false;
 
-    private int indexCurrentSong, playlistSongsIndexDiffEnd;
+    private int indexCurrentSong, setlistSongsIndexDiffEnd;
     private String filename;
 
     public static SongViewFragment newInstance() {
@@ -148,7 +147,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         setInstanceData();
 
-        determinePlaylistSongProgression();
+        determineSetListSongProgression();
 
         setUpWidgets();
 
@@ -197,6 +196,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 } else if(itemId == R.id.menu_transpose) {
                     createTransposeDialog();
                     return true;
+                } else if(itemId == R.id.menu_add_to_setlist) {
+                    createSetListDialog();
+                    return true;
                 } else if(itemId == android.R.id.home) {
                     if(songViewFragmentViewModel.isEditedTextToSave) {
                         if (songViewFragmentViewModel.autoSave) {
@@ -231,9 +233,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         } else if(id == R.id.autoScrollFaster) {
             animationBlink(autoScrollFasterButton);
             changeAutoScrollFactor(true);
-        } else if(id == R.id.playlist_next) {
+        } else if(id == R.id.setlist_next) {
             openNextSong(true);
-        } else if(id == R.id.playlist_previous) {
+        } else if(id == R.id.setlist_previous) {
             openNextSong(false);
         }
     }
@@ -254,15 +256,15 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         autoScrollFasterButton = binding.autoScrollFaster;
         autoScrollFasterButton.setOnClickListener(this);
 
-        if(dataViewModel.getPlaylistMLD() != null) {
-            if(playlistSongsIndexDiffEnd > 0) {
-                nextSongButton = binding.playlistNext;
+        if(dataViewModel.getSetListMLD() != null) {
+            if(setlistSongsIndexDiffEnd > 0) {
+                nextSongButton = binding.setlistNext;
                 nextSongButton.setVisibility(View.VISIBLE);
                 nextSongButton.setOnClickListener(this);
             }
 
             if(indexCurrentSong > 0) {
-                previousSongButton = binding.playlistPrevious;
+                previousSongButton = binding.setlistPrevious;
                 previousSongButton.setVisibility(View.VISIBLE);
                 previousSongButton.setOnClickListener(this);
             }
@@ -405,11 +407,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 songTitle = getResources().getString(R.string.new_file);
                 songViewFragmentViewModel.isEditedTextToSave = true;
             } else if(filename.isEmpty() && !(songTitle != null && songTitle.isEmpty())) { // from web search
-                filename = songTitle.replace(" ", "_");
+                filename = songTitle;
                 songViewFragmentViewModel.isEditedTextToSave = true;
             } else {
                 songTitle = filename;
-                filename = filename.replace(" ", "_");
                 chordText = SaveFileHelper.openFile(filename.concat(".txt"));
                 transposition = getTransposition(filename);
                 songViewFragmentViewModel.autoSave = true;
@@ -429,14 +430,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         getParentFragmentManager().setFragmentResultListener("EditChordTextDialog", this, songViewFragmentViewModel.getFragmentResultListener());
     }
 
-    private void determinePlaylistSongProgression() {
-        if(dataViewModel.playlistSongs == null)
+    private void determineSetListSongProgression() {
+        if(dataViewModel.setListSongs == null)
             return;
 
-        indexCurrentSong = dataViewModel.playlistSongs.indexOf(filename.replace("_"," "));
-        int indexLastSong = dataViewModel.playlistSongs.size() - 1;
+        indexCurrentSong = dataViewModel.setListSongs.indexOf(filename);
+        int indexLastSong = dataViewModel.setListSongs.size() - 1;
 
-        playlistSongsIndexDiffEnd = indexLastSong - indexCurrentSong;
+        setlistSongsIndexDiffEnd = indexLastSong - indexCurrentSong;
     }
 
     private void handleBackButton() {
@@ -472,10 +473,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 if(successfullySavedLog) {
                     Toast.makeText(getActivity(), getResources().getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
 
+                    saveTextSize(viewingTextView.getTextSize());
                     songViewFragmentViewModel.isEditedTextToSave = false;
                     songViewFragmentViewModel.filename = filename;
-                    setTitle(songViewFragmentViewModel.filename);
-                    saveTextSize(viewingTextView.getTextSize());
 
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.unable_to_save_file), Toast.LENGTH_SHORT).show();
@@ -502,6 +502,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private void proceedAfterSaving(String callingMethod) {
         if (callingMethod.equals("onBackPressed") || callingMethod.equals("onHomePressed"))
             Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+        else
+            setTitle(songViewFragmentViewModel.filename);
     }
 
     private boolean checkSdCard() {
@@ -691,9 +693,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private void openNextSong(boolean forward) {
         String subsequentSong;
         if(forward)
-            subsequentSong = dataViewModel.playlistSongs.get(indexCurrentSong + 1);
+            subsequentSong = dataViewModel.setListSongs.get(indexCurrentSong + 1);
         else
-            subsequentSong = dataViewModel.playlistSongs.get(indexCurrentSong - 1);
+            subsequentSong = dataViewModel.setListSongs.get(indexCurrentSong - 1);
 
         SongViewFragmentDirections.ActionNavSongViewSelf action =
                 SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null);
@@ -857,12 +859,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                             .setPositiveButton(android.R.string.ok, (dialog1, which1) -> {
 
                                 saveFile(editText.getText().toString(), songViewFragmentViewModel.chordText);
+                                songViewFragmentViewModel.filename = editText.getText().toString();
                                 proceedAfterSaving(callingMethod);
                             })
                             .show();
 
                 } else {
                     saveFile(editText.getText().toString(), songViewFragmentViewModel.chordText);
+                    songViewFragmentViewModel.filename = editText.getText().toString();
                     proceedAfterSaving(callingMethod);
                 }
 
@@ -897,7 +901,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         }
 
         final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.chord_popup, null);
+        View view = inflater.inflate(R.layout.popup_chord, null);
 
         ImageButton nextChordButton = (ImageButton) view.findViewById(R.id.next_chord_button);
         ImageButton previousChordButton = (ImageButton) view.findViewById(R.id.previous_chord_button);
@@ -1025,6 +1029,60 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
+    private void createSetListDialog() {
+
+        if (!checkSdCard()) {
+            return;
+        }
+
+        List<String> setListNames = new ArrayList<>(SaveFileHelper.getSavedSetListNames());
+
+        if (setListNames.isEmpty()) {
+            Toast.makeText(requireContext(), R.string.no_setlists, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Collections.sort(setListNames);
+
+        final String[] listItems = new String[setListNames.size()];
+
+        int i = 0;
+        for (String setList : setListNames) {
+            listItems[i] = setList.replace(".pl","");
+            i++;
+        }
+
+        final int[] checkedItem = {-1};
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.add_to_setlist)
+                .setSingleChoiceItems(listItems, checkedItem[0], (dialog, which) -> {
+                    checkedItem[0] = which;
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String setList = listItems[checkedItem[0]];
+
+                        List<String> filenames = SaveFileHelper.openSetList(setList);
+                        filenames.add(songViewFragmentViewModel.filename);
+
+                        StringBuilder resultText = new StringBuilder();
+                        for (String line : filenames) {
+                            resultText.append(line).append(".txt\n");
+                        }
+
+                        SaveFileHelper.saveFile(resultText.toString(),setList.concat(".pl"));
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {})
+                .create()
+                .show();
+    }
+
     //Classes
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -1053,16 +1111,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
             float textSize = viewingTextView.getTextSize();
             float scaleFactor = scaleGestureDetector.getScaleFactor();
-            int textSizeDelta = 0;
-            if(scaleFactor > 1.0f)
-                textSizeDelta = 1;
-            else if(scaleFactor < 1.0f)
-                textSizeDelta = -1;
+
+            textSize *= scaleFactor;
 
             float textSizeMin = getResources().getDimension(R.dimen.text_size_min);
-            float textSizeMax = 40f;
-
-            textSize += textSizeDelta;
+            float textSizeMax = getResources().getDimension(R.dimen.text_size_max);
 
             if(textSize < textSizeMin) {
                 textSize = textSizeMin;

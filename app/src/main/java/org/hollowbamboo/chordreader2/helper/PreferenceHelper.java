@@ -41,7 +41,7 @@ public class PreferenceHelper {
 		
 		editor.putBoolean(context.getString(R.string.pref_first_run), bool);
 		
-		editor.commit();
+		editor.apply();
 
 	}
 	public static boolean getFirstRunPreference(Context context) {
@@ -75,7 +75,7 @@ public class PreferenceHelper {
 		editor.putString(context.getString(R.string.pref_scheme).toString(), 
 				context.getText(colorScheme.getNameResource()).toString());
 		
-		editor.commit();
+		editor.apply();
 		
 	}
 
@@ -96,7 +96,7 @@ public class PreferenceHelper {
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor editor = sharedPrefs.edit();
 		editor.putString(context.getString(R.string.pref_note_naming), noteNameValue);
-		editor.commit();
+		editor.apply();
 		
 	}
 
@@ -117,7 +117,7 @@ public class PreferenceHelper {
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor editor = sharedPrefs.edit();
 		editor.putString(context.getString(R.string.pref_search_engine), searchEngineURL);
-		editor.commit();
+		editor.apply();
 
 	}
 

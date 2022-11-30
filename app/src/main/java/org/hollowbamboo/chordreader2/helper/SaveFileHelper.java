@@ -35,8 +35,6 @@ public class SaveFileHelper {
 	
 	public static boolean fileExists(String filename) {
 
-		filename = rectifyFilename(filename);
-
 		File catlogDir = getBaseDirectory();
 		
 		File file = new File(catlogDir, filename);
@@ -45,8 +43,6 @@ public class SaveFileHelper {
 	}
 	
 	public static void deleteFile(String filename) {
-
-		filename = rectifyFilename(filename);
 
 		File catlogDir = getBaseDirectory();
 		
@@ -60,8 +56,6 @@ public class SaveFileHelper {
 	
 	public static Date getLastModifiedDate(String filename) {
 
-		filename = rectifyFilename(filename);
-		
 		File catlogDir = getBaseDirectory();
 		
 		File file = new File(catlogDir, filename);
@@ -98,7 +92,7 @@ public class SaveFileHelper {
 		List<String> result = new ArrayList<String>();
 
 		for (File file : tempArrayList) {
-			String fileName = file.getName().replace("_", " ").replace(".txt", "");
+			String fileName = file.getName().replace(".txt", "");
 			result.add(fileName);
 		}
 
@@ -106,7 +100,7 @@ public class SaveFileHelper {
 	}
 
 
-	public static List<String> getSavedPlayListNames() {
+	public static List<String> getSavedSetListNames() {
 		List<File> fileNames = getFilenamesInBaseDirectory();
 
 		ArrayList<File> tempArrayList = new ArrayList<File>();
@@ -129,7 +123,7 @@ public class SaveFileHelper {
 		List<String> result = new ArrayList<String>();
 
 		for (File file : tempArrayList) {
-			String fileName = file.getName().replace("_", " ").replace(".pl", "");
+			String fileName = file.getName().replace(".pl", "");
 			result.add(fileName);
 		}
 
@@ -159,22 +153,13 @@ public class SaveFileHelper {
 				|| filenameAsString.contains("\\")
 				|| filenameAsString.contains("*")
 				|| filenameAsString.contains("|")
-				|| filenameAsString.contains(":")
 				|| filenameAsString.contains("<")
 				|| filenameAsString.contains(">")
 				|| filenameAsString.contains("?");
 
 	}
 
-	public static String rectifyFilename(String filename) {
-		filename = filename.replace(" ", "_");
-
-		return filename;
-	}
-
 	public static String openFile(String filename) {
-
-		filename = rectifyFilename(filename);
 
 		File baseDir = getBaseDirectory();
 		File logFile;
@@ -211,10 +196,10 @@ public class SaveFileHelper {
 		return result.toString();
 	}
 
-	public static List<String> openPlaylist(String filename) {
+	public static List<String> openSetList(String filename) {
 
 		if (!filename.endsWith(".pl"))
-			filename = rectifyFilename(filename).concat(".pl");
+			filename = filename.concat(".pl");
 
 		File baseDir = getBaseDirectory();
 		File logFile;
@@ -235,7 +220,7 @@ public class SaveFileHelper {
 			while (bufferedReader.ready()) {
 				String songFile = bufferedReader.readLine();
 				if (fileExists(songFile)) {
-					String songFileName = songFile.replace(".txt", "").replace("_"," ");
+					String songFileName = songFile.replace(".txt", "");
 					filenames.add(songFileName);
 				}
 			}
@@ -255,8 +240,6 @@ public class SaveFileHelper {
 	}
 	
 	public static boolean saveFile(String filetext, String filename) {
-
-		filename = rectifyFilename(filename);
 
 		File baseDir = getBaseDirectory();
 		

@@ -81,7 +81,7 @@
             app:layout_constraintTop_toBottomOf="@id/autoScrollPlayButton" />
 
         <ImageView
-            android:id="@+id/playlist_next"
+            android:id="@+id/setlist_next"
             android:layout_width="@dimen/song_view_button_size"
             android:layout_height="@dimen/song_view_button_size"
             android:layout_marginBottom="42dp"
@@ -93,7 +93,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
-            android:id="@+id/playlist_previous"
+            android:id="@+id/setlist_previous"
             android:layout_width="@dimen/song_view_button_size"
             android:layout_height="@dimen/song_view_button_size"
             android:background="@drawable/round_button"

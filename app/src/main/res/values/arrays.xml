@@ -57,7 +57,7 @@
 	<string-array name="navigation_list">
 		<item>Web Search</item>
 		<item>Songs</item>
-		<item>Playlists</item>
+		<item>Setlists</item>
 		<item>Settings</item>
 		<item>About</item>
 	</string-array>

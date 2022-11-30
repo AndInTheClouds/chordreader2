@@ -76,7 +76,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/find_chords_intro_message"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_small" />
+                                android:textSize="@dimen/text_size" />
 
                         </LinearLayout>
 
@@ -120,12 +120,21 @@
 
             </RelativeLayout>
 
-            <WebView
-                android:id="@+id/find_chords_web_view"
-                android:layout_width="fill_parent"
-                android:layout_height="0px"
-                android:layout_weight="1.0"
-                android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/web_view_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/linkColorBlue"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <WebView
+                    android:id="@+id/find_chords_web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
 
 
         </LinearLayout>

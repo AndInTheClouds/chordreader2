@@ -18,7 +18,7 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/playlist_item_drag_handle"
+            android:id="@+id/setlist_item_drag_handle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding"
@@ -27,25 +27,25 @@
             android:src="@drawable/ic_baseline_drag_handle_24" />
 
         <TextView
-            android:id="@+id/playlist_song_count_text_view"
+            android:id="@+id/setlist_song_count_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@id/playlist_item_drag_handle"
+            android:layout_toEndOf="@id/setlist_item_drag_handle"
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/playlist_song_filename_text_view"
+            android:id="@+id/setlist_song_filename_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/dragHandle"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/playlist_song_count_text_view"
+            android:layout_toEndOf="@id/setlist_song_count_text_view"
             android:textSize="@dimen/text_size" />
 
         <ImageView
-            android:id="@+id/playlist_item_delete"
+            android:id="@+id/setlist_item_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

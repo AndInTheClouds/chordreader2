@@ -60,10 +60,6 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        assert actionBar != null;
-        actionBar.hide();
-
         super.onCreate(savedInstanceState);
     }
 

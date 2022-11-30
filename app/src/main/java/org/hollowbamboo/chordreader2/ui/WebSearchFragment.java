@@ -19,7 +19,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,14 +28,19 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -55,7 +59,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
@@ -91,14 +94,14 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     private ImageView infoIconImageView;
     private ImageButton searchButton;
     private WebView webView;
+    private LinearLayout webViewFrame;
 
     private ArrayAdapter<String> queryAdapter;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
-
-    public static WebSearchFragment newInstance() {
-        return new WebSearchFragment();
+    public WebSearchFragment() {
+        setArguments(new Bundle());
     }
 
     @Override
@@ -120,12 +123,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         searchEditText = binding.findChordsEditText;
 
         webView = binding.findChordsWebView;
-
-        webView.setWebViewClient(webSearchViewModel.getClient());
-
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        webView.addJavascriptInterface(this, "HTMLOUT");
+        webViewFrame = binding.webViewFrame;
 
         progressBar = binding.findChordsProgressBar;
         infoIconImageView = binding.findChordsImageView;
@@ -146,6 +144,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         prepareQuerySaver();
         setUpInstanceData();
         setUpMenu();
+        setUpWebView();
 
         setObserversForLiveData();
 
@@ -169,6 +168,12 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     public void onPause() {
         super.onPause();
 
+        Bundle bundle = new Bundle();
+        webView.saveState(bundle);
+
+        assert getArguments() != null;
+        getArguments().putBundle("webViewState", bundle);
+
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
     }
@@ -190,13 +195,58 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 } else if(itemId == R.id.menu_refresh) {
                     refreshWebView();
                     return true;
+                } else if(itemId == android.R.id.home) {
+                    if(webView.copyBackForwardList().getCurrentIndex() > 0) {
+                        webView.goBack();
+                    } else
+                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    return true;
                 }
-
                 return false;
             }
         };
 
         menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+    private void setUpWebView() {
+        webView.setWebViewClient(webSearchViewModel.getClient());
+
+        assert getArguments() != null;
+        webView.restoreState(getArguments().getBundle("webViewState"));
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(this, "HTMLOUT");
+
+        ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(requireContext(), new MyScaleListener());
+
+        View.OnTouchListener touchListener = (v, event) -> {
+
+            if(event.getPointerCount() == 2) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        scaleGestureDetector.onTouchEvent(event);
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        scaleGestureDetector.onTouchEvent(event);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return true;
+            }
+            return false;
+        };
+
+        webView.setOnTouchListener(touchListener);
     }
 
     @Override
@@ -235,7 +285,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         if(id == R.id.find_chords_search_button) {
             performSearch();
         } else if(id == R.id.find_chords_message_secondary_view) {
-            webSearchViewModel.analyzeHtml();
+            showConfirmChordChartDialog(webSearchViewModel.analyzeHtml());
 // TODO: remove evtl.       } else if(id == R.id.find_chords_edit_text) {// I think it's intuitive to select the whole text when you click here
 //            if(!TextUtils.isEmpty(searchEditText.getText())) {
 //                searchEditText.setSelection(0, searchEditText.getText().length());
@@ -270,21 +320,6 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             @Override
             public void onChanged(Boolean aBoolean) {
                 urlLoading();
-            }
-        });
-
-        webSearchViewModel.getShowConfirmChordChartDialogMLD().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String chordText) {
-
-                ConfirmChordChartDialog confirmChordChartDialog = new ConfirmChordChartDialog();
-
-                Bundle args = new Bundle();
-                args.putString("chordText", webSearchViewModel.getChordText());
-                args.putString("searchText", webSearchViewModel.getSearchText());
-                confirmChordChartDialog.setArguments(args);
-
-                confirmChordChartDialog.show(getParentFragmentManager(),"dialog");
             }
         });
     }
@@ -368,6 +403,8 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         progressBar.setVisibility(View.GONE);
         infoIconImageView.setVisibility(View.VISIBLE);
+
+        webViewFrame.setVisibility(View.VISIBLE);
         webView.setVisibility(View.VISIBLE);
 
         Log.d(LOG_TAG,"chordWebpage is: " + webSearchViewModel.getChordWebpage());
@@ -376,6 +413,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 || webSearchViewModel.getChordWebpage() == null && webSearchViewModel.checkHtmlOfUnknownWebpage()) {
             messageTextView.setText(R.string.chords_found);
             messageSecondaryView.setBackgroundResource(R.drawable.focused_shape);
+            animationBlink(infoIconImageView);
 
         } else {
             messageTextView.setText(R.string.find_chords_second_message);
@@ -386,6 +424,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     public void urlLoading() {
         progressBar.setVisibility(View.VISIBLE);
         infoIconImageView.setVisibility(View.GONE);
+        animationBlink(infoIconImageView);
         messageTextView.setText(R.string.loading);
         messageSecondaryView.setEnabled(false);
         messageSecondaryView.setBackgroundResource(android.R.drawable.title_bar);
@@ -455,58 +494,76 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         mainView.setBackgroundColor(colorScheme.getBackgroundColor(getActivity()));
     }
 
-    public static class ConfirmChordChartDialog extends DialogFragment {
-        String chordText, searchText;
 
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    private void showConfirmChordChartDialog(String chordInputText) {
 
-            chordText = getArguments() != null ? getArguments().getString("chordText") : "Error";
-            searchText = getArguments() != null ? getArguments().getString("searchText") : "Error";
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            // from showConfirmChordChartDialog()
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
+        editText.setText(chordInputText);
+        editText.setTypeface(Typeface.MONOSPACE);
+        editText.setBackgroundColor(PreferenceHelper.getColorScheme(requireContext()).getBackgroundColor(requireContext()));
+        editText.setTextColor(PreferenceHelper.getColorScheme(requireContext()).getForegroundColor(requireContext()));
 
-            final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
-            editText.setText(chordText);
-            editText.setTypeface(Typeface.MONOSPACE);
-            editText.setBackgroundColor(PreferenceHelper.getColorScheme(requireContext()).getBackgroundColor(requireContext()));
-            editText.setTextColor(PreferenceHelper.getColorScheme(requireContext()).getForegroundColor(requireContext()));
+        //set AlertDialog theme according app theme
+        int alertDialogTheme;
+        if(PreferenceHelper.getColorScheme(requireContext()) == ColorScheme.Dark)
+            alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
+        else
+            alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
 
-            //set AlertDialog theme according app theme
-            int alertDialogTheme;
-            if(PreferenceHelper.getColorScheme(requireContext()) == ColorScheme.Dark)
-                alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
-            else
-                alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), alertDialogTheme);
+        builder.setTitle(R.string.confirm_chordchart)
+                .setInverseBackgroundForced(true)
+                .setView(editText)
+                .setCancelable(true)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String chordText = editText.getText().toString();
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), alertDialogTheme);
-            builder.setTitle(R.string.confirm_chordchart)
-                    .setInverseBackgroundForced(true)
-                    .setView(editText)
-                    .setCancelable(true)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                        chordText = editText.getText().toString();
+                    WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
+                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), chordText);
+                    Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+                });
 
-                        WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
-                                WebSearchFragmentDirections.actionNavWebSearchToNavSongView(searchText, chordText);
-
-                        Navigation.findNavController(getParentFragment().getView()).navigate(action);
-                    });
-
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(alertDialog.getWindow().getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-            alertDialog.getWindow().setAttributes(lp);
-
-
-            return alertDialog;
-        }
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(alertDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        alertDialog.getWindow().setAttributes(lp);
     }
 
+    protected void animationBlink(ImageView imageView) {
+        Animation animButtonBlink = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_infinite_anim);
+        if (imageView.isShown())
+            imageView.startAnimation(animButtonBlink);
+        else
+            imageView.clearAnimation();
+    }
+
+    private class MyScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+
+            float scaleFactor = scaleGestureDetector.getScaleFactor();
+            int textSize = webView.getSettings().getTextZoom();
+
+            webView.getSettings().setTextZoom((int)(textSize * scaleFactor));
+
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+        }
+    }
 }

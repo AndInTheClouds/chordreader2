@@ -44,22 +44,22 @@
     <string name="sort_by_date">Sort by Date</string>
     <string name="edit">Edit</string>
     <string name="edit_chords">Edit Chords</string>
-    
+
     <string name="no_guitar_chord_available">No guitar fingering available.</string>
     <string name="variation" translatable="false">Var.</string>
-    
-	<string name="pref_text_size" translatable="false">text_size</string>
-	<string name="pref_text_size_title">Text Size</string>
+
+    <string name="pref_text_size" translatable="false">text_size</string>
+    <string name="pref_text_size_title">Text Size</string>
 
     <string name="pref_scheme" translatable="false">color_scheme</string>
     <string name="pref_scheme_title">Color Scheme</string>
     <string name="pref_scheme_dark" translatable="false">Dark</string>
     <string name="pref_scheme_light" translatable="false">Light</string>
     <string name="pref_scheme_android" translatable="false">Android</string>
-    
+
     <string name="pref_category_appearance">Appearance</string>
     <string name="pref_category_configuration">Configuration</string>
-    
+
     <string name="pref_note_naming" translatable="false">note_naming</string>
     <string name="pref_note_naming_title">Note Naming</string>
     <string name="pref_note_naming_value_english" translatable="false">English</string>
@@ -75,12 +75,12 @@
     <string name="pref_search_engine" translatable="false">searchEngineURL</string>
     <string name="pref_search_engine_default" translatable="false">https://www.startpage.com/sp/search?q=</string>
     <string name="settings">Settings</string>
-    
+
     <string name="pref_first_run" translatable="false">first_run3</string>
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.1?</b> \n\n    <li>Setlist feature</li>\n    <li>Switch UI architecture to fragment model</li>\n    <li>Miscellaneous bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.1.1?</b> \n\n    <li>Add active song to a setlist via menu</li>\n    <li>Help page added</li>\n    <li>Minor bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>
@@ -91,8 +91,8 @@
     <string name="pref_search_engine_title">Search engine URL</string>
     <string name="chord_variation_editing">Chord variation editing</string>
     <string name="no_chord_available_add">No guitar fingering available. Please add.</string>
-    <string name="new_playlist">New Setlist</string>
-    <string name="manage_saved_playlists">Manage Setlists</string>
+    <string name="new_setlist">New Setlist</string>
+    <string name="manage_saved_setlists">Manage Setlists</string>
     <string name="slower_auto_scroll" translatable="false">slower auto scroll</string>
     <string name="start_auto_scroll" translatable="false">start auto-scroll</string>
     <string name="stop_auto_scroll" translatable="false">stop auto-scroll</string>
@@ -104,10 +104,15 @@
     <string name="cancel">Cancel</string>
     <string name="select_all">Select all</string>
     <string name="delete">Delete</string>
-    <string name="of" > of </string>
+    <string name="of"> of </string>
     <string name="help">Help</string>
-    <string name="file_selection_for_playlist">Select songs for setlist</string>
+    <string name="file_selection_for_setlist">Select songs for setlist</string>
     <string name="no_local_songs">No songs found on your device. Perform a web search.</string>
-    <string name="no_playlists">No setlists stored on your device. Create a new one.</string>
+    <string name="no_setlists">No setlists stored on your device. Create a new one.</string>
+    <string name="add_to_setlist">Add to a setlist</string>
+    <string name="help_page"><![CDATA[<h2>1. Basic concept</h2><p>Chordreader 2 is designed to serve as a digital songbook. You can use this app to search for chords and song lyrics on the Internet or create them yourself. These are then stored locally on your device as a text file in the chord_reader_2 directory in the base directory. You can thus customize the lyrics according to your needs and share or print your individual song versions. Setlists are also saved as text files and can be used in the same way.</p><p>For navigation the Nav Slider is always available by swiping from the left edge of the screen to the right.</p><p>With additional apps, such as Syncthing or Nextcloud, you can easily sync your personal song versions on multiple devices or share them with others.</p>
+    <h2>2. Web Search</h2><p>With Web Search you can search the Internet for chords and song lyrics using your favorite search engine (see Settings). Once you find the right page with the chords, Chord Reader 2 extracts the chords and song lyrics. By tapping the blue button above the blue framed internet browser, the result will be shown to you. By confirming, the song is then displayed in the Song View and can then be saved.</p>
+    <h2>3. Song View</h2><p>In the Song View, you can adjust the text size using two-finger zoom. The text size is then saved for the respective song in the app\'s internal database.</p> <p>The Song View offers an auto-scroll function. Based on the BPM value Beats per Minute and the auto-scroll correction factor, which are stored in the header of the file, the scroll speed is calculated. For this the following basic assumption is made:<i>For two lines (text line + chords above it) 4 beats are assumed.</i><br> The BPM value also determines the flashing speed of the metronome (blue flashing play button). The auto-scroll correction factor adjusts the scroll speed and can be changed dynamically with the plus and minus buttons. This may be necessary, for example, if a song file was created on a smartphone and is then to be displayed on a tablet. Auto-scroll is started and stopped with the Play button. This can also be started and stopped by double tapping the display.</p><p>The color style of the Song View can be switched between Light or Dark in the settings.</p><p>The transpose function offers on the one hand the possibility to adjust the pitch of the chords to the vocal pitch through the transpose slider. On the other hand, you can use the Capo slider to change the chords as if you were using a capo on the selected fret. This is useful, for example, when playing with two guitars, one with capo and the second with adjusted chords but without capo.</p>
+    <h2>4. Setlists</h2><p>Setlists are used to display songs that are stored as a file on the device in a predefined order and to switch between them directly.</p><p>After creating a new Setlist, you can add songs in a selection screen. The order can then be adjusted using drag and drop (blue double bar). Individual songs can be removed from the respective setlist with the delete button (blue trash can). From the song view, the current song can also be added to a setlist via the menu.</p><p>When a song is opened from the setlist view, two additional buttons (left/right arrow) are available in the song view. With these can be switched according to the order of the setlist between the songs directly forward or back.</p>]]></string>
 
 </resources>

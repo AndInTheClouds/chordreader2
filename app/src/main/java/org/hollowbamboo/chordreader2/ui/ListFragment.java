@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -57,7 +56,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.adapter.SelectableFilterAdapter;
@@ -66,7 +64,6 @@ import org.hollowbamboo.chordreader2.databinding.FragmentListBinding;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
 import org.hollowbamboo.chordreader2.helper.SaveFileHelper;
 import org.hollowbamboo.chordreader2.model.DataViewModel;
-import org.hollowbamboo.chordreader2.model.ListFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,9 +73,9 @@ import java.util.Objects;
 
 public class ListFragment extends Fragment implements TextWatcher {
 
-    private static final String MODE_PLAYLIST = "Playlists";
+    private static final String MODE_SETLIST = "Setlists";
     private static final String MODE_SONGS = "Songs";
-    private static final String MODE_PLAYLIST_SONG_SELECTION = "PlaylistSongsSelection";
+    private static final String MODE_SETLIST_SONG_SELECTION = "SetlistSongsSelection";
 
     private ConstraintLayout songListMainView;
     private EditText filterEditText;
@@ -168,8 +165,8 @@ public class ListFragment extends Fragment implements TextWatcher {
     public void onStop() {
         super.onStop();
 
-        if(Objects.equals(dataViewModel.mode, MODE_PLAYLIST_SONG_SELECTION))
-            dataViewModel.setPlaylistSongs(fileListAdapter.getSelectedFiles());
+        if(Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION))
+            dataViewModel.setSetListSongs(fileListAdapter.getSelectedFiles());
     }
 
     private void setUpMenu() {
@@ -181,7 +178,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
                 ListFragment.menu = menu;
 
-                if(!Objects.equals(dataViewModel.mode, MODE_PLAYLIST_SONG_SELECTION)) {
+                if(!Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION)) {
                     menu.findItem(R.id.menu_new_file).setVisible(true);
                     menu.findItem(R.id.menu_manage_files).setVisible(true);
                 }
@@ -200,10 +197,10 @@ public class ListFragment extends Fragment implements TextWatcher {
                     startSelectionMode();
                     return true;
                 } else if(itemId == R.id.menu_new_file) {
-                    if(!(dataViewModel.mode.equals(MODE_PLAYLIST)))
+                    if(!(dataViewModel.mode.equals(MODE_SETLIST)))
                         startSongView(null);
                     else
-                        newPlaylistDialog();
+                        newSetListDialog();
 
                     return true;
                 } else if(itemId == R.id.menu_cancel_selection) {
@@ -236,7 +233,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     }
 
-    private void newPlaylistDialog() {
+    private void newSetListDialog() {
 
         if(!checkSdCard()) {
             return;
@@ -266,19 +263,19 @@ public class ListFragment extends Fragment implements TextWatcher {
             }
         });
 
-        editText.setText(R.string.new_playlist);
+        editText.setText(R.string.new_setlist);
 
-        editText.setSelection(0, getString(R.string.new_playlist).length());
+        editText.setSelection(0, getString(R.string.new_setlist).length());
 
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
 
             if(SaveFileHelper.isInvalidFilename(editText.getText())) {
                 Toast.makeText(getActivity(), getResources().getString(R.string.enter_good_filename), Toast.LENGTH_SHORT).show();
             } else {
-                String playlistFileName = editText.getText().toString().concat(".pl");
+                String setlistFileName = editText.getText().toString().concat(".pl");
                 editText.clearFocus();
 
-                if(SaveFileHelper.fileExists(playlistFileName)) {
+                if(SaveFileHelper.fileExists(setlistFileName)) {
 
                     new AlertDialog.Builder(requireContext())
                             .setCancelable(true)
@@ -286,14 +283,14 @@ public class ListFragment extends Fragment implements TextWatcher {
                             .setMessage(R.string.overwrite_file)
                             .setNegativeButton(android.R.string.cancel, null)
                             .setPositiveButton(android.R.string.ok, (dialog1, which1) -> {
-                                SaveFileHelper.saveFile("", playlistFileName);
-                                startPlaylistList(playlistFileName);
+                                SaveFileHelper.saveFile("", setlistFileName);
+                                startSetListList(setlistFileName);
                             })
                             .show();
 
                 } else {
-                    SaveFileHelper.saveFile("", playlistFileName);
-                    startPlaylistList(playlistFileName);
+                    SaveFileHelper.saveFile("", setlistFileName);
+                    startSetListList(setlistFileName);
                 }
 
             }
@@ -338,7 +335,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(IsSelectionModeActive && !dataViewModel.mode.equals(MODE_PLAYLIST_SONG_SELECTION)) {
+                if(IsSelectionModeActive && !dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION)) {
                     cancelSelectionMode();
                 } else
                     Navigation.findNavController(getParentFragment().requireView()).popBackStack();
@@ -367,13 +364,13 @@ public class ListFragment extends Fragment implements TextWatcher {
                 setTitle("Songs");
                 textView.setText(R.string.no_local_songs);
                 break;
-            case MODE_PLAYLIST:
+            case MODE_SETLIST:
                 setTitle("Setlists");
-                filenames = new ArrayList<>(SaveFileHelper.getSavedPlayListNames());
-                textView.setText(R.string.no_playlists);
+                filenames = new ArrayList<>(SaveFileHelper.getSavedSetListNames());
+                textView.setText(R.string.no_setlists);
                 break;
-            case MODE_PLAYLIST_SONG_SELECTION:
-                setTitle(getString(R.string.file_selection_for_playlist));
+            case MODE_SETLIST_SONG_SELECTION:
+                setTitle(getString(R.string.file_selection_for_setlist));
 
                 okButton.setVisibility(View.VISIBLE);
                 okButton.setOnClickListener(new View.OnClickListener(){
@@ -408,8 +405,8 @@ public class ListFragment extends Fragment implements TextWatcher {
                     textView.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
                 }
 
-                if (dataViewModel.mode.equals(MODE_PLAYLIST)) {
-                    textView.setText(R.string.no_playlists);
+                if (dataViewModel.mode.equals(MODE_SETLIST)) {
+                    textView.setText(R.string.no_setlists);
                     textView.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
                 }
 
@@ -425,7 +422,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         searchWebButton.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
         textView.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
 
-        if(dataViewModel.mode.equals(MODE_PLAYLIST_SONG_SELECTION))
+        if(dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION))
             setFileSelection();
 
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -441,8 +438,8 @@ public class ListFragment extends Fragment implements TextWatcher {
                         case MODE_SONGS:
                             startSongView(filename);
                             break;
-                        case MODE_PLAYLIST:
-                            startPlaylistList(filename);
+                        case MODE_SETLIST:
+                            startSetListList(filename);
                             break;
                     }
             }
@@ -478,7 +475,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         IsSelectionModeActive = true;
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        for (String filename : dataViewModel.playlistSongs) {
+        for (String filename : dataViewModel.setListSongs) {
             String s = filename.replace(".txt","");
             int index = fileListAdapter.getIndexOfFile(s);
             fileListAdapter.switchSelectionForIndex(index);
@@ -497,8 +494,8 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         if (dataViewModel.mode.equals(MODE_SONGS))
             setTitle(getString(R.string.manage_saved_files));
-        else if (dataViewModel.mode.equals(MODE_PLAYLIST))
-            setTitle(getString(R.string.manage_saved_playlists));
+        else if (dataViewModel.mode.equals(MODE_SETLIST))
+            setTitle(getString(R.string.manage_saved_setlists));
 
     }
 
@@ -517,7 +514,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         if (dataViewModel.mode.equals(MODE_SONGS))
             setTitle("Songs");
-        else if (dataViewModel.mode.equals(MODE_PLAYLIST))
+        else if (dataViewModel.mode.equals(MODE_SETLIST))
             setTitle("Setlists");
     }
 
@@ -556,7 +553,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                             String fileName = "";
                             if(Objects.equals(dataViewModel.mode, MODE_SONGS))
                                 fileName = s.concat(".txt");
-                            else if(Objects.equals(dataViewModel.mode, MODE_PLAYLIST))
+                            else if(Objects.equals(dataViewModel.mode, MODE_SETLIST))
                                 fileName = s.concat(".pl");
                             SaveFileHelper.deleteFile(fileName);
                         }
@@ -574,8 +571,8 @@ public class ListFragment extends Fragment implements TextWatcher {
         }
     }
 
-    private void startPlaylistList(String playlist) {
-        dataViewModel.setPlaylistMLD(playlist);
+    private void startSetListList(String setlist) {
+        dataViewModel.setSetListMLD(setlist);
 
         Navigation.findNavController(getParentFragment().getView()).navigate(R.id.nav_drag_list_view);
     }

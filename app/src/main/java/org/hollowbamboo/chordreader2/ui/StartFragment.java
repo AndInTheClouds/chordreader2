@@ -63,8 +63,8 @@ public class StartFragment extends Fragment implements View.OnClickListener, Tex
         buttonWebSearch.setOnClickListener(this);
         Button buttonLocalSongs = binding.buttonLocalSongs;
         buttonLocalSongs.setOnClickListener(this);
-        Button buttonPlayList = binding.buttonPlaylists;
-        buttonPlayList.setOnClickListener(this);
+        Button buttonSetList = binding.buttonSetLists;
+        buttonSetList.setOnClickListener(this);
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
@@ -105,9 +105,9 @@ public class StartFragment extends Fragment implements View.OnClickListener, Tex
             StartFragmentDirections.ActionNavStartToListFragment action =
                     StartFragmentDirections.actionNavStartToListFragment("Songs");
             Navigation.findNavController(view).navigate(action);
-        } else if(id == R.id.button_playlists) {
+        } else if(id == R.id.button_set_lists) {
             StartFragmentDirections.ActionNavStartToListFragment action =
-                    StartFragmentDirections.actionNavStartToListFragment("Playlists");
+                    StartFragmentDirections.actionNavStartToListFragment("Setlists");
             Navigation.findNavController(view).navigate(action);
         }
     }

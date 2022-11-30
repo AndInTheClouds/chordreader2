@@ -70,11 +70,11 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         recyclerView = binding.recyclerView;
 
-        setTitle(dataViewModel.getPlaylistMLD().getValue().replace(".pl",""));
+        setTitle(dataViewModel.getSetListMLD().getValue().replace(".pl",""));
 
-        dataViewModel.getPlaylistSongsMLD().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+        dataViewModel.getSetListSongsMLD().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<String> playlistSongs) {
+            public void onChanged(@Nullable ArrayList<String> setListSongs) {
                 setupRecyclerView();
             }
         });
@@ -90,14 +90,14 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     public void onPause() {
         super.onPause();
 
-        savePlaylistToFile();
+        saveSetListToFile();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (dataViewModel.playlistSongs.isEmpty())
+        if (dataViewModel.setListSongs.isEmpty())
             startListView();
     }
 
@@ -113,7 +113,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private void setupRecyclerView() {
 
-        mAdapter = new RecyclerViewAdapter(dataViewModel.playlistSongs, this, this);
+        mAdapter = new RecyclerViewAdapter(dataViewModel.setListSongs, this, this);
 
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback(mAdapter);
@@ -163,20 +163,19 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private void startListView() {
         DraggableListFragmentDirections.ActionNavDragListViewToNavListView action =
-                DraggableListFragmentDirections.actionNavDragListViewToNavListView("PlaylistSongsSelection");
+                DraggableListFragmentDirections.actionNavDragListViewToNavListView("SetlistSongsSelection");
         View view = getParentFragment().getView();
         Navigation.findNavController(view).navigate(action);
     }
 
-    private void savePlaylistToFile() {
-        String fileName = dataViewModel.getPlaylistMLD().getValue();
+    private void saveSetListToFile() {
+        String fileName = dataViewModel.getSetListMLD().getValue();
         if(!fileName.endsWith(".pl"))
             fileName = fileName + ".pl";
 
         StringBuilder resultText = new StringBuilder();
-        for (String line : Objects.requireNonNull(dataViewModel.getPlaylistSongsMLD().getValue())) {
-            line = (SaveFileHelper.rectifyFilename(line)) + ".txt\n";
-            resultText.append(line);
+        for (String line : Objects.requireNonNull(dataViewModel.getSetListSongsMLD().getValue())) {
+            resultText.append(line).append(".txt\n");
         }
 
         SaveFileHelper.saveFile(resultText.toString(),fileName);

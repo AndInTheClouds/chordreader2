@@ -14,7 +14,7 @@ It's an app that:
      height="80">](https://f-droid.org/packages/org.hollowbamboo.chordreader2/)
 
 ## Status
-This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Klehr respectively. It's still under development, e.g. playlists are planned to be implementend.
+This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Klehr respectively.
 > It's my first project at all. Every comment or support is welcomed.
 
 ## License
@@ -24,6 +24,7 @@ This is a fork of the abandoned ChordReader app by Nolan Lawson, and Marcel Kleh
 
 ## Donation
 If you would like to donate, visit 
-[Flattr][2]. 
+[paypal.me/hollowbamboo][2]. 
 
-[2]: https://flattr.com/@AndInTheClouds
+[2]:  https://paypal.me/hollowbamboo
+

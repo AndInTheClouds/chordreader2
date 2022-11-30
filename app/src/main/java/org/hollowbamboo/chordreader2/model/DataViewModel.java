@@ -10,35 +10,35 @@ import java.util.ArrayList;
 public class DataViewModel extends ViewModel {
 
     public String mode;
-    public ArrayList<String> playlistSongs;
+    public ArrayList<String> setListSongs;
 
-    private MutableLiveData<String> playlistMLD;
-    public MutableLiveData<ArrayList<String>> playlistSongsMLD;
+    private MutableLiveData<String> setListMLD;
+    public MutableLiveData<ArrayList<String>> setListSongsMLD;
 
-    public void setPlaylistMLD(String playlist) {
-        playlistMLD = new MutableLiveData<>();
-        playlistMLD.setValue(playlist);
+    public void setSetListMLD(String setlist) {
+        setListMLD = new MutableLiveData<>();
+        setListMLD.setValue(setlist);
 
-        playlistSongs = (ArrayList<String>) SaveFileHelper.openPlaylist(playlist);
+        setListSongs = (ArrayList<String>) SaveFileHelper.openSetList(setlist);
 
-        playlistSongsMLD = new MutableLiveData<>();
-        playlistSongsMLD.setValue(playlistSongs);
+        setListSongsMLD = new MutableLiveData<>();
+        setListSongsMLD.setValue(setListSongs);
     }
 
-    public MutableLiveData<String> getPlaylistMLD() {
-        return playlistMLD;
+    public MutableLiveData<String> getSetListMLD() {
+        return setListMLD;
     }
 
-    public MutableLiveData<ArrayList<String>> getPlaylistSongsMLD() { return playlistSongsMLD; }
+    public MutableLiveData<ArrayList<String>> getSetListSongsMLD() { return setListSongsMLD; }
 
-    public void setPlaylistSongs(ArrayList<String> playlistSongs) {
-        this.playlistSongs = playlistSongs;
-        playlistSongsMLD.setValue(playlistSongs);
+    public void setSetListSongs(ArrayList<String> setListSongs) {
+        this.setListSongs = setListSongs;
+        setListSongsMLD.setValue(setListSongs);
     }
 
     public void resetData() {
-        playlistSongs = null;
-        playlistMLD = null;
-        playlistSongsMLD = null;
+        setListSongs = null;
+        setListMLD = null;
+        setListSongsMLD = null;
     }
 }
