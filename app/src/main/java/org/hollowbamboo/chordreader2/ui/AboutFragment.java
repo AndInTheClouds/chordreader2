@@ -99,8 +99,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        assert getParentFragment() != null;
-        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+        }
     }
 
     public void initializeWebView() {

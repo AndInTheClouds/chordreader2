@@ -103,9 +103,12 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         int id = view.getId();
         if(id == R.id.chord_edit_save_button) {
             updateChordDictionary();
-            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            if (getParentFragment() != null)
+                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
         } else if(id == R.id.chord_edit_cancel_button) {
-            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            if (getParentFragment() != null) {
+                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            }
         } else if(id == R.id.add_chord_var_button) {
             addChordVar();
         }
@@ -221,6 +224,6 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
             }
             newGuitarChords.add(stringBuilder.substring(0, stringBuilder.length() - 1)); //remove last '-'
         }
-        ChordDictionary.setGuitarChordsForChord(CHORD, newGuitarChords);
+        ChordDictionary.setGuitarChordsForChord(requireContext(), CHORD, newGuitarChords);
     }
 }

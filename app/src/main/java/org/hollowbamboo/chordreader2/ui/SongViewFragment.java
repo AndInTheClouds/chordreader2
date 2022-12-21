@@ -76,7 +76,6 @@ import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import org.hollowbamboo.chordreader2.R;
-import org.hollowbamboo.chordreader2.adapter.BasicTwoLineAdapter;
 import org.hollowbamboo.chordreader2.adapter.ChordPagerAdapter;
 import org.hollowbamboo.chordreader2.chords.Chord;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
@@ -105,6 +104,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private static final String LOG_TAG = "SongViewFragment";
     private static final int PROGRESS_DIALOG_MIN_TIME = 600;
+    private static final int POST_SAVE_PROCEEDING_EXIT = 100;
+
+    private int howToProceedAfterSaving = 0;
 
     private SongViewFragmentViewModel songViewFragmentViewModel;
     private FragmentSongViewBinding binding;
@@ -189,7 +191,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 int itemId = menuItem.getItemId();
 
                 if(itemId == R.id.menu_save_chords) {
-                    showSaveChordTextDialog("");
+                    showSaveChordTextDialog();
                     return true;
                 } else if(itemId == R.id.menu_edit_file) {
                     showEditChordTextDialog();
@@ -202,14 +204,15 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     return true;
                 } else if(itemId == android.R.id.home) {
                     if(songViewFragmentViewModel.isEditedTextToSave) {
+                        howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
                         if (songViewFragmentViewModel.autoSave) {
                             saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
-                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
                         } else {
-                            showSavePromptDialog("onHomePressed");
+                            showSavePromptDialog();
                         }
-                    } else
+                    } else if (getParentFragment() != null) {
                         Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    }
 
                     return true;
                 }
@@ -412,7 +415,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 songViewFragmentViewModel.isEditedTextToSave = true;
             } else {
                 songTitle = filename;
-                chordText = SaveFileHelper.openFile(filename.concat(".txt"));
+                chordText = SaveFileHelper.openFile(requireContext(),filename.concat(".txt"));
                 transposition = getTransposition(filename);
                 songViewFragmentViewModel.autoSave = true;
             }
@@ -445,16 +448,17 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
+
                 if(songViewFragmentViewModel.isEditedTextToSave) {
                     if (songViewFragmentViewModel.autoSave)
                         saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
                     else {
-                        showSavePromptDialog("onBackPressed");
+                        showSavePromptDialog();
                         return;
                     }
-                }
-
-                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                } else
+                    proceedAfterSaving();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -472,14 +476,25 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 super.handleMessage(msg);
                 Boolean successfullySavedLog = (Boolean) msg.obj;
                 if(successfullySavedLog) {
-                    ToastUtils.showToastInUiThread(requireContext(),R.string.file_saved);
+                    ThreadUtils.showToastInUiThread(requireActivity(),R.string.file_saved);
 
                     songViewFragmentViewModel.isEditedTextToSave = false;
                     songViewFragmentViewModel.filename = filename;
 
                 } else {
-                    ToastUtils.showToastInUiThread(requireContext(),R.string.unable_to_save_file);
+                    ThreadUtils.showToastInUiThread(requireActivity(),R.string.unable_to_save_file);
                 }
+
+                // must be called on the main thread
+                Handler mainThread = new Handler(Looper.getMainLooper());
+                mainThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        proceedAfterSaving();
+                    }
+                });
+
+
                 handlerThread.quit();
             }
         };
@@ -492,25 +507,27 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             dbHelper.close();
 
             Message message = new Message();
-            message.obj = SaveFileHelper.saveFile(filetext, filename.concat(".txt"));
+            message.obj = SaveFileHelper.saveFile(requireContext(), filetext, filename.concat(".txt"));
+
 
             asyncHandler.sendMessage(message);
         };
-        asyncHandler.post(runnable);
 
-        saveTextSize(viewingTextView.getTextSize());
+        asyncHandler.post(runnable);
     }
 
-    private void proceedAfterSaving(String callingMethod) {
-        if (callingMethod.equals("onBackPressed") || callingMethod.equals("onHomePressed"))
-            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+    private void proceedAfterSaving() {
+        if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_EXIT)
+            if (getParentFragment() != null) {
+                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            }
         else
             setTitle(songViewFragmentViewModel.filename);
     }
 
     private boolean checkSdCard() {
 
-        boolean result = SaveFileHelper.checkIfSdCardExists();
+        boolean result = SaveFileHelper.checkIfSdCardExists(requireContext());
 
         if(!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
@@ -786,16 +803,16 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     // Dialogs
 
-    private void showSavePromptDialog(final String callingMethod) {
+    private void showSavePromptDialog() {
         new AlertDialog.Builder(requireContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.unsaved_changes)
                 .setMessage(R.string.unsaved_changes_message)
                 .setNegativeButton(R.string.no, (dialog, which) -> {
                     songViewFragmentViewModel.isEditedTextToSave = false;
-                    proceedAfterSaving(callingMethod);
+                    proceedAfterSaving();
                 })
-                .setPositiveButton(R.string.yes, (dialog, which) -> showSaveChordTextDialog(callingMethod))
+                .setPositiveButton(R.string.yes, (dialog, which) -> showSaveChordTextDialog())
                 .show();
     }
 
@@ -812,7 +829,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         editChordTextDialog.show(getParentFragmentManager(),"EditChordTextDialog");
     }
 
-    protected void showSaveChordTextDialog(final String callingMethod) {
+    protected void showSaveChordTextDialog() {
 
         if(!checkSdCard()) {
             return;
@@ -851,7 +868,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), getResources().getString(R.string.enter_good_filename), Toast.LENGTH_SHORT).show();
             } else {
 
-                if(SaveFileHelper.fileExists(editText.getText().toString().concat(".txt"))) {
+                if(SaveFileHelper.fileExists(requireContext(),editText.getText().toString().concat(".txt"))) {
 
                     new AlertDialog.Builder(requireContext())
                             .setCancelable(true)
@@ -862,14 +879,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
                                 saveFile(editText.getText().toString(), songViewFragmentViewModel.chordText);
                                 songViewFragmentViewModel.filename = editText.getText().toString();
-                                proceedAfterSaving(callingMethod);
+                                proceedAfterSaving();
                             })
                             .show();
 
                 } else {
                     saveFile(editText.getText().toString(), songViewFragmentViewModel.chordText);
                     songViewFragmentViewModel.filename = editText.getText().toString();
-                    proceedAfterSaving(callingMethod);
+                    proceedAfterSaving();
                 }
 
             }
@@ -1038,7 +1055,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        List<String> setListNames = new ArrayList<>(SaveFileHelper.getSavedSetListNames());
+        List<String> setListNames = new ArrayList<>(SaveFileHelper.getSavedSetListNames(requireContext()));
 
         if (setListNames.isEmpty()) {
             Toast.makeText(requireContext(), R.string.no_setlists, Toast.LENGTH_SHORT).show();
@@ -1067,7 +1084,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         String setList = listItems[checkedItem[0]];
 
-                        List<String> filenames = SaveFileHelper.openSetList(setList);
+                        List<String> filenames = SaveFileHelper.openSetList(requireContext(),setList);
                         filenames.add(songViewFragmentViewModel.filename);
 
                         StringBuilder resultText = new StringBuilder();
@@ -1075,7 +1092,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                             resultText.append(line).append(".txt\n");
                         }
 
-                        SaveFileHelper.saveFile(resultText.toString(),setList.concat(".pl"));
+                        SaveFileHelper.saveFile(requireContext(), resultText.toString(),setList.concat(".pl"));
 
                         dialog.dismiss();
                     }
@@ -1114,7 +1131,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             float textSize = viewingTextView.getTextSize();
             float scaleFactor = scaleGestureDetector.getScaleFactor();
 
-            textSize *= scaleFactor;
+            float textSizeDelta = 0;
+            if(scaleFactor > 1.0f)
+                textSizeDelta = 0.5f;
+            else if(scaleFactor < 1.0f)
+                textSizeDelta = -0.5f;
+
+            textSize += textSizeDelta;
 
             float textSizeMin = getResources().getDimension(R.dimen.text_size_min);
             float textSizeMax = getResources().getDimension(R.dimen.text_size_max);
@@ -1303,7 +1326,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             protected String chordText;
         }
     }
-    public static class ToastUtils {
+    public static class ThreadUtils {
 
         public static void showToastInUiThread(final Context ctx,
                                                final int stringRes) {

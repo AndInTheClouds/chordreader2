@@ -19,8 +19,6 @@ public class DataViewModel extends ViewModel {
         setListMLD = new MutableLiveData<>();
         setListMLD.setValue(setlist);
 
-        setListSongs = (ArrayList<String>) SaveFileHelper.openSetList(setlist);
-
         setListSongsMLD = new MutableLiveData<>();
         setListSongsMLD.setValue(setListSongs);
     }

@@ -1,7 +1,15 @@
 package org.hollowbamboo.chordreader2.helper;
 
+import static android.os.Build.VERSION.SDK_INT;
+
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import org.hollowbamboo.chordreader2.util.UtilLogger;
 
@@ -12,46 +20,59 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class SaveFileHelper {
 
 	private static UtilLogger log = new UtilLogger(SaveFileHelper.class);
 	
-	public static boolean checkIfSdCardExists() {
-		
-		File sdcardDir = Environment.getExternalStorageDirectory();
-			
-		return sdcardDir != null && sdcardDir.listFiles() != null;
-		
-	}
-	
-	public static boolean fileExists(String filename) {
+	public static boolean checkIfSdCardExists(Context context) {
 
-		File catlogDir = getBaseDirectory();
-		
-		File file = new File(catlogDir, filename);
-		
-		return file.exists();
-	}
-	
-	public static void deleteFile(String filename) {
+		if (SDK_INT < Build.VERSION_CODES.O) {
+			File sdcardDir = Environment.getExternalStorageDirectory();
 
-		File catlogDir = getBaseDirectory();
-		
-		File file = new File(catlogDir, filename);
-		
-		if(file.exists()) {
-			file.delete();
+			return sdcardDir != null && sdcardDir.listFiles() != null;
+		} else {
+			return Objects.requireNonNull(DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context))).exists();
 		}
-		
+	}
+	
+	public static boolean fileExists(Context context, String filename) {
+		if (SDK_INT < Build.VERSION_CODES.O) {
+			File catlogDir = getBaseDirectory();
+			File file = new File(catlogDir, filename);
+			return file.exists();
+		} else {
+			DocumentFile file = Objects.requireNonNull(DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context))).findFile(filename);
+			return file != null && file.exists();
+
+		}
+	}
+	
+	public static void deleteFile(Context context,String filename) {
+		if (SDK_INT < Build.VERSION_CODES.O) {
+
+			File catlogDir = getBaseDirectory();
+			File file = new File(catlogDir, filename);
+
+			if(file.exists())
+				file.delete();
+
+		} else {
+			DocumentFile file = Objects.requireNonNull(DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context))).findFile(filename);
+
+			if(file != null && file.exists())
+				file.delete();
+		}
 	}
 	
 	public static Date getLastModifiedDate(String filename) {
@@ -69,16 +90,8 @@ public class SaveFileHelper {
 		}
 	}
 
-	public static List<String> getSavedSongNames() {
-		List<File> fileNames = getFilenamesInBaseDirectory();
-
-		ArrayList<File> tempArrayList = new ArrayList<File>();
-
-		for (File file : fileNames) {
-			String fileName = file.getName();
-			if(fileName.endsWith(".txt"))
-				tempArrayList.add(file);
-		}
+	public static List<String> getSavedSongNames(Context context) {
+		List<String> fileNames = getFilenamesInBaseDirectory(context);
 
 //		Collections.sort(tempArrayList, new Comparator<File>() {
 //
@@ -88,59 +101,69 @@ public class SaveFileHelper {
 //			}
 //		});
 
+		List<String> result = new ArrayList<String>();
+
+		for (String file : fileNames) {
+			if(file.endsWith(".txt"))
+				result.add(file.replace(".txt", ""));
+		}
+		return result;
+	}
+
+
+	public static List<String> getSavedSetListNames(Context context) {
+		List<String> fileNames = getFilenamesInBaseDirectory(context);
+
+
+//		Collections.sort(tempArrayList, new Comparator<File>() {
+//
+//			@Override
+//			public int compare(File object1, File object2) {
+//				return new Long(object2.lastModified()).compareTo(object1.lastModified());
+//			}
+//		});
 
 		List<String> result = new ArrayList<String>();
 
-		for (File file : tempArrayList) {
-			String fileName = file.getName().replace(".txt", "");
-			result.add(fileName);
+		for (String file : fileNames) {
+			if(file.endsWith(".pl"))
+				result.add(file.replace(".pl", ""));
 		}
 
 		return result;
 	}
 
+	public static List<String> getFilenamesInBaseDirectory(Context context) {
 
-	public static List<String> getSavedSetListNames() {
-		List<File> fileNames = getFilenamesInBaseDirectory();
+		List<String> result = new ArrayList<>();
 
-		ArrayList<File> tempArrayList = new ArrayList<File>();
+		if (SDK_INT < Build.VERSION_CODES.O) {
+			File baseDir = getBaseDirectory();
+			File[] filesArray = baseDir.listFiles();
 
-		for (File file : fileNames) {
-			String fileName = file.getName();
-			if(fileName.endsWith(".pl"))
-				tempArrayList.add(file);
-		}
-
-		Collections.sort(tempArrayList, new Comparator<File>() {
-
-			@Override
-			public int compare(File object1, File object2) {
-				return new Long(object2.lastModified()).compareTo(object1.lastModified());
+			if (filesArray != null) {
+				for (File file : filesArray) {
+					String fileName = file.getName();
+					result.add(fileName);
+				}
 			}
-		});
+		} else {
+			DocumentFile documentFile = DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context));
+			DocumentFile[] documentFiles = new DocumentFile[0];
+			if (documentFile != null) {
+				documentFiles = documentFile.listFiles();
+			}
 
-
-		List<String> result = new ArrayList<String>();
-
-		for (File file : tempArrayList) {
-			String fileName = file.getName().replace(".pl", "");
-			result.add(fileName);
+			for (DocumentFile d : documentFiles) {
+				result.add(d.getName());
+			}
 		}
-
-		return result;
-	}
-
-	public static List<File> getFilenamesInBaseDirectory() {
 		
-		File baseDir = getBaseDirectory();
-		
-		File[] filesArray = baseDir.listFiles();
-		
-		if(filesArray == null) {
+		if(result.isEmpty()) {
 			return Collections.emptyList();
 		}
 
-		return Arrays.asList(filesArray);
+		return result;
 	}
 
 	public static boolean isInvalidFilename(CharSequence filename) {
@@ -159,24 +182,55 @@ public class SaveFileHelper {
 
 	}
 
-	public static String openFile(String filename) {
+	public static String openFile(Context context, String filename) {
 
-		File baseDir = getBaseDirectory();
-		File logFile;
+		BufferedReader bufferedReader = null;
+		InputStream inputStream = null;
 
-		if(!(filename == null))
-			logFile = new File(baseDir, filename);
-		else
-			return "";
+		if (SDK_INT < Build.VERSION_CODES.O) {
+			File baseDir = getBaseDirectory();
+			File logFile;
+
+			if (!(filename == null))
+				logFile = new File(baseDir, filename);
+			else
+				return "";
+
+			try {
+				bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
+			} catch (IOException ex) {
+				log.e(ex, "couldn't read file");
+			}
+		} else {
+
+			DocumentFile logFile, documentFile;
+
+			try {
+				documentFile = DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context));
+			} catch (Exception e) {
+				return "";
+			}
+
+			if (!(documentFile == null))
+				logFile = documentFile.findFile(filename);
+			else
+				return "";
+
+			try {
+				if (!(logFile == null))
+					inputStream = context.getContentResolver().openInputStream(logFile.getUri());
+				else
+					return "";
+
+				bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+			} catch (IOException ex) {
+				log.e(ex, "couldn't read file");
+			}
+		}
 		
 		StringBuilder result = new StringBuilder();
 		
-		BufferedReader bufferedReader = null;
-		
 		try {
-			
-			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
-			
 			while (bufferedReader.ready()) {
 				result.append(bufferedReader.readLine()).append("\n");
 			}
@@ -196,84 +250,97 @@ public class SaveFileHelper {
 		return result.toString();
 	}
 
-	public static List<String> openSetList(String filename) {
+	public static List<String> openSetList(Context context, String filename) {
 
 		if (!filename.endsWith(".pl"))
 			filename = filename.concat(".pl");
 
-		File baseDir = getBaseDirectory();
-		File logFile;
+		String fileText = openFile(context,filename);
 
-		if(!(filename == null))
-			logFile = new File(baseDir, filename);
-		else
-			return Collections.emptyList();
+		ArrayList<String> filesList = new ArrayList<>();
 
-		List<String> filenames = new ArrayList<>();
-
-		BufferedReader bufferedReader = null;
-
-		try {
-
-			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
-
-			while (bufferedReader.ready()) {
-				String songFile = bufferedReader.readLine();
-				if (fileExists(songFile)) {
-					String songFileName = songFile.replace(".txt", "");
-					filenames.add(songFileName);
-				}
-			}
-		} catch (IOException ex) {
-			log.e(ex, "couldn't read file");
-
-		} finally {
-			if(bufferedReader != null) {
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					log.e(e, "couldn't close buffered reader");
-				}
-			}
+		for (String file : fileText.split("\n")) {
+			if (fileExists(context, file))
+				filesList.add(file.replace(".txt", ""));
 		}
-		return filenames;
+
+		if (filesList.size() == 1 && filesList.get(0).equals(""))
+			filesList.remove(0);
+		return filesList;
 	}
 	
-	public static boolean saveFile(String filetext, String filename) {
+	public static boolean saveFile(Context context, String fileText, String filename) {
 
-		File baseDir = getBaseDirectory();
-		
-		File newFile = new File(baseDir, filename);
-		try {
-			if(!newFile.exists()) {
-				newFile.createNewFile();
+		if (SDK_INT < Build.VERSION_CODES.O) {
+
+			File baseDir = getBaseDirectory();
+
+			File newFile = new File(baseDir, filename);
+
+			try {
+				if (!newFile.exists())
+					newFile.createNewFile();
+			} catch (IOException ex) {
+				log.e(ex, "couldn't create new file");
+				return false;
 			}
-		} catch (IOException ex) {
-			log.e(ex, "couldn't create new file");
-			return false;
-		}
-		PrintStream out = null;
-		try {
-			// specifying 8192 gets rid of an annoying warning message
-			out = new PrintStream(new BufferedOutputStream(new FileOutputStream(newFile, false), 8192));
-			
-			out.print(filetext);
-			
-		} catch (FileNotFoundException ex) {
-			log.e(ex,"unexpected exception");
-			return false;
-		} finally {
-			if(out != null) {
-				out.close();
+
+			PrintStream out = null;
+
+			try {
+				// specifying 8192 gets rid of an annoying warning message
+				out = new PrintStream(new BufferedOutputStream(new FileOutputStream(newFile, false), 8192));
+
+				out.print(fileText);
+
+			} catch (FileNotFoundException ex) {
+				log.e(ex,"unexpected exception");
+				return false;
+			} finally {
+				if(out != null) {
+					out.close();
+				}
+			}
+
+		} else {
+
+			Uri uri;
+
+			try {
+				DocumentFile documentFile = DocumentFile.fromTreeUri(context, PreferenceHelper.getStorageLocation(context));
+
+				DocumentFile logFile = documentFile.findFile(filename);
+
+				if (logFile == null)
+					logFile = documentFile.createFile("application/txt",filename);
+
+				uri = logFile.getUri();
+
+			} catch (Exception e) {
+				log.e(e, "couldn't create new file");
+				return false;
+			}
+
+			try {
+				ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri,"w");
+
+				FileOutputStream fileOutputStream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
+
+				fileOutputStream.write(fileText.getBytes(StandardCharsets.UTF_8));
+
+				fileOutputStream.close();
+				parcelFileDescriptor.close();
+			} catch (Exception ex) {
+				log.e(ex,"couldn't write to file");
+				return false;
 			}
 		}
-		
+
 		return true;
-		
-		
 	}
 	
-	private static File getBaseDirectory() {
+	public static File getBaseDirectory() {
+
 		File sdcardDir = Environment.getExternalStorageDirectory();
 		
 		File baseDir = new File(sdcardDir, "chord_reader_2");

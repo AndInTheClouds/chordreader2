@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/dragHandle"
             android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/setlist_item_delete"
             android:layout_toEndOf="@id/setlist_song_count_text_view"
             android:textSize="@dimen/text_size" />
 

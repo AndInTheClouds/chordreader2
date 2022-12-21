@@ -198,8 +198,9 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 } else if(itemId == android.R.id.home) {
                     if(webView.copyBackForwardList().getCurrentIndex() > 0) {
                         webView.goBack();
-                    } else
+                    } else if (getParentFragment() != null) {
                         Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    }
                     return true;
                 }
                 return false;
@@ -345,8 +346,9 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             public void handleOnBackPressed() {
                 if(webView.copyBackForwardList().getCurrentIndex() > 0) {
                     webView.goBack();
-                } else
+                } else if (getParentFragment() != null) {
                     Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -523,7 +525,9 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
                     WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
                             WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), chordText);
-                    Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+                    if (getParentFragment() != null) {
+                        Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+                    }
                 });
 
         AlertDialog alertDialog = builder.create();

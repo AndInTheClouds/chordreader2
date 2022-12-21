@@ -2,12 +2,19 @@ package org.hollowbamboo.chordreader2.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.Chord;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
+import org.hollowbamboo.chordreader2.db.ChordReaderDBHelper;
+import org.hollowbamboo.chordreader2.ui.SongViewFragment;
 import org.hollowbamboo.chordreader2.util.StringUtil;
 
 import java.io.BufferedReader;
@@ -33,7 +40,7 @@ public class ChordDictionary {
 
 		// load custom chord variations
 		try {
-			customChordVars = SaveFileHelper.openFile("customChordVariations_DO_NOT_EDIT.crd");
+			customChordVars = SaveFileHelper.openFile(context,"customChordVariations_DO_NOT_EDIT.crd");
 
 			if (!customChordVars.isEmpty()) {
 				loadIntoChordDictionary(context, -1, NoteNaming.English, dictionary);
@@ -114,17 +121,17 @@ public class ChordDictionary {
 		return result != null ? result : Collections.emptyList();
 	}
 
-	public static void setGuitarChordsForChord(Chord chord, List<String> newGuitarChords) {
+	public static void setGuitarChordsForChord(Context context, Chord chord, List<String> newGuitarChords) {
 		List<String> existingValue = chordsToGuitarChords.get(chord);
 		if (existingValue != null) {
 			chordsToGuitarChords.remove(chord);
 		}
 		chordsToGuitarChords.put(chord, newGuitarChords);
 
-		saveChordDictionaryToFile();
+		saveChordDictionaryToFile(context);
 	}
 
-	private static void saveChordDictionaryToFile() {
+	private static void saveChordDictionaryToFile(Context context) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Object key : chordsToGuitarChords.keySet()) {
 			String chord = ((Chord) key).toPrintableString(NoteNaming.English);
@@ -142,14 +149,45 @@ public class ChordDictionary {
 		final String result = stringBuilder.substring(0, stringBuilder.length() - 1); // cut off final newline
 
 		// do in background to avoid jankiness
-		AsyncTask<Void,Void,Boolean> saveTask = new AsyncTask<Void, Void, Boolean>(){
+		HandlerThread handlerThread = new HandlerThread("SaveChordsHandlerThread");
+		handlerThread.start();
 
+		Handler asyncHandler = new Handler(handlerThread.getLooper()) {
 			@Override
-			protected Boolean doInBackground(Void... params) {
-				return SaveFileHelper.saveFile(result, "customChordVariations_DO_NOT_EDIT.crd");
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				Boolean successfullySavedLog = (Boolean) msg.obj;
+
+				String toastMessage;
+
+				if(successfullySavedLog) {
+					toastMessage = context.getString(R.string.file_saved);
+				} else {
+					toastMessage = context.getString(R.string.unable_to_save_file);
+				}
+
+				// must be called on the main thread
+				Handler mainThread = new Handler(Looper.getMainLooper());
+				mainThread.post(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+					}
+				});
+
+
+				handlerThread.quit();
 			}
 		};
 
-		saveTask.execute((Void)null);
+		Runnable runnable = () -> {
+			// your async code goes here.
+			Message message = new Message();
+			message.obj = SaveFileHelper.saveFile(context, result, "customChordVariations_DO_NOT_EDIT.crd");
+
+			asyncHandler.sendMessage(message);
+		};
+
+		asyncHandler.post(runnable);
 	}
 }

@@ -3,6 +3,7 @@ package org.hollowbamboo.chordreader2.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
@@ -15,8 +16,9 @@ public class PreferenceHelper {
 	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
 	private static String searchEngineURL = null;
+	private static String storageLocation = null;
 
-	private static UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
+	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
 	
 	public static void clearCache() {
 		textSize = -1;
@@ -118,8 +120,25 @@ public class PreferenceHelper {
 		Editor editor = sharedPrefs.edit();
 		editor.putString(context.getString(R.string.pref_search_engine), searchEngineURL);
 		editor.apply();
-
 	}
 
+	public static Uri getStorageLocation(Context context) {
 
+		if(storageLocation == null) {
+
+			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+			storageLocation = sharedPrefs.getString(
+					context.getString(R.string.pref_storage_location),
+					context.getString(R.string.pref_storage_location_default));
+		}
+
+		return Uri.parse(storageLocation);
+	}
+
+	public static void setStorageLocation(Context context, Uri uri) {
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = sharedPrefs.edit();
+		editor.putString(context.getString(R.string.pref_storage_location), uri.toString());
+		editor.apply();
+	}
 }

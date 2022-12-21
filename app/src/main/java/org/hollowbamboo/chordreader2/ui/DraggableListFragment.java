@@ -24,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -175,9 +176,11 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         StringBuilder resultText = new StringBuilder();
         for (String line : Objects.requireNonNull(dataViewModel.getSetListSongsMLD().getValue())) {
-            resultText.append(line).append(".txt\n");
+            if (!line.endsWith(".txt"))
+                line = line + ".txt";
+            resultText.append(line).append("\n");
         }
 
-        SaveFileHelper.saveFile(resultText.toString(),fileName);
+        SaveFileHelper.saveFile(requireContext(),resultText.toString(),fileName);
     }
 }

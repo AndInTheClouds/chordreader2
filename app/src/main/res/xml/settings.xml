@@ -12,9 +12,15 @@
 	
 	<PreferenceCategory android:title="@string/pref_category_configuration">
 
+		<Preference
+			android:key="@string/pref_storage_location"
+			android:title="@string/storage_location"
+			android:persistent="true" />
+
 		<EditTextPreference
 			android:defaultValue="@string/pref_search_engine_default"
 			android:key="searchEngineURL"
+			android:persistent="true"
 			android:title="@string/pref_search_engine_title" />
 
 		<Preference android:key="@string/pref_note_naming"
