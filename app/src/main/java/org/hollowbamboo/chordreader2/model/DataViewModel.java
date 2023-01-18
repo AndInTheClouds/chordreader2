@@ -12,14 +12,15 @@ public class DataViewModel extends ViewModel {
     public String mode;
     public ArrayList<String> setListSongs;
 
-    private MutableLiveData<String> setListMLD;
+    private MutableLiveData<String> setListMLD = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> setListSongsMLD;
 
     public void setSetListMLD(String setlist) {
-        setListMLD = new MutableLiveData<>();
+        if (setListMLD == null)
+            setListMLD = new MutableLiveData<>();
+
         setListMLD.setValue(setlist);
 
-        setListSongsMLD = new MutableLiveData<>();
         setListSongsMLD.setValue(setListSongs);
     }
 
@@ -31,6 +32,10 @@ public class DataViewModel extends ViewModel {
 
     public void setSetListSongs(ArrayList<String> setListSongs) {
         this.setListSongs = setListSongs;
+
+        if (setListSongsMLD == null)
+            setListSongsMLD = new MutableLiveData<>();
+
         setListSongsMLD.setValue(setListSongs);
     }
 

@@ -15,7 +15,8 @@
 		<Preference
 			android:key="@string/pref_storage_location"
 			android:title="@string/storage_location"
-			android:persistent="true" />
+			android:persistent="true"
+			android:defaultValue="@string/pref_storage_location_default"/>
 
 		<EditTextPreference
 			android:defaultValue="@string/pref_search_engine_default"

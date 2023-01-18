@@ -56,10 +56,9 @@ public class SongViewFragmentViewModel extends ViewModel {
 
     private final MutableLiveData<Integer> bpmMLD = new MutableLiveData<>();
     private final MutableLiveData<Float> scrollVelocityCorrFactorMLD = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> saveResultMLD = new MutableLiveData<>();
 
-    public SongViewFragmentViewModel() {
-
-    }
+    public SongViewFragmentViewModel() {    }
 
     public MutableLiveData<Float> getTextSize() {
         return textSizeMLD;
@@ -85,12 +84,12 @@ public class SongViewFragmentViewModel extends ViewModel {
         return scrollVelocityCorrFactorMLD;
     }
 
-    public void setSongTitle(String songTitle) {
-        fragmentTitle.setValue(songTitle);
+    public MutableLiveData<Boolean> getSaveResultMLD() {
+        return saveResultMLD;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setSongTitle(String songTitle) {
+        fragmentTitle.setValue(songTitle);
     }
 
     public void setChordText(String chordText) {
@@ -250,7 +249,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         }
 
     }
-
 
     private static float extractAutoScrollParam(String text, String autoScrollParam) {
 

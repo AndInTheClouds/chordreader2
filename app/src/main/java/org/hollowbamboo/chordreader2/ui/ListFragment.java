@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +25,9 @@ import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -48,6 +52,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuHost;
@@ -66,10 +71,12 @@ import org.hollowbamboo.chordreader2.helper.SaveFileHelper;
 import org.hollowbamboo.chordreader2.model.DataViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 public class ListFragment extends Fragment implements TextWatcher {
 
@@ -362,20 +369,23 @@ public class ListFragment extends Fragment implements TextWatcher {
         }
 
         // Open files depending on listFragment mode
-        List<String> filenames = new ArrayList<>(SaveFileHelper.getSavedSongNames(requireContext()));
+
+        List<String> filenames = null;
 
         switch (dataViewModel.mode) {
             case MODE_SONGS:
                 setTitle("Songs");
+                filenames = getFileNames(".txt");
                 textView.setText(R.string.no_local_songs);
                 break;
             case MODE_SETLIST:
                 setTitle("Setlists");
-                filenames = new ArrayList<>(SaveFileHelper.getSavedSetListNames(requireContext()));
+                filenames = getFileNames(".pl");
                 textView.setText(R.string.no_setlists);
                 break;
             case MODE_SETLIST_SONG_SELECTION:
                 setTitle(getString(R.string.file_selection_for_setlist));
+                filenames = getFileNames(".txt");
 
                 okButton.setVisibility(View.VISIBLE);
                 okButton.setOnClickListener(new View.OnClickListener(){
@@ -390,7 +400,8 @@ public class ListFragment extends Fragment implements TextWatcher {
                 break;
         }
 
-        Collections.sort(filenames, (Comparator<CharSequence>) (first, second) -> first.toString().toLowerCase().compareTo(second.toString().toLowerCase()));
+        if (filenames != null)
+            Collections.sort(filenames, (Comparator<CharSequence>) (first, second) -> first.toString().toLowerCase().compareTo(second.toString().toLowerCase()));
 
         fileListAdapter = new SelectableFilterAdapter(requireContext(), filenames) {
             @Override
@@ -529,9 +540,58 @@ public class ListFragment extends Fragment implements TextWatcher {
             setTitle("Setlists");
     }
 
+    private List<String> getFileNames(String fileExtension) {
+
+        List<String> result = new ArrayList<>();
+
+        // do in background to avoid jankiness
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        HandlerThread handlerThread = new HandlerThread("GetFileListHandlerThread");
+        handlerThread.start();
+
+        Handler asyncHandler = new Handler(handlerThread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String[] fileList = (String[]) msg.obj;
+
+                result.addAll(Arrays.asList(fileList));
+
+                latch.countDown();
+
+                handlerThread.quit();
+            }
+        };
+
+        Runnable runnable = () -> {
+            // your async code goes here.
+            Message message = new Message();
+            message.obj = SaveFileHelper.getSavedFileNames(requireContext(), fileExtension);
+
+            asyncHandler.sendMessage(message);
+        };
+
+        asyncHandler.post(runnable);
+
+        // wait for async saving result
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (result.isEmpty())
+            return new ArrayList<>();
+
+        return result;
+    }
+
+
+
     private boolean checkSdCard() {
 
-        boolean result = SaveFileHelper.checkIfSdCardExists(requireContext());
+        boolean result = SaveFileHelper.checkIfSdCardExists();
 
         if(!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
@@ -583,7 +643,13 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
     private void startSetListList(String setlist) {
-        dataViewModel.setListSongs = (ArrayList<String>) SaveFileHelper.openSetList(requireContext(),setlist);
+
+        if (!setlist.endsWith(".pl"))
+            setlist = setlist.concat(".pl");
+
+        ArrayList<String> filesList = (ArrayList<String>) SaveFileHelper.openSetlist(requireContext(), setlist);
+
+        dataViewModel.setSetListSongs(filesList);
         dataViewModel.setSetListMLD(setlist);
 
         Navigation.findNavController(getParentFragment().getView()).navigate(R.id.nav_drag_list_view);

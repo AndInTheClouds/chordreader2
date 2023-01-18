@@ -187,6 +187,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private void setStorageLocationPreference(Uri uri) {
+
+        requireContext().grantUriPermission(requireContext().getPackageName(), uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        requireContext().getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
         PreferenceHelper.setStorageLocation(requireContext(), uri);
         PreferenceHelper.clearCache();
         storageLocationPreference.setSummary(uri.toString());

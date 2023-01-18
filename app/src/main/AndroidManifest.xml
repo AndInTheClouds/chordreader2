@@ -14,7 +14,6 @@
     <application
         android:icon="@mipmap/chord_reader_icon"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true">
 
         <activity

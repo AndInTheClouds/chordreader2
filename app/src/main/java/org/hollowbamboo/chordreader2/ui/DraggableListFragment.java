@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,6 +63,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d("SetList List", "Start DraggableListView");
         dataViewModel =
                 new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
@@ -84,6 +85,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         setUpMenu();
 
+        Log.d("SetList List", "DraggableListView started");
         return root;
     }
 
@@ -171,8 +173,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private void saveSetListToFile() {
         String fileName = dataViewModel.getSetListMLD().getValue();
-        if(!fileName.endsWith(".pl"))
-            fileName = fileName + ".pl";
+        if (fileName != null && !fileName.endsWith(".pl")) fileName = fileName + ".pl";
 
         StringBuilder resultText = new StringBuilder();
         for (String line : Objects.requireNonNull(dataViewModel.getSetListSongsMLD().getValue())) {

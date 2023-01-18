@@ -25,6 +25,7 @@ public class PreferenceHelper {
 		colorScheme = null;
 		noteNaming = null;
 		searchEngineURL = null;
+		storageLocation = null;
 	}
 	
 	private static void cacheTextsize(Context context, int dimenId) {

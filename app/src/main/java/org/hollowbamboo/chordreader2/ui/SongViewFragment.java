@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.text.InputType;
 import android.text.Layout;
@@ -94,11 +93,13 @@ import org.hollowbamboo.chordreader2.views.AutoScrollView;
 import org.hollowbamboo.chordreader2.views.ChordVisualisationView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 public class SongViewFragment extends Fragment implements View.OnClickListener {
 
@@ -175,6 +176,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         binding = null;
     }
 
@@ -206,7 +208,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     if(songViewFragmentViewModel.isEditedTextToSave) {
                         howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
                         if (songViewFragmentViewModel.autoSave) {
-                            saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
+                            saveFile(songViewFragmentViewModel.filename, songViewFragmentViewModel.chordText);
                         } else {
                             showSavePromptDialog();
                         }
@@ -395,6 +397,22 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 showChordPopup(chord);
             }
         });
+
+        songViewFragmentViewModel.getSaveResultMLD().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean successfullySavedLog) {
+
+                if(successfullySavedLog) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
+
+                    songViewFragmentViewModel.isEditedTextToSave = false;
+                    songViewFragmentViewModel.filename = filename;
+
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.unable_to_save_file), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setInstanceData() {
@@ -408,7 +426,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             Transposition transposition = null;
 
             if(filename == null) {
-                songTitle = getResources().getString(R.string.new_file);
+                songTitle = filename = getResources().getString(R.string.new_file);
                 songViewFragmentViewModel.isEditedTextToSave = true;
             } else if(filename.isEmpty() && !(songTitle != null && songTitle.isEmpty())) { // from web search
                 filename = songTitle;
@@ -422,13 +440,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             songTitle = Character.toUpperCase(songTitle.charAt(0)) + songTitle.substring(1);
 
             songViewFragmentViewModel.setSongTitle(songTitle);
-            songViewFragmentViewModel.setFilename(filename);
+            songViewFragmentViewModel.filename = filename;
             songViewFragmentViewModel.setNoteNaming(getNoteNaming());
             songViewFragmentViewModel.setTransposition(transposition);
             songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(getActivity().getBaseContext()).getLinkColor(getActivity().getBaseContext()));
             songViewFragmentViewModel.setChordText(chordText);
         }
-
 
 
         getParentFragmentManager().setFragmentResultListener("EditChordTextDialog", this, songViewFragmentViewModel.getFragmentResultListener());
@@ -452,10 +469,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
                 if(songViewFragmentViewModel.isEditedTextToSave) {
                     if (songViewFragmentViewModel.autoSave)
-                        saveFile(songViewFragmentViewModel.getFragmentTitle().getValue(), songViewFragmentViewModel.chordText);
+                        saveFile(songViewFragmentViewModel.filename, songViewFragmentViewModel.chordText);
                     else {
                         showSavePromptDialog();
-                        return;
                     }
                 } else
                     proceedAfterSaving();
@@ -464,10 +480,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
-    private void saveFile(final String filename, final String filetext) {
+    private void saveFile(final String filename, final String fileText) {
 
-        // do in background to avoid jankiness
-        HandlerThread handlerThread = new HandlerThread("SaveFileHandlerThread");
+        // Save text size
+
+        HandlerThread handlerThread = new HandlerThread("SaveTextSizeHandlerThread");
         handlerThread.start();
 
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {
@@ -475,25 +492,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 Boolean successfullySavedLog = (Boolean) msg.obj;
-                if(successfullySavedLog) {
-                    ThreadUtils.showToastInUiThread(requireActivity(),R.string.file_saved);
-
-                    songViewFragmentViewModel.isEditedTextToSave = false;
-                    songViewFragmentViewModel.filename = filename;
-
-                } else {
-                    ThreadUtils.showToastInUiThread(requireActivity(),R.string.unable_to_save_file);
-                }
-
-                // must be called on the main thread
-                Handler mainThread = new Handler(Looper.getMainLooper());
-                mainThread.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        proceedAfterSaving();
-                    }
-                });
-
 
                 handlerThread.quit();
             }
@@ -507,27 +505,34 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             dbHelper.close();
 
             Message message = new Message();
-            message.obj = SaveFileHelper.saveFile(requireContext(), filetext, filename.concat(".txt"));
-
+            message.obj = true;
 
             asyncHandler.sendMessage(message);
         };
 
         asyncHandler.post(runnable);
+
+
+        // Save to file
+        boolean successfullySavedLog = SaveFileHelper.saveFile(requireContext(), fileText, filename.concat(".txt"));
+
+        songViewFragmentViewModel.getSaveResultMLD().setValue(successfullySavedLog);
+
+        proceedAfterSaving();
     }
 
     private void proceedAfterSaving() {
-        if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_EXIT)
+        if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_EXIT) {
             if (getParentFragment() != null) {
                 Navigation.findNavController(getParentFragment().requireView()).popBackStack();
             }
-        else
+        } else
             setTitle(songViewFragmentViewModel.filename);
     }
 
     private boolean checkSdCard() {
 
-        boolean result = SaveFileHelper.checkIfSdCardExists(requireContext());
+        boolean result = SaveFileHelper.checkIfSdCardExists();
 
         if(!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
@@ -801,6 +806,27 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void appendSongToSetlist(String setlist) {
+
+
+        if (!setlist.endsWith(".pl"))
+            setlist = setlist.concat(".pl");
+
+        ArrayList<String> filesList = (ArrayList<String>) SaveFileHelper.openSetlist(requireContext(), setlist);
+
+        filesList.add(songViewFragmentViewModel.filename);
+
+        StringBuilder resultText = new StringBuilder();
+        for (String line : filesList) {
+            if (!line.endsWith(".txt"))
+                resultText.append(line).append(".txt\n");
+            else
+                resultText.append(line).append("\n");
+        }
+
+        SaveFileHelper.saveFile(requireContext(), resultText.toString(),setlist);
+    }
+
     // Dialogs
 
     private void showSavePromptDialog() {
@@ -857,9 +883,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        editText.setText(songViewFragmentViewModel.getFragmentTitle().getValue());
+        editText.setText(songViewFragmentViewModel.filename);
 
-        editText.setSelection(0, songViewFragmentViewModel.getFragmentTitle().getValue().length());
+        editText.setSelection(0, songViewFragmentViewModel.filename.length());
 
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
 
@@ -1055,7 +1081,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        List<String> setListNames = new ArrayList<>(SaveFileHelper.getSavedSetListNames(requireContext()));
+        List<String> setListNames = Arrays.asList(SaveFileHelper.getSavedFileNames(requireContext(),".pl"));
 
         if (setListNames.isEmpty()) {
             Toast.makeText(requireContext(), R.string.no_setlists, Toast.LENGTH_SHORT).show();
@@ -1084,15 +1110,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         String setList = listItems[checkedItem[0]];
 
-                        List<String> filenames = SaveFileHelper.openSetList(requireContext(),setList);
-                        filenames.add(songViewFragmentViewModel.filename);
-
-                        StringBuilder resultText = new StringBuilder();
-                        for (String line : filenames) {
-                            resultText.append(line).append(".txt\n");
-                        }
-
-                        SaveFileHelper.saveFile(requireContext(), resultText.toString(),setList.concat(".pl"));
+                        appendSongToSetlist(setList);
 
                         dialog.dismiss();
                     }
@@ -1324,20 +1342,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         public static class EditTextDialogViewModel extends ViewModel {
             protected String chordText;
-        }
-    }
-    public static class ThreadUtils {
-
-        public static void showToastInUiThread(final Context ctx,
-                                               final int stringRes) {
-
-            Handler mainThread = new Handler(Looper.getMainLooper());
-            mainThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(ctx, ctx.getString(stringRes), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 

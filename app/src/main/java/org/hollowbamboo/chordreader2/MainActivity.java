@@ -257,9 +257,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
                             PreferenceHelper.getStorageLocation(getApplicationContext()));
 
-                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                     directoryPickerResultLauncher.launch(intent);
                 } else {
                     ActivityCompat.requestPermissions(MainActivity.this,

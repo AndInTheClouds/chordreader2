@@ -29,165 +29,144 @@ import java.util.List;
 import java.util.Map;
 
 public class ChordDictionary {
-	private static final String LOG_TAG = "ChordDictionary";
+    private static final String LOG_TAG = "ChordDictionary";
 
-	// maps chords to finger positions on guitar frets, e.g. 133211
-	private static Map<Chord, List<String>> chordsToGuitarChords = null;
-	private static String customChordVars;
-	
-	public static void initialize(Context context) {
-		Map<Chord, List<String>> dictionary = new HashMap<>();
+    // maps chords to finger positions on guitar frets, e.g. 133211
+    private static Map<Chord, List<String>> chordsToGuitarChords = null;
+    private static String customChordVars;
 
-		// load custom chord variations
-		try {
-			customChordVars = SaveFileHelper.openFile(context,"customChordVariations_DO_NOT_EDIT.crd");
+    public static void initialize(Context context) {
+        Map<Chord, List<String>> dictionary = new HashMap<>();
 
-			if (!customChordVars.isEmpty()) {
-				loadIntoChordDictionary(context, -1, NoteNaming.English, dictionary);
-			} else
-				throw new IOException();
+        // load custom chord variations
+        try {
+            customChordVars = SaveFileHelper.openFile(context, "customChordVariations_DO_NOT_EDIT.crd");
 
-		} catch (IOException e) {
-			//no customChordVariations_DO_NOT_EDIT.crd - ignore
-			Log.e(LOG_TAG, e + " - No customChordVariations file, load default");
+            if (!customChordVars.isEmpty()) {
+                loadIntoChordDictionary(context, -1, NoteNaming.English, dictionary);
+            } else
+                throw new IOException();
 
-			try {
-				loadIntoChordDictionary(context, R.raw.chords1, NoteNaming.English, dictionary);
-				loadIntoChordDictionary(context, R.raw.chords2, NoteNaming.NorthernEuropean, dictionary);
+        } catch (IOException e) {
+            //no customChordVariations_DO_NOT_EDIT.crd - ignore
+            Log.e(LOG_TAG, e + " - No customChordVariations file, load default");
 
-			} catch (IOException f) {
-				Log.e(LOG_TAG, f + " - unexpected exception, couldn't initialize ChordDictionary");
-			} catch (Exception f) {
-				Log.e(LOG_TAG, f + " - unknown exception, couldn't initialize ChordDictionary");
-			}
-		}
-		if (!dictionary.isEmpty())
-			Log.i(LOG_TAG, "Chord Dictionary initialized");
-		chordsToGuitarChords = dictionary;
-	}
-	
-	private static void loadIntoChordDictionary(Context context, int resId, NoteNaming noteNaming, Map<Chord, List<String>> dictionary) throws IOException {
-		InputStream inputStream;
-		
-		if (resId == -1) {
-			inputStream =  new ByteArrayInputStream(customChordVars.getBytes());
-		} else {
-			inputStream = context.getResources().openRawResource(resId);
-		}
-		
-		BufferedReader bufferedReader = null;
-		
-		try {
-			bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-			while (bufferedReader.ready()) {
-				String line = bufferedReader.readLine();
-				line = line.trim();
-				String[] tokens = StringUtil.split(line, ":");
-				
-				String chordText = tokens[0].trim();
-				String guitarChord = tokens[1].trim();
-				
-				Chord chord = ChordParser.parseChord(chordText, noteNaming);
-				
-				if (chord == null) {
-					Log.w(LOG_TAG, "Unable to parse chord text - skipping:" + chordText);
-					continue;
-				}
-				
-				// map chords to their string guitar chord representations
-				// note that there may be multiples - e.g. there are several ways
-				// to play a G chord
-				List<String> existingValue = dictionary.get(chord);
-				if (existingValue == null) {
-					dictionary.put(chord, new ArrayList<>(Collections.singleton(guitarChord)));
-				} else if (!existingValue.contains(guitarChord)) {
-					existingValue.add(guitarChord);
-				}
-				
-			}
-		} finally {
-			if (bufferedReader != null) {
-				bufferedReader.close();
-			}
-		}
-	}
-	
-	public static boolean isInitialized() {
-		return chordsToGuitarChords != null;
-	}
+            try {
+                loadIntoChordDictionary(context, R.raw.chords1, NoteNaming.English, dictionary);
+                loadIntoChordDictionary(context, R.raw.chords2, NoteNaming.NorthernEuropean, dictionary);
 
-	public static List<String> getGuitarChordsForChord(Chord chord) {
-		List<String> result = chordsToGuitarChords.get(chord);
-		return result != null ? result : Collections.emptyList();
-	}
+            } catch (IOException f) {
+                Log.e(LOG_TAG, f + " - unexpected exception, couldn't initialize ChordDictionary");
+            } catch (Exception f) {
+                Log.e(LOG_TAG, f + " - unknown exception, couldn't initialize ChordDictionary");
+            }
+        }
+        if (!dictionary.isEmpty())
+            Log.i(LOG_TAG, "Chord Dictionary initialized");
+        chordsToGuitarChords = dictionary;
+    }
 
-	public static void setGuitarChordsForChord(Context context, Chord chord, List<String> newGuitarChords) {
-		List<String> existingValue = chordsToGuitarChords.get(chord);
-		if (existingValue != null) {
-			chordsToGuitarChords.remove(chord);
-		}
-		chordsToGuitarChords.put(chord, newGuitarChords);
+    private static void loadIntoChordDictionary(Context context, int resId, NoteNaming noteNaming, Map<Chord, List<String>> dictionary) throws IOException {
+        InputStream inputStream;
 
-		saveChordDictionaryToFile(context);
-	}
+        if (resId == -1) {
+            inputStream = new ByteArrayInputStream(customChordVars.getBytes());
+        } else {
+            inputStream = context.getResources().openRawResource(resId);
+        }
 
-	private static void saveChordDictionaryToFile(Context context) {
-		StringBuilder stringBuilder = new StringBuilder();
-		for (Object key : chordsToGuitarChords.keySet()) {
-			String chord = ((Chord) key).toPrintableString(NoteNaming.English);
-			List<String> chordVarsList = chordsToGuitarChords.get(key);
+        BufferedReader bufferedReader = null;
 
-			for (String chordVar : chordVarsList) {
-				stringBuilder
-						.append(chord)
-						.append(": ")
-						.append(chordVar)
-						.append('\n');
-			}
-		}
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            while (bufferedReader.ready()) {
+                String line = bufferedReader.readLine();
+                line = line.trim();
+                String[] tokens = StringUtil.split(line, ":");
 
-		final String result = stringBuilder.substring(0, stringBuilder.length() - 1); // cut off final newline
+                String chordText = tokens[0].trim();
+                String guitarChord = tokens[1].trim();
 
-		// do in background to avoid jankiness
-		HandlerThread handlerThread = new HandlerThread("SaveChordsHandlerThread");
-		handlerThread.start();
+                Chord chord = ChordParser.parseChord(chordText, noteNaming);
 
-		Handler asyncHandler = new Handler(handlerThread.getLooper()) {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				Boolean successfullySavedLog = (Boolean) msg.obj;
+                if (chord == null) {
+                    Log.w(LOG_TAG, "Unable to parse chord text - skipping:" + chordText);
+                    continue;
+                }
 
-				String toastMessage;
+                // map chords to their string guitar chord representations
+                // note that there may be multiples - e.g. there are several ways
+                // to play a G chord
+                List<String> existingValue = dictionary.get(chord);
+                if (existingValue == null) {
+                    dictionary.put(chord, new ArrayList<>(Collections.singleton(guitarChord)));
+                } else if (!existingValue.contains(guitarChord)) {
+                    existingValue.add(guitarChord);
+                }
 
-				if(successfullySavedLog) {
-					toastMessage = context.getString(R.string.file_saved);
-				} else {
-					toastMessage = context.getString(R.string.unable_to_save_file);
-				}
+            }
+        } finally {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+        }
+    }
 
-				// must be called on the main thread
-				Handler mainThread = new Handler(Looper.getMainLooper());
-				mainThread.post(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
-					}
-				});
+    public static boolean isInitialized() {
+        return chordsToGuitarChords != null;
+    }
 
+    public static List<String> getGuitarChordsForChord(Chord chord) {
+        List<String> result = chordsToGuitarChords.get(chord);
+        return result != null ? result : Collections.emptyList();
+    }
 
-				handlerThread.quit();
-			}
-		};
+    public static void setGuitarChordsForChord(Context context, Chord chord, List<String> newGuitarChords) {
+        List<String> existingValue = chordsToGuitarChords.get(chord);
+        if (existingValue != null) {
+            chordsToGuitarChords.remove(chord);
+        }
+        chordsToGuitarChords.put(chord, newGuitarChords);
 
-		Runnable runnable = () -> {
-			// your async code goes here.
-			Message message = new Message();
-			message.obj = SaveFileHelper.saveFile(context, result, "customChordVariations_DO_NOT_EDIT.crd");
+        saveChordDictionaryToFile(context);
+    }
 
-			asyncHandler.sendMessage(message);
-		};
+    private static void saveChordDictionaryToFile(Context context) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object key : chordsToGuitarChords.keySet()) {
+            String chord = ((Chord) key).toPrintableString(NoteNaming.English);
+            List<String> chordVarsList = chordsToGuitarChords.get(key);
 
-		asyncHandler.post(runnable);
-	}
+            for (String chordVar : chordVarsList) {
+                stringBuilder
+                        .append(chord)
+                        .append(": ")
+                        .append(chordVar)
+                        .append('\n');
+            }
+        }
+
+        final String result = stringBuilder.substring(0, stringBuilder.length() - 1); // cut off final newline
+
+        Boolean successfullySavedLog = SaveFileHelper.saveFile(
+                context, result, "customChordVariations_DO_NOT_EDIT.crd");
+
+        String toastMessage;
+
+        if (successfullySavedLog) {
+            toastMessage = context.getString(R.string.file_saved);
+        } else {
+            toastMessage = context.getString(R.string.unable_to_save_file);
+        }
+
+        // must be called on the main thread
+        Handler mainThread = new Handler(Looper.getMainLooper());
+        mainThread.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 }
