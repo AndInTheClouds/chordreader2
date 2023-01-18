@@ -65,7 +65,10 @@
     <string name="pref_first_run_title">Einführung zurücksetzen</string>
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
     <string name="first_run_title">Willkommen zu Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Was ist neu in Version 2.1.1?</b>\n\n<li>Aktiven Song per Menü einer Setlist hinzugefügen</li>\n<li>Hilfe-Seite hinzugefügt</li>\n<li>Kleinere Bugfixes und Optimierungen</li>\n\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
+    <string name="first_run_message">\n<b>Was ist neu in Version 2.1.2?</b>\n\n
+        <li>Wechsel zu Android Storage Access Framework ab Android 8.1</li>\n
+        <li>Möglichkeit für individuellen Speicherpfad</li>\n\n
+        ChordReader 2 ist eine <b>Open Source Software</b>.</string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
     <string name="closing_chordreader">ChordReader schließen</string>

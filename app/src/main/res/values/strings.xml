@@ -82,7 +82,10 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.1.1?</b> \n\n    <li>Add active song to a setlist via menu</li>\n    <li>Help page added</li>\n    <li>Minor bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.1.2?</b> \n\n
+        <li>Switch to Android Storage Access Framework as of Android 8.1</li>\n
+        <li>Possibility for custom storage path</li>\n
+        <li>Minor bugfixes and optimizations</li>\n   \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>
