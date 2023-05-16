@@ -311,7 +311,7 @@ public class SaveFileHelper {
 
     public static List<String> openSetlist(Context context, String setlist) {
 
-        ArrayList<String> filesList = new ArrayList<>();
+        final String[][] tempList2 = {new String[0]};
 
         // do in background to avoid jankiness
         final CountDownLatch latch = new CountDownLatch(1);
@@ -323,6 +323,8 @@ public class SaveFileHelper {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+
+                tempList2[0] = (String[]) msg.obj;
 
                 latch.countDown();
 
@@ -340,28 +342,34 @@ public class SaveFileHelper {
 
             ArrayList<String> existingFiles = SaveFileHelper.getExistingFiles(context, files);
 
+            ArrayList<String> tempList = new ArrayList<>();
+
             for (String file : existingFiles) {
-                filesList.add(file.replace(".txt", ""));
+                tempList.add(file.replace(".txt", ""));
             }
 
-            if (filesList.size() == 1 && filesList.get(0).equals(""))
-                filesList.remove(0);
+            if (tempList.size() == 1 && tempList.get(0).equals(""))
+                tempList.remove(0);
 
-            message.obj = "ready";
+            String[] stringArray = new String[tempList.size()];
+            tempList.toArray(stringArray);
+            message.obj = stringArray;
 
             asyncHandler.sendMessage(message);
         };
 
         asyncHandler.post(runnable);
 
-        // wait for async saving result
+        // wait for async opening result
         try {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        return filesList.isEmpty() ? new ArrayList<>() : filesList;
+        ArrayList<String> fileList = new ArrayList<>(Arrays.asList(tempList2[0]));
+
+        return fileList.isEmpty() ? new ArrayList<>() : fileList;
     }
 
     public static boolean saveFile(Context context, String fileText, String filename) {
@@ -522,7 +530,7 @@ public class SaveFileHelper {
                         DocumentsContract.Document.COLUMN_DISPLAY_NAME
                 }, null, null, null);
 
-                ArrayList<Uri> existingFilesUris = new ArrayList<>();
+                Uri[] existingFilesUris = new Uri[requestedFileNames.size()];
 
                 while (cursor.moveToNext()) {
                     final String fileName = cursor.getString(1);
@@ -534,11 +542,12 @@ public class SaveFileHelper {
                                 DocumentsContract.buildDocumentUriUsingTree(
                                         PreferenceHelper.getStorageLocation(context), documentId);
 
-                        existingFilesUris.add(documentUri);
+                        int index = requestedFileNames.indexOf(fileName);
+                        existingFilesUris[index] = documentUri;
                     }
                 }
 
-                return existingFilesUris;
+                return new ArrayList<>(Arrays.asList(existingFilesUris));
 
             } catch (Exception e) {
                 Log.w("SaveFileHelper_getUri", "Failed query: " + e);

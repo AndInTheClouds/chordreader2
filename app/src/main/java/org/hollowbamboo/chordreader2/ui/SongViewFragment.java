@@ -106,6 +106,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = "SongViewFragment";
     private static final int PROGRESS_DIALOG_MIN_TIME = 600;
     private static final int POST_SAVE_PROCEEDING_EXIT = 100;
+    private static final int POST_SAVE_PROCEEDING_NEXT_SONG = 200;
+    private static final int POST_SAVE_PROCEEDING_PREVIOUS_SONG = 201;
 
     private int howToProceedAfterSaving = 0;
 
@@ -205,16 +207,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     createSetListDialog();
                     return true;
                 } else if(itemId == android.R.id.home) {
-                    if(songViewFragmentViewModel.isEditedTextToSave) {
-                        howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
-                        if (songViewFragmentViewModel.autoSave) {
-                            saveFile(songViewFragmentViewModel.filename, songViewFragmentViewModel.chordText);
-                        } else {
-                            showSavePromptDialog();
-                        }
-                    } else if (getParentFragment() != null) {
-                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-                    }
+                    howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
+                    checkForSaving();
 
                     return true;
                 }
@@ -240,9 +234,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             animationBlink(autoScrollFasterButton);
             changeAutoScrollFactor(true);
         } else if(id == R.id.setlist_next) {
-            openNextSong(true);
+            howToProceedAfterSaving = POST_SAVE_PROCEEDING_NEXT_SONG;
+            checkForSaving();
         } else if(id == R.id.setlist_previous) {
-            openNextSong(false);
+            howToProceedAfterSaving = POST_SAVE_PROCEEDING_PREVIOUS_SONG;
+            checkForSaving();
         }
     }
 
@@ -467,17 +463,22 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             public void handleOnBackPressed() {
                 howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
 
-                if(songViewFragmentViewModel.isEditedTextToSave) {
-                    if (songViewFragmentViewModel.autoSave)
-                        saveFile(songViewFragmentViewModel.filename, songViewFragmentViewModel.chordText);
-                    else {
-                        showSavePromptDialog();
-                    }
-                } else
-                    proceedAfterSaving();
+                checkForSaving();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+    }
+
+    private void checkForSaving() {
+
+        if(songViewFragmentViewModel.isEditedTextToSave) {
+            if (songViewFragmentViewModel.autoSave)
+                saveFile(songViewFragmentViewModel.filename, songViewFragmentViewModel.chordText);
+            else {
+                showSavePromptDialog();
+            }
+        } else
+            proceedAfterSaving();
     }
 
     private void saveFile(final String filename, final String fileText) {
@@ -526,6 +527,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             if (getParentFragment() != null) {
                 Navigation.findNavController(getParentFragment().requireView()).popBackStack();
             }
+        } else if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_NEXT_SONG) {
+            openNextSong(true);
+        } else if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_PREVIOUS_SONG) {
+            openNextSong(false);
         } else
             setTitle(songViewFragmentViewModel.filename);
     }

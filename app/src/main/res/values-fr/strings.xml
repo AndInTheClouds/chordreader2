@@ -65,9 +65,9 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.2 ?</b>\n\n
-        <li>Passage à Android Storage Access Framework à partir d\'Android 8.1</li>\n
-        <li>Possibilité d\'un emplacement de stockage individuel</li>\n\n
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.3 ?</b>\n\n
+        <li>Correction d\'un problème de désorganisation de l\'ordre des chansons dans la setlist à l\'ouverture</li>\n
+        <li>Correction d\'un problème de sauvegarde des chansons éditées lors du changement de chanson en mode Setlist</li>\n\n
         Chord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
