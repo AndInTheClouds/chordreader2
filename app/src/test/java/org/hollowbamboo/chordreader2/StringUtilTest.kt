@@ -17,4 +17,18 @@ class StringUtilTest {
         // Then
         Assert.assertEquals(arrayOf("lorem", "ipsum"), actual)
     }
+
+    @Test
+    fun replace() {
+        // Given
+        val originalString = "a1a1a1a1a1"
+        val searchString = "a"
+        val replaceString = "b"
+
+        // When
+        val actual = StringUtil.replace(originalString, searchString, replaceString)
+
+        // Then
+        Assert.assertEquals("b1b1b1b1b1", actual)
+    }
 }
