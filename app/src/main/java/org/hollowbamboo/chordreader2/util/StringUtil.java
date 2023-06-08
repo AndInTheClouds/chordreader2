@@ -87,22 +87,6 @@ public class StringUtil {
     }
     
 
-    public static String join(int[] arr, String delimiter) {
-    	
-    	if(arr.length == 0) {
-    		return "";
-    	}
-
-    	StringBuilder sb = new StringBuilder();
-    	
-    	for (int i : arr) {
-    		sb.append(delimiter).append(Integer.toString(i));
-    	}
-    	
-    	return sb.substring(delimiter.length());
-    	
-    }
-    
     public static String capitalize(String str) {
     	
     	StringBuilder sb = new StringBuilder(str);
