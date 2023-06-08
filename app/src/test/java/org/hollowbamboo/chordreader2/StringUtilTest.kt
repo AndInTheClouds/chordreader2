@@ -31,4 +31,28 @@ class StringUtilTest {
         // Then
         Assert.assertEquals("b1b1b1b1b1", actual)
     }
+
+    @Test
+    fun isAllWhitespace_true() {
+        // Given
+        val input = "      "
+
+        // When
+        val actual = StringUtil.isAllWhitespace(input)
+
+        // Then
+        Assert.assertTrue(actual)
+    }
+
+    @Test
+    fun isAllWhitespace_false() {
+        // Given
+        val input = "     lorem ipsum"
+
+        // When
+        val actual = StringUtil.isAllWhitespace(input)
+
+        // Then
+        Assert.assertFalse(actual)
+    }
 }
