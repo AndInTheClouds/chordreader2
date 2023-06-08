@@ -87,19 +87,6 @@ public class StringUtil {
     }
     
 
-    public static String capitalize(String str) {
-    	
-    	StringBuilder sb = new StringBuilder(str);
-    	
-    	for (int i = 0; i < sb.length(); i++) {
-    		if(i == 0 || Character.isWhitespace(sb.charAt(i - 1))) {
-    			sb.replace(i, i + 1, Character.toString(Character.toUpperCase(sb.charAt(i))));
-    		}
-    	}
-    	
-    	return sb.toString();	
-    }
-    
     public static boolean isAllWhitespace(CharSequence str) {
     	for (int i = 0; i < str.length(); i++) {
     		if(!Character.isWhitespace(str.charAt(i))) {
