@@ -338,6 +338,12 @@ public class SaveFileHelper {
 
             String setlistContent  = SaveFileHelper.openFile(context, setlist);
 
+            if (setlistContent.length() == 0) {
+                message.obj = new String[0];
+                asyncHandler.sendMessage(message);
+                return;
+            }
+
             String[] files = setlistContent.split("\n");
 
             ArrayList<String> existingFiles = SaveFileHelper.getExistingFiles(context, files);
