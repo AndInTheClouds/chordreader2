@@ -102,13 +102,6 @@ public class PreferenceHelper {
 		return searchEngineURL;
 	}
 
-	public static void setSearchEngineURL(Context context, String searchEngineURL) {
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = sharedPrefs.edit();
-		editor.putString(context.getString(R.string.pref_search_engine), searchEngineURL);
-		editor.apply();
-	}
-
 	public static Uri getStorageLocation(Context context) {
 
 		if(storageLocation == null) {
