@@ -133,10 +133,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private int indexCurrentSong, setlistSongsIndexDiffEnd;
     private String filename;
 
-    public static SongViewFragment newInstance() {
-        return new SongViewFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
