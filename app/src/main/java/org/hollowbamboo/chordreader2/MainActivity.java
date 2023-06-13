@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
-    DataViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             requestPermission();
 
         showInitialMessage();
-
-        viewModel = new ViewModelProvider(this).get(DataViewModel.class);
     }
 
     @Override
