@@ -249,7 +249,6 @@ public class WebSearchViewModel extends ViewModel {
 
                     Message message = new Message();
                     message.obj = taskCounter.incrementAndGet();
-                    ;
 
                     asyncHandler.sendMessage(message);
                 };

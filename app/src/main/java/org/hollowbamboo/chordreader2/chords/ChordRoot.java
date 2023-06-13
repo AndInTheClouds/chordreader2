@@ -21,5 +21,4 @@ public enum ChordRoot {
 	Gb,
 	G,
 	Ab,
-	;
 }

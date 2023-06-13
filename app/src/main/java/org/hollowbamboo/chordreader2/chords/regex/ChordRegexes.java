@@ -92,8 +92,8 @@ public class ChordRegexes {
 		}
 		
 		
-		for (String alias : aliases) {;
-			
+		for (String alias : aliases) {
+
 			if (TextUtils.isEmpty(alias)) {
 				continue; // e.g. the "major" quality can be expressed as an empty string, so skip in the regex
 			}
