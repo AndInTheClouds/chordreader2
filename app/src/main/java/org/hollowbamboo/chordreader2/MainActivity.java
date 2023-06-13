@@ -36,7 +36,6 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -48,7 +47,6 @@ import com.google.android.material.navigation.NavigationView;
 import org.hollowbamboo.chordreader2.databinding.ActivityMainBinding;
 import org.hollowbamboo.chordreader2.helper.ChordDictionary;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
-import org.hollowbamboo.chordreader2.model.DataViewModel;
 
 import java.util.Objects;
 
