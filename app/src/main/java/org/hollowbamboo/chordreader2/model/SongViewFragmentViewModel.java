@@ -136,10 +136,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         }
     }
 
-    public Transposition getTransposition() {
-        return transposition;
-    }
-
     public Spannable buildUpChordTextToDisplay() {
 
         // have to build up a new string, because some of the chords may have different string lengths
