@@ -4,16 +4,9 @@ import java.util.regex.Pattern;
 
 public class ChordRegex {
 
-	private String regexStringWithParens;
 	private Pattern pattern;
 	private Pattern patternWithParens;
 
-	public String getRegexStringWithParens() {
-		return regexStringWithParens;
-	}
-	public void setRegexStringWithParens(String regexStringWithParens) {
-		this.regexStringWithParens = regexStringWithParens;
-	}
 	public Pattern getPattern() {
 		return pattern;
 	}
