@@ -15,10 +15,6 @@ public class Pair<E,T> {
 	public T getSecond() {
 		return second;
 	}
-	public void setSecond(T second) {
-		this.second = second;
-	}
-	
 	public String toString() {
 		return "<" + first + ", " + second + ">";
 	}
