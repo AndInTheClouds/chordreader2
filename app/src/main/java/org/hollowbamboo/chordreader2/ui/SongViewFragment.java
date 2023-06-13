@@ -1263,10 +1263,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
 
-        public void reMeasureCurrentPage(int position) {
-            mCurrentPagePosition = position;
-            requestLayout();
-        }
     }
 
     public static class EditChordTextDialog extends DialogFragment {
