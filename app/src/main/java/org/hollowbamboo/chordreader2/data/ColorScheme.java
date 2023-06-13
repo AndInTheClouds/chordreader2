@@ -11,20 +11,19 @@ import org.hollowbamboo.chordreader2.R;
 public enum ColorScheme {
 	
 	Dark (R.string.pref_scheme_dark, R.color.scheme_dark_background, 
-			R.color.scheme_dark_foreground, R.color.scheme_dark_bubble, R.color.scheme_dark_link
+			R.color.scheme_dark_foreground, R.color.scheme_dark_link
 	),
 	Light (R.string.pref_scheme_light, R.color.scheme_light_background, 
-			R.color.scheme_light_foreground, R.color.scheme_light_bubble, R.color.scheme_light_link
+			R.color.scheme_light_foreground, R.color.scheme_light_link
 	),
 	Android (R.string.pref_scheme_android, R.color.scheme_android_background, 
-			R.color.scheme_android_foreground, R.color.scheme_android_bubble, R.color.scheme_android_link
+			R.color.scheme_android_foreground, R.color.scheme_android_link
 	),
 	;
 	
 	private final int nameResource;
 	private final int backgroundColorResource;
 	private final int foregroundColorResource;
-	private final int bubbleColorResource;
 	private final int linkColorResource;
 	
 	private int backgroundColor = -1;
@@ -34,11 +33,10 @@ public enum ColorScheme {
 	private static final Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
 	
 	ColorScheme(int nameResource, int backgroundColorResource, int foregroundColorResource,
-				int bubbleColorResource, int linkColorResource) {
+				int linkColorResource) {
 		this.nameResource = nameResource;
 		this.backgroundColorResource = backgroundColorResource;
 		this.foregroundColorResource = foregroundColorResource;
-		this.bubbleColorResource = bubbleColorResource;
 		this.linkColorResource = linkColorResource;
 
 	}
