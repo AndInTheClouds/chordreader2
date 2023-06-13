@@ -70,7 +70,6 @@ public class ChordRegexes {
 	 * with the longest strings first, e.g. ["sus4","sus","sus2"] -->
 	 * 
 	 * (sus4|sus2|sus)
-	 * @param allAliases
 	 * @return
 	 */
 	private static String greedyDisjunction(List<String> aliases, boolean matchingGroup) {
