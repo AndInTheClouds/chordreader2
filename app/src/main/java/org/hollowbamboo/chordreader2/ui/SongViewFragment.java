@@ -128,7 +128,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private GestureDetector gestureDetector;
     private ScaleGestureDetector scaleGestureDetector;
 
-    private float lastYCoordinate;
     private boolean doubleTapExecuted = false;
 
     private int indexCurrentSong, setlistSongsIndexDiffEnd;
@@ -276,8 +275,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
         View.OnTouchListener touchListener = (v, event) -> {
-
-            lastYCoordinate = event.getRawY();
 
             final int action = event.getAction();
 
