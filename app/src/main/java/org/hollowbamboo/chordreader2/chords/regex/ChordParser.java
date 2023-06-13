@@ -70,11 +70,9 @@ public class ChordParser {
 		if (!TextUtils.isEmpty(overridingRoot)) {
 			overridingChordRoot = noteNaming.findByAlias(overridingRoot.substring(1)); // cut off initial "/"
 		}
-		
-		Chord chord = Chord.newChord(
+
+		return Chord.newChord(
 				chordRoot, chordQuality, chordSeventh, chordAdded, chordSuspsended, overridingChordRoot);
-		
-		return chord;
 	}
 
 	/**
