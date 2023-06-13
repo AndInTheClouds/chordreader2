@@ -12,7 +12,7 @@ public class UtilLogger {
 
 	public static final boolean DEBUG_MODE = false;
 	
-	private String tag;
+	private final String tag;
 	
 	public UtilLogger(String tag) {
 		this.tag = tag;

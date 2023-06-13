@@ -6,7 +6,7 @@ import org.hollowbamboo.chordreader2.util.UtilLogger;
 
 public class PackageHelper {
 
-	private static UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PackageHelper.class);
+	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PackageHelper.class);
 	
 	public static String getVersionName(Context context) {
 		try {

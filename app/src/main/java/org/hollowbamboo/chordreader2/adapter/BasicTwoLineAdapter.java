@@ -20,9 +20,9 @@ public class BasicTwoLineAdapter extends ArrayAdapter<String> {
 
 	private static final int RES_ID = R.layout.simple_dropdown_item_2line;
 	
-	private List<String> firstLines;
-	private List<String> secondLines;
-	private int checked;
+	private final List<String> firstLines;
+	private final List<String> secondLines;
+	private final int checked;
 	
 	
 	public BasicTwoLineAdapter(Context context, List<String> firstLines, List<String> secondLines, int checked) {

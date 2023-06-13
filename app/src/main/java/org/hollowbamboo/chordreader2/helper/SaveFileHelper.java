@@ -41,7 +41,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class SaveFileHelper {
 
-    private static UtilLogger log = new UtilLogger(SaveFileHelper.class);
+    private static final UtilLogger log = new UtilLogger(SaveFileHelper.class);
 
     public static boolean checkIfSdCardExists() {
 

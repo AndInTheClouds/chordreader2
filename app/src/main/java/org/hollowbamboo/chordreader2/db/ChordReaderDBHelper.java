@@ -34,7 +34,7 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 
 	
 	// private variables
-	private SQLiteDatabase db;
+	private final SQLiteDatabase db;
 	
 	public ChordReaderDBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);

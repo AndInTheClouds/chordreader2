@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ChordPagerAdapter extends PagerAdapter {
 
     // This holds all the currently displayable views, in order from left to right.
-    private ArrayList<View> views = new ArrayList<View>();
+    private final ArrayList<View> views = new ArrayList<View>();
 
     //-----------------------------------------------------------------------------
     // Used by ViewPager.  "Object" represents the page; tell the ViewPager where the
