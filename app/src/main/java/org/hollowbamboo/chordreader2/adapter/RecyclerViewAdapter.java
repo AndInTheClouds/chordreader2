@@ -70,8 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() { return data.size(); }
 
-    public ArrayList<String> getData() { return data; }
-
     @Override
     public void onRowMoved(int fromPosition, int toPosition) {
         if(fromPosition < toPosition) {
