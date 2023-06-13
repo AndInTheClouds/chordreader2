@@ -40,7 +40,6 @@ public class WebSearchViewModel extends ViewModel {
     private NoteNaming noteNaming;
 
     private final CustomWebViewClient client;
-    private FragmentResultListener fragmentResultListener;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
