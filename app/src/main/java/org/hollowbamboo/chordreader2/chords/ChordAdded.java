@@ -16,7 +16,7 @@ public enum ChordAdded {
 	PowerChord (Arrays.asList("5")), // duh duh DUH, duh duh DUH-duh, duh duh DUH, duh duh ((c) Deep Purple)
 	;
 	
-	private List<String> aliases;
+	private final List<String> aliases;
 	
 	ChordAdded (List<String> aliases) {
 		this.aliases = aliases;
@@ -36,7 +36,7 @@ public enum ChordAdded {
 		return result;
 	}
 	
-	private static Map<String, org.hollowbamboo.chordreader2.chords.ChordAdded> lookupMap = new HashMap<String, org.hollowbamboo.chordreader2.chords.ChordAdded>();
+	private static final Map<String, org.hollowbamboo.chordreader2.chords.ChordAdded> lookupMap = new HashMap<String, org.hollowbamboo.chordreader2.chords.ChordAdded>();
 	
 	static {
 		for (org.hollowbamboo.chordreader2.chords.ChordAdded value : values()) {

@@ -21,19 +21,19 @@ public enum ColorScheme {
 			R.drawable.app_selector_android),
 	;
 	
-	private int nameResource;
-	private int backgroundColorResource;
-	private int foregroundColorResource;
-	private int bubbleColorResource;
-	private int linkColorResource;
-	private int selectorResource;
+	private final int nameResource;
+	private final int backgroundColorResource;
+	private final int foregroundColorResource;
+	private final int bubbleColorResource;
+	private final int linkColorResource;
+	private final int selectorResource;
 	
 	private int backgroundColor = -1;
 	private int foregroundColor = -1;
 	private int bubbleColor = -1;
 	private int linkColor = -1;
 	
-	private static Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
+	private static final Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
 	
 	ColorScheme(int nameResource, int backgroundColorResource, int foregroundColorResource,
 				int bubbleColorResource, int linkColorResource, int selectorResource) {

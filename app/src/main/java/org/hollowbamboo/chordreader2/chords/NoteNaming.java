@@ -61,9 +61,9 @@ public enum NoteNaming {
 			.build()),
 	;
 	
-	private EnumMap<ChordRoot, List<String>> noteNames;
-	private Map<String,ChordRoot> lookupMap = new HashMap<String, ChordRoot>();
-	private int printableNameResource;
+	private final EnumMap<ChordRoot, List<String>> noteNames;
+	private final Map<String,ChordRoot> lookupMap = new HashMap<String, ChordRoot>();
+	private final int printableNameResource;
 	
 	private NoteNaming(int printableNameResource,
 			EnumMap<ChordRoot, List<String>> noteNames) {
