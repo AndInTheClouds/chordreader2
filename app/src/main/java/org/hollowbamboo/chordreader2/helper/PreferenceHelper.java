@@ -55,18 +55,6 @@ public class PreferenceHelper {
 		return colorScheme;
 		
 	}
-		
-	public static void setColorScheme(Context context, ColorScheme colorScheme) {
-		
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = sharedPrefs.edit();
-		
-		editor.putString(context.getString(R.string.pref_scheme).toString(), 
-				context.getText(colorScheme.getNameResource()).toString());
-		
-		editor.apply();
-		
-	}
 
 	public static NoteNaming getNoteNaming(Context context) {
 		
