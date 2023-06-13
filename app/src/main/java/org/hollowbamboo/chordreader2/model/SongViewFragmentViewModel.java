@@ -179,10 +179,6 @@ public class SongViewFragmentViewModel extends ViewModel {
 
             Pair<Integer, Integer> newStartAndEndPosition = newStartAndEndPositions.get(i);
 
-            //Log.d("pair is " + newStartAndEndPosition);
-            //Log.d("substr is " + sb.substring(
-            //		newStartAndEndPosition.getFirst(), newStartAndEndPosition.getSecond()));
-
             final Chord chord = chordsInText.get(i).getChord();
 
             InternalURLSpan urlSpan = new InternalURLSpan(v -> showChordPopupMLD.setValue(chord)) {
