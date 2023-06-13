@@ -110,7 +110,6 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 					Transposition transposition = new Transposition();
 					
 					transposition.setId(cursor.getInt(0));
-					transposition.setFilename(cursor.getString(1));
 					transposition.setTranspose(cursor.getInt(2));
 					transposition.setCapo(cursor.getInt(3));
 					
