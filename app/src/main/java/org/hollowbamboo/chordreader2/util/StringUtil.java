@@ -72,20 +72,6 @@ public class StringUtil {
         return sb.toString();
     }
 
-    public static String join(String delimiter, String[] strings) {
-        
-        if(strings.length == 0) {
-            return "";
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String str : strings) {
-            stringBuilder.append(" ").append(str);
-        }
-
-        return stringBuilder.substring(1);
-    }
-    
 
     public static boolean isAllWhitespace(CharSequence str) {
     	for (int i = 0; i < str.length(); i++) {
