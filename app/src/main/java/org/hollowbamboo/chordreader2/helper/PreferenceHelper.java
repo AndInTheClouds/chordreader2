@@ -11,8 +11,7 @@ import org.hollowbamboo.chordreader2.data.ColorScheme;
 import org.hollowbamboo.chordreader2.util.UtilLogger;
 
 public class PreferenceHelper {
-	
-	private static float textSize = -1;
+
 	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
 	private static String searchEngineURL = null;
@@ -21,22 +20,12 @@ public class PreferenceHelper {
 	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
 	
 	public static void clearCache() {
-		textSize = -1;
 		colorScheme = null;
 		noteNaming = null;
 		searchEngineURL = null;
 		storageLocation = null;
 	}
-	
-	private static void cacheTextsize(Context context, int dimenId) {
-		
-		float unscaledSize = context.getResources().getDimension(dimenId);
-		
-		log.d("unscaledSize is %g", unscaledSize);
-		
-		textSize = unscaledSize;
-	}
-	
+
 	public static void setFirstRunPreference(Context context, boolean bool) {
 
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
