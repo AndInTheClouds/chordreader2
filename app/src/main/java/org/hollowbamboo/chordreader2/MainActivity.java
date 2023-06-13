@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int STORAGE_PERMISSION_CODE = 100;
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
     DrawerLayout drawer;
     DataViewModel viewModel;
 
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        org.hollowbamboo.chordreader2.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
