@@ -142,21 +142,6 @@ public class SaveFileHelper {
         }
     }
 
-    public static Date getLastModifiedDate(String filename) {
-
-        File catlogDir = getBaseDirectory();
-
-        File file = new File(catlogDir, filename);
-
-        if (file.exists()) {
-            return new Date(file.lastModified());
-        } else {
-            // shouldn't happen
-            log.e("file last modified date not found: %s", filename);
-            return new Date();
-        }
-    }
-
     public static String[] getSavedFileNames(Context context, String fileExtension) {
 
         List<String> fileNames = getFilenamesInBaseDirectory(context);
