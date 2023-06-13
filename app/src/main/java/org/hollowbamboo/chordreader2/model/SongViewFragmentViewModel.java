@@ -40,7 +40,6 @@ public class SongViewFragmentViewModel extends ViewModel {
     public int capoFret = 0;
     public int transposeHalfSteps = 0;
     private NoteNaming noteNaming;
-    private Transposition transposition;
     private int bpm;
     private int linkColor;
     private float scrollVelocityCorrectionFactor;
@@ -125,7 +124,6 @@ public class SongViewFragmentViewModel extends ViewModel {
     }
 
     public void setTransposition(Transposition transposition) {
-        this.transposition = transposition;
 
         if(filename != null && transposition != null) {
             capoFret = transposition.getCapo();
