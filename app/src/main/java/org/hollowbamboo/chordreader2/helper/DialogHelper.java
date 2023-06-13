@@ -10,10 +10,10 @@ import org.hollowbamboo.chordreader2.R;
 
 public class DialogHelper {
 	
-	public static int CAPO_MIN = 0;
-	public static int CAPO_MAX = 6;
-	public static int TRANSPOSE_MIN = -6;
-	public static int TRANSPOSE_MAX = 6;
+	public static final int CAPO_MIN = 0;
+	public static final int CAPO_MAX = 6;
+	public static final int TRANSPOSE_MIN = -6;
+	public static final int TRANSPOSE_MAX = 6;
 
 	public static View createTransposeDialogView(Context context, int capoFret, int transposeHalfSteps) {
 		
