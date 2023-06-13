@@ -72,11 +72,10 @@ public class ChordPagerAdapter extends PagerAdapter {
 
     //-----------------------------------------------------------------------------
     // Add "view" to right end of "views".
-    // Returns the position of the new view.
     // The app should call this to add pages; not used by ViewPager.
-    public int addView (View v)
+    public void addView (View v)
     {
-        return addView (v, views.size());
+        addView(v, views.size());
     }
 
     //-----------------------------------------------------------------------------
