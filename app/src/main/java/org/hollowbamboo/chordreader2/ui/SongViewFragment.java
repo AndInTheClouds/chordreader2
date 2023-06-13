@@ -121,7 +121,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
 
     private ImageButton autoScrollPlayButton, autoScrollPauseButton, autoScrollSlowerButton, autoScrollFasterButton;
-    private ImageView nextSongButton, previousSongButton;
 
     private CountDownTimer releaseWakeLockCountDownTimer;
     private Timer metronomeTimer;
@@ -260,13 +259,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         if(dataViewModel.getSetListMLD() != null) {
             if(setlistSongsIndexDiffEnd > 0) {
-                nextSongButton = binding.setlistNext;
+                ImageView nextSongButton = binding.setlistNext;
                 nextSongButton.setVisibility(View.VISIBLE);
                 nextSongButton.setOnClickListener(this);
             }
 
             if(indexCurrentSong > 0) {
-                previousSongButton = binding.setlistPrevious;
+                ImageView previousSongButton = binding.setlistPrevious;
                 previousSongButton.setVisibility(View.VISIBLE);
                 previousSongButton.setOnClickListener(this);
             }
