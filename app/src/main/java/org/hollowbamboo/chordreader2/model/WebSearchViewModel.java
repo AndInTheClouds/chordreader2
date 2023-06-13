@@ -40,7 +40,6 @@ public class WebSearchViewModel extends ViewModel {
     private String searchEngineURL = null;
     private String searchText;
 
-    private volatile String chordText;
     private String html = null;
     boolean isUrlLoading;
     private NoteNaming noteNaming;
@@ -136,7 +135,7 @@ public class WebSearchViewModel extends ViewModel {
 
         Log.d(LOG_TAG,"unknown webpage");
 
-        chordText = WebPageExtractionHelper.extractLikelyChordChart(html, noteNaming);
+        String chordText = WebPageExtractionHelper.extractLikelyChordChart(html, noteNaming);
 
 
         if(chordText == null) { // didn't find a good extraction, so use the entire html
