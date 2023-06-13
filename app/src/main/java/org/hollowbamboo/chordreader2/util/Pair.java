@@ -12,9 +12,6 @@ public class Pair<E,T> {
 	public E getFirst() {
 		return first;
 	}
-	public void setFirst(E first) {
-		this.first = first;
-	}
 	public T getSecond() {
 		return second;
 	}
