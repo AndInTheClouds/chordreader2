@@ -106,8 +106,7 @@ public class Chord implements Cloneable, Serializable {
 		} else if (!seventh.equals(other.seventh))
 			return false;
 		if (suspended == null) {
-			if (other.suspended != null)
-				return false;
+			return other.suspended == null;
 		} else if (!suspended.equals(other.suspended))
 			return false;
 		return true;
