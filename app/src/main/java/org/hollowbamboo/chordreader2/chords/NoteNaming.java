@@ -65,7 +65,7 @@ public enum NoteNaming {
 	private final Map<String,ChordRoot> lookupMap = new HashMap<String, ChordRoot>();
 	private final int printableNameResource;
 	
-	private NoteNaming(int printableNameResource,
+	NoteNaming(int printableNameResource,
 			EnumMap<ChordRoot, List<String>> noteNames) {
 		if (noteNames.size() != 12) {
 			throw new IllegalArgumentException("must have 12 notes");
