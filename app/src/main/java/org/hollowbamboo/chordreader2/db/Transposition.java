@@ -5,9 +5,6 @@ public class Transposition {
 	private int capo;
 	private int transpose;
 
-	public void setId(int id) {
-	}
-
 	public void setFilename(String filename) {
 	}
 	public int getCapo() {
