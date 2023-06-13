@@ -246,8 +246,6 @@ public class ListFragment extends Fragment implements TextWatcher {
             return;
         }
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
         final EditText editText = new EditText(requireContext());
         editText.setSingleLine();
         editText.setSingleLine(true);
