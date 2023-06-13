@@ -30,7 +30,6 @@ public enum ColorScheme {
 	
 	private int backgroundColor = -1;
 	private int foregroundColor = -1;
-	private int bubbleColor = -1;
 	private int linkColor = -1;
 	
 	private static final Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
@@ -71,14 +70,6 @@ public enum ColorScheme {
 		}
 		return linkColor;
 	}
-	
-	public int getBubbleColor(Context context) {
-		if(bubbleColor == -1) {
-			bubbleColor = context.getResources().getColor(bubbleColorResource);
-		}
-		return bubbleColor;
-	}
-	
 	public int getSelectorResource() {
 		return selectorResource;
 	}
