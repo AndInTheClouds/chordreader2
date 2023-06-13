@@ -80,11 +80,7 @@ public enum NoteNaming {
 		}
 	}
 
-	public EnumMap<ChordRoot, List<String>> getNoteNames() {
-		return noteNames;
-	}
-	
-	
+
 	public List<String> getAllNames() {
 		List<String> result = new ArrayList<String>();
 		
