@@ -45,8 +45,8 @@ public class DialogHelper {
 		
 		minTextView.setText(Integer.toString(min));
 		// check if we need to distinguish between negative and positive
-		maxTextView.setText((min < 0 && max > 0 ? "+" : "") + Integer.toString(max));
-		progressTextView.setText((min < 0 && defaultValue > 0 ? "+" : "") + Integer.toString(defaultValue));
+		maxTextView.setText((min < 0 && max > 0 ? "+" : "") + max);
+		progressTextView.setText((min < 0 && defaultValue > 0 ? "+" : "") + defaultValue);
 		seekBar.setMax(max - min);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			
