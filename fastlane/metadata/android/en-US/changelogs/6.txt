@@ -1,0 +1,5 @@
+- Changelog added to F-Droid
+- Bug fixes:
+     > Save setlist only when changed,
+     > catch null pointers while wakelock acquiring and restore app from background,
+     > Improve Web extraction - fixed lost whitespaces after multiple new lines

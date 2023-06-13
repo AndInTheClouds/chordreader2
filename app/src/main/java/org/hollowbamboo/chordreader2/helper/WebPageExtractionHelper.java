@@ -41,7 +41,7 @@ public class WebPageExtractionHelper {
 			"<!-- END HEADER -->(.*?)<!-- BOTTOM GRIDS - START -->",
 			Pattern.DOTALL);
 
-	private static Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r ]*){2,}");
+	private static Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r]*){2,}");
 
 	public static String extractChordChart(ChordWebpage webpage, String html, NoteNaming noteNaming) {
 

@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.text.InputType;
 import android.text.Layout;
@@ -548,7 +550,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private void setTitle(String titleText) {
 
         // have to use original thread, else exception
-        Handler handlerInMainThread = new Handler(toolbar.getContext().getMainLooper());
+        Looper looper = toolbar.getContext().getMainLooper();
+
+        if (looper == null)
+            return;
+
+        Handler handlerInMainThread = new Handler(looper);
 
         Runnable yourRunnable = new Runnable() {
             @Override
@@ -572,7 +579,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         Log.d(LOG_TAG,"Acquiring wakelock");
 
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (getActivity() != null)
+         if (getActivity().getWindow() != null)
+             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if(releaseWakeLockCountDownTimer != null) {
             releaseWakeLockCountDownTimer.cancel();

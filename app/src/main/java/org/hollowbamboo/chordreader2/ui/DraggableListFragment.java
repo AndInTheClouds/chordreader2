@@ -60,6 +60,8 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     private FragmentDraggableListBinding binding;
     private DataViewModel dataViewModel;
 
+    private boolean isSetListChanged = false;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         recyclerView = binding.recyclerView;
 
-        setTitle(dataViewModel.getSetListMLD().getValue().replace(".pl",""));
+        setTitle(dataViewModel.getSetListMLD().getValue().replace(".pl", ""));
 
         dataViewModel.getSetListSongsMLD().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
@@ -93,7 +95,8 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     public void onPause() {
         super.onPause();
 
-        saveSetListToFile();
+        if (isSetListChanged)
+            saveSetListToFile();
     }
 
     @Override
@@ -120,8 +123,17 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback(mAdapter);
-        touchHelper  = new ItemTouchHelper(callback);
+        touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
+
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+
+                isSetListChanged = true;
+            }
+        });
 
         recyclerView.setAdapter(mAdapter);
     }
@@ -144,7 +156,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int itemId = menuItem.getItemId();
 
-                if(itemId == R.id.menu_new_file) {
+                if (itemId == R.id.menu_new_file) {
                     startListView();
                     return true;
                 }
@@ -159,7 +171,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     private void startSongView(String filename) {
         DraggableListFragmentDirections.ActionNavDragListViewToNavSongView action =
                 DraggableListFragmentDirections.actionNavDragListViewToNavSongView(
-                        filename.replace(".txt", ""),filename,null);
+                        filename.replace(".txt", ""), filename, null);
 
         Navigation.findNavController(getParentFragment().getView()).navigate(action);
     }
@@ -182,6 +194,6 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
             resultText.append(line).append("\n");
         }
 
-        SaveFileHelper.saveFile(requireContext(),resultText.toString(),fileName);
+        SaveFileHelper.saveFile(requireContext(), resultText.toString(), fileName);
     }
 }
