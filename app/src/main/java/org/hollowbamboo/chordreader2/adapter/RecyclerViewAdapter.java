@@ -97,14 +97,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        View rowView;
         private final TextView listItemCountTextView, songFileNameTextView;
         private final ImageView listItemDeleteImageView,listItemDragHandleImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            rowView = itemView;
 
             listItemDeleteImageView = itemView.findViewById(R.id.setlist_item_delete);
             listItemCountTextView = itemView.findViewById(R.id.setlist_song_count_text_view);
