@@ -389,6 +389,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         webView.loadUrl(url);
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showHTML(String html) {
 
