@@ -82,35 +82,35 @@ public class ChordVisualisationView extends View {
 
     public ChordVisualisationView(Context context) {
         super(context);
-        init(null, null);
+        init(null);
     }
 
     public ChordVisualisationView(String chord, Context context) {
         super(context);
 
-        init(null, chord);
+        init(chord);
     }
 
     public ChordVisualisationView(String chord, Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        init(attrs, chord);
+        init(chord);
     }
 
     public ChordVisualisationView(String chord, Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        init(attrs, chord);
+        init(chord);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ChordVisualisationView(String chord, Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        init(attrs, chord);
+        init(chord);
     }
 
-    private void init(@Nullable AttributeSet set, String chord) {
+    private void init(String chord) {
 
         this.chord = chord;
         parseChord();
