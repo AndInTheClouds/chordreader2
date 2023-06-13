@@ -1216,8 +1216,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     public static class WrapContentViewPager extends ViewPager {
 
-        private int mCurrentPagePosition = 0;
-
         public WrapContentViewPager(Context context) {
             super(context);
         }
@@ -1228,6 +1226,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int mCurrentPagePosition = 0;
             try {
                 boolean wrapHeight = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST;
                 if(wrapHeight) {
