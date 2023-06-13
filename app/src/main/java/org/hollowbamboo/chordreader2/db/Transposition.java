@@ -2,14 +2,10 @@ package org.hollowbamboo.chordreader2.db;
 
 public class Transposition {
 
-	private int id;
 	private int capo;
 	private int transpose;
-	public int getId() {
-		return id;
-	}
+
 	public void setId(int id) {
-		this.id = id;
 	}
 
 	public void setFilename(String filename) {
