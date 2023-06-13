@@ -13,11 +13,7 @@ public class UtilLogger {
 	public static final boolean DEBUG_MODE = false;
 	
 	private final String tag;
-	
-	public UtilLogger(String tag) {
-		this.tag = tag;
-	}
-	
+
 	public UtilLogger(Class<?> clazz) {
 		this.tag = clazz.getSimpleName();
 	}
