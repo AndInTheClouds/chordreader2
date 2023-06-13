@@ -482,7 +482,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Boolean successfullySavedLog = (Boolean) msg.obj;
 
                 handlerThread.quit();
             }
