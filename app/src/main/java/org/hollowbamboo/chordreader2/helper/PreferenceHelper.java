@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
-import org.hollowbamboo.chordreader2.util.UtilLogger;
 
 public class PreferenceHelper {
 
@@ -17,8 +16,6 @@ public class PreferenceHelper {
 	private static String searchEngineURL = null;
 	private static String storageLocation = null;
 
-	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
-	
 	public static void clearCache() {
 		colorScheme = null;
 		noteNaming = null;
