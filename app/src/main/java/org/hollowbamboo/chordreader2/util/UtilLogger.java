@@ -27,13 +27,7 @@ public class UtilLogger {
 			Log.i(tag, smartFormat(format,more));
 		}
 	}
-	
-	public void i(Exception e, String format, Object... more) {
-		if(DEBUG_MODE) {
-			Log.i(tag, smartFormat(format,more), e);
-		}
-	}
-	
+
 	public void w(Exception e, String format, Object... more) {
 		if(DEBUG_MODE) {
 			Log.w(tag, smartFormat(format,more), e);
