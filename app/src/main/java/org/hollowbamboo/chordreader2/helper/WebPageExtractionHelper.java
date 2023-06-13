@@ -47,10 +47,8 @@ public class WebPageExtractionHelper {
 
 		Pattern pattern = null;
 
-		switch (webpage) {
-		case Chordie:
+		if (webpage == ChordWebpage.Chordie) {
 			pattern = chordiePattern;
-			break;
 		}
 		Matcher matcher = pattern.matcher(html);
 
