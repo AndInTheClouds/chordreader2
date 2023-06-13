@@ -317,7 +317,6 @@ public class SaveFileHelper {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
 
             String setlistContent  = SaveFileHelper.openFile(context, setlist);
@@ -384,7 +383,6 @@ public class SaveFileHelper {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
             message.obj = doSaving(context, fileText, filename);
 

@@ -488,7 +488,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext());
             dbHelper.saveTransposition(filename, songViewFragmentViewModel.transposeHalfSteps,
                     songViewFragmentViewModel.capoFret);
@@ -676,7 +675,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             long start = System.currentTimeMillis();
 
             int capoDiff = songViewFragmentViewModel.capoFret - newCapoFret;

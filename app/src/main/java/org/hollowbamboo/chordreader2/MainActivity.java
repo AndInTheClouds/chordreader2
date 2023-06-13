@@ -312,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {};
 
         Runnable runnable = () -> {
-            // your async code goes here.
             ChordDictionary.initialize(this);
             handlerThread.quit();
         };

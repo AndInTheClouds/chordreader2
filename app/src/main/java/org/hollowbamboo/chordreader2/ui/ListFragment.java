@@ -561,7 +561,6 @@ public class ListFragment extends Fragment implements TextWatcher {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
             message.obj = SaveFileHelper.getSavedFileNames(requireContext(), fileExtension);
 

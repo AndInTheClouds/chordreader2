@@ -236,7 +236,6 @@ public class WebSearchViewModel extends ViewModel {
                 };
 
                 Runnable runnable = () -> {
-                    // your async code goes here.
                     try {
                         Thread.sleep(PAGE_WAIT_TIME);
                     } catch (InterruptedException ignored) {

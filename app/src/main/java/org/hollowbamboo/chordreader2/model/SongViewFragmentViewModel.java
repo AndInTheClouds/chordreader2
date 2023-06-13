@@ -218,7 +218,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             if(capoFret != 0 || transposeHalfSteps != 0) {
                 updateChordsInTextForTransposition(-transposeHalfSteps, -capoFret);
             }
