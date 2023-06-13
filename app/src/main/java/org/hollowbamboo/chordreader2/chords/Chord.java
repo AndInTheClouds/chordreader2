@@ -17,9 +17,6 @@ public class Chord implements Cloneable, Serializable {
 	public void setRoot(ChordRoot root) {
 		this.root = root;
 	}
-	public void setAdded(ChordAdded added) {
-		this.added = added;
-	}
 	public ChordSuspended getSuspended() {
 		return suspended;
 	}
