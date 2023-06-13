@@ -2,8 +2,8 @@ package org.hollowbamboo.chordreader2.util;
 
 public class Pair<E,T> {
 
-	private E first;
-	private T second;
+	private final E first;
+	private final T second;
 	public Pair(E first, T second) {
 		super();
 		this.first = first;
