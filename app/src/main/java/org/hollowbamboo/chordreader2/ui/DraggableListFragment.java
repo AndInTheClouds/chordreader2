@@ -56,7 +56,6 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private ItemTouchHelper touchHelper;
 
-    private FragmentDraggableListBinding binding;
     private DataViewModel dataViewModel;
 
     @Override
@@ -66,7 +65,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         dataViewModel =
                 new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
-        binding = FragmentDraggableListBinding.inflate(inflater, container, false);
+        org.hollowbamboo.chordreader2.databinding.FragmentDraggableListBinding binding = FragmentDraggableListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView = binding.recyclerView;
