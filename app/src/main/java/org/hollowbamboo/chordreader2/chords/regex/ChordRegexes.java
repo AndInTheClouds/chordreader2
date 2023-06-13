@@ -29,7 +29,6 @@ public class ChordRegexes {
 		String regexString = createRegexString(noteNaming);
 		String regexStringWithParens = createRegexStringWithParens(regexString);
 		
-		chordRegex.setRegexString(regexString);
 		chordRegex.setRegexStringWithParens(regexStringWithParens);
 		chordRegex.setPattern(Pattern.compile(regexString));
 		chordRegex.setPatternWithParens(Pattern.compile(regexStringWithParens));
