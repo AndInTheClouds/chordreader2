@@ -8,26 +8,7 @@ import java.util.List;
  * @author nolan
  */
 public class StringUtil {
-	
-	/**
-	 * Pad the specified number of spaces to the input string to make it that length
-	 * @param input
-	 * @param size
-	 * @return
-	 */
-	public static String padLeft(String input, int size) {
-		
-		if(input.length() > size) {
-			throw new IllegalArgumentException("input must be shorter than or equal to the number of spaces: " + size);
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		for (int i = input.length(); i < size; i ++) {
-			sb.append(" ");
-		}
-		return sb.append(input).toString();
-	}
-	
+
     /**
      * same as the String.split(), except it doesn't use regexes, so it's faster.
      *
