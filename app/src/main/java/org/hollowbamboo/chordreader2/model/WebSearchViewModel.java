@@ -2,27 +2,22 @@ package org.hollowbamboo.chordreader2.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.navigation.Navigation;
 
 import org.hollowbamboo.chordreader2.ChordWebpage;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
 import org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper;
-import org.hollowbamboo.chordreader2.ui.WebSearchFragmentDirections;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;

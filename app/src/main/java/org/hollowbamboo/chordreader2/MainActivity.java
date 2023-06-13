@@ -1,7 +1,5 @@
 package org.hollowbamboo.chordreader2;
 
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
-import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 import static android.os.Build.VERSION.SDK_INT;
 
 import android.Manifest;

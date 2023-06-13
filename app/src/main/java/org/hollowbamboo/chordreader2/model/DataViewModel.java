@@ -3,8 +3,6 @@ package org.hollowbamboo.chordreader2.model;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.hollowbamboo.chordreader2.helper.SaveFileHelper;
-
 import java.util.ArrayList;
 
 public class DataViewModel extends ViewModel {
