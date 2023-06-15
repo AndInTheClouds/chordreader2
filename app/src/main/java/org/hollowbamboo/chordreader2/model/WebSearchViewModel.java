@@ -39,6 +39,7 @@ public class WebSearchViewModel extends ViewModel {
 
     private String searchEngineURL = null;
     private String searchText;
+    private int bpm;
 
     private volatile String chordText;
     private String html = null;
@@ -90,6 +91,8 @@ public class WebSearchViewModel extends ViewModel {
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }
+
+    public int getBPM(){ return bpm; }
 
     public String getSearchText() { return searchText; }
 
@@ -161,9 +164,10 @@ public class WebSearchViewModel extends ViewModel {
                 return false; // skip page - we're on the search results page
         }
 
+        bpm = WebPageExtractionHelper.extractBPMFromHtml(html);
+
         String txt = WebPageExtractionHelper.convertHtmlToText(html);
         return ChordParser.containsLineWithChords(txt, noteNaming);
-
     }
 
     public boolean checkHtmlOfKnownWebpage() {

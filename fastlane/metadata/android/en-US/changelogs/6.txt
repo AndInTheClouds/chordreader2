@@ -1,4 +1,5 @@
 - Changelog added to F-Droid
+- Web extraction: now extracts BPM if provided
 - Bug fixes:
      > Save setlist only when changed,
      > catch null pointers while wakelock acquiring and restore app from background,

@@ -43,6 +43,8 @@ public class WebPageExtractionHelper {
 
 	private static Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r]*){2,}");
 
+	private static Pattern bpmPattern = Pattern.compile("(\\d{2,3})(\\s*bpm)", Pattern.CASE_INSENSITIVE);
+
 	public static String extractChordChart(ChordWebpage webpage, String html, NoteNaming noteNaming) {
 
 		Pattern pattern = null;
@@ -133,6 +135,20 @@ public class WebPageExtractionHelper {
 
         return plainText.toString();
     }
+
+	public static int extractBPMFromHtml(String text) {
+
+		Matcher matcher = bpmPattern.matcher(text);
+
+		if (matcher.find()) {
+			String match = matcher.group(1);
+
+			if (match != null) {
+				return Integer.parseInt(match);
+			}
+		}
+		return -1;
+	}
 
 	private static String cleanUpText(String text) {
 

@@ -421,6 +421,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             String songTitle = SongViewFragmentArgs.fromBundle(getArguments()).getSongTitle();
             filename = SongViewFragmentArgs.fromBundle(getArguments()).getFilename();
             String chordText = SongViewFragmentArgs.fromBundle(getArguments()).getChordText();
+            songViewFragmentViewModel.setBpm(SongViewFragmentArgs.fromBundle(getArguments()).getBpm());
             Transposition transposition = null;
 
             if(filename == null) {

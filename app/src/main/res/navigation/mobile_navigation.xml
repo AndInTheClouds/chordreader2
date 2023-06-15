@@ -66,6 +66,10 @@
             android:name="chordText"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="bpm"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
             android:id="@+id/action_nav_song_view_to_nav_chord_dict_edit"
             app:destination="@id/nav_chord_dict_edit" />

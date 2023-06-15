@@ -523,8 +523,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String chordText = editText.getText().toString();
 
+//                    WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
+//                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), null, chordText, webSearchViewModel.getBPM());
                     WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
                             WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), chordText);
+                    action.setBpm(webSearchViewModel.getBPM());
                     if (getParentFragment() != null) {
                         Navigation.findNavController(getParentFragment().requireView()).navigate(action);
                     }

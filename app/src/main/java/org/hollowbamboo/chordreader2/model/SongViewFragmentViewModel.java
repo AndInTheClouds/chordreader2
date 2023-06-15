@@ -41,7 +41,7 @@ public class SongViewFragmentViewModel extends ViewModel {
     public int transposeHalfSteps = 0;
     private NoteNaming noteNaming;
     private Transposition transposition;
-    private int bpm;
+    private Integer bpm;
     private int linkColor;
     private float scrollVelocityCorrectionFactor;
     private FragmentResultListener fragmentResultListener;
@@ -88,6 +88,10 @@ public class SongViewFragmentViewModel extends ViewModel {
         return saveResultMLD;
     }
 
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
+    }
+
     public void setSongTitle(String songTitle) {
         fragmentTitle.setValue(songTitle);
     }
@@ -96,7 +100,8 @@ public class SongViewFragmentViewModel extends ViewModel {
         this.chordText = chordText;
 
         // BPMs and AutoScrollSpeed
-        bpm = (int) extractAutoScrollParam(chordText, "bpm");
+        if(bpm == null) //If bpm was retrieved from web extraction, it is already set
+            bpm = (int) extractAutoScrollParam(chordText, "bpm");
         bpm = bpm < 0 ? 100 : bpm;
 
         scrollVelocityCorrectionFactor = extractAutoScrollParam(chordText, "scrollVelocityCorrectionFactor");
