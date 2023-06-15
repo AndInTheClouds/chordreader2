@@ -16,7 +16,7 @@ public enum ChordSuspended {
 	Sus4 (Arrays.asList("sus4", "suspended", "sus")),
 	Sus2 (Arrays.asList("sus2", "suspended2"));
 	
-	private List<String> aliases;
+	private final List<String> aliases;
 	
 	ChordSuspended (List<String> aliases) {
 		this.aliases = aliases;
@@ -37,7 +37,7 @@ public enum ChordSuspended {
 	}	
 	
 	
-	private static Map<String,ChordSuspended> lookupMap = new HashMap<String, ChordSuspended>();
+	private static final Map<String,ChordSuspended> lookupMap = new HashMap<String, ChordSuspended>();
 	
 	static {
 		for (ChordSuspended value : values()) {

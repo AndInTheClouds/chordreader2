@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
 
 public class WebPageExtractionHelper {
 
-	private static UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper.class);
+	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper.class);
 
     // html tag or html escaped character
-    private static Pattern htmlObjectPattern = Pattern.compile(
+    private static final Pattern htmlObjectPattern = Pattern.compile(
             "(" +
             "<\\s*style.*?>.*?<\\s*/style\\s*>" + // style span
             "|" + // OR
@@ -31,17 +31,17 @@ public class WebPageExtractionHelper {
 
 
     // HTML newline tag, such as '<p>' or '<br/>'
-    private static Pattern htmlNewlinePattern = Pattern.compile(
+    private static final Pattern htmlNewlinePattern = Pattern.compile(
             "<(?:p|br)\\s*+(?:/\\s*+)?>", Pattern.CASE_INSENSITIVE);
 
-	private static Pattern prePattern = Pattern.compile("<pre[^>]*>(.*?)</pre>",
+	private static final Pattern prePattern = Pattern.compile("<pre[^>]*>(.*?)</pre>",
 				Pattern.DOTALL|Pattern.CASE_INSENSITIVE);
 
-	private static Pattern chordiePattern = Pattern.compile(
+	private static final Pattern chordiePattern = Pattern.compile(
 			"<!-- END HEADER -->(.*?)<!-- BOTTOM GRIDS - START -->",
 			Pattern.DOTALL);
 
-	private static Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r]*){2,}");
+	private static final Pattern multipleNewlinePattern = Pattern.compile("([ \t\r]*\n[\t\r]*){2,}");
 
 	private static Pattern bpmPattern = Pattern.compile("(\\d{2,3})(\\s*bpm)", Pattern.CASE_INSENSITIVE);
 
@@ -49,10 +49,8 @@ public class WebPageExtractionHelper {
 
 		Pattern pattern = null;
 
-		switch (webpage) {
-		case Chordie:
+		if (webpage == ChordWebpage.Chordie) {
 			pattern = chordiePattern;
-			break;
 		}
 		Matcher matcher = pattern.matcher(html);
 

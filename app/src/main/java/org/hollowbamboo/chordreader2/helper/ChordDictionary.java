@@ -1,11 +1,8 @@
 package org.hollowbamboo.chordreader2.helper;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,8 +10,6 @@ import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.Chord;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
-import org.hollowbamboo.chordreader2.db.ChordReaderDBHelper;
-import org.hollowbamboo.chordreader2.ui.SongViewFragment;
 import org.hollowbamboo.chordreader2.util.StringUtil;
 
 import java.io.BufferedReader;

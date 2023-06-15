@@ -12,12 +12,8 @@ public class UtilLogger {
 
 	public static final boolean DEBUG_MODE = false;
 	
-	private String tag;
-	
-	public UtilLogger(String tag) {
-		this.tag = tag;
-	}
-	
+	private final String tag;
+
 	public UtilLogger(Class<?> clazz) {
 		this.tag = clazz.getSimpleName();
 	}
@@ -27,25 +23,7 @@ public class UtilLogger {
 			Log.i(tag, smartFormat(format,more));
 		}
 	}
-	
-	public void i(Exception e, String format, Object... more) {
-		if(DEBUG_MODE) {
-			Log.i(tag, smartFormat(format,more), e);
-		}
-	}
-	
-	public void w(Exception e, String format, Object... more) {
-		if(DEBUG_MODE) {
-			Log.w(tag, smartFormat(format,more), e);
-		}
-	}
-	
-	public void w(String format, Object... more) {
-		if(DEBUG_MODE) {
-			Log.w(tag, smartFormat(format,more));
-		}
-	}	
-	
+
 	public void e(String format, Object... more) {
 		Log.e(tag, smartFormat(format,more));
 	}	

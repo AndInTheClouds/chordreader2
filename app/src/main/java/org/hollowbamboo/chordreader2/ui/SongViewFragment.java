@@ -101,7 +101,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
 
 public class SongViewFragment extends Fragment implements View.OnClickListener {
 
@@ -123,7 +122,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
 
     private ImageButton autoScrollPlayButton, autoScrollPauseButton, autoScrollSlowerButton, autoScrollFasterButton;
-    private ImageView nextSongButton, previousSongButton;
 
     private CountDownTimer releaseWakeLockCountDownTimer;
     private Timer metronomeTimer;
@@ -132,15 +130,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     private GestureDetector gestureDetector;
     private ScaleGestureDetector scaleGestureDetector;
 
-    private float lastXCoordinate, lastYCoordinate;
     private boolean doubleTapExecuted = false;
 
     private int indexCurrentSong, setlistSongsIndexDiffEnd;
     private String filename;
-
-    public static SongViewFragment newInstance() {
-        return new SongViewFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -262,13 +255,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         if(dataViewModel.getSetListMLD() != null) {
             if(setlistSongsIndexDiffEnd > 0) {
-                nextSongButton = binding.setlistNext;
+                ImageView nextSongButton = binding.setlistNext;
                 nextSongButton.setVisibility(View.VISIBLE);
                 nextSongButton.setOnClickListener(this);
             }
 
             if(indexCurrentSong > 0) {
-                previousSongButton = binding.setlistPrevious;
+                ImageView previousSongButton = binding.setlistPrevious;
                 previousSongButton.setVisibility(View.VISIBLE);
                 previousSongButton.setOnClickListener(this);
             }
@@ -280,9 +273,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
         View.OnTouchListener touchListener = (v, event) -> {
-
-            lastXCoordinate = event.getRawX();
-            lastYCoordinate = event.getRawY();
 
             final int action = event.getAction();
 
@@ -495,14 +485,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Boolean successfullySavedLog = (Boolean) msg.obj;
 
                 handlerThread.quit();
             }
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext());
             dbHelper.saveTransposition(filename, songViewFragmentViewModel.transposeHalfSteps,
                     songViewFragmentViewModel.capoFret);
@@ -697,7 +685,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             long start = System.currentTimeMillis();
 
             int capoDiff = songViewFragmentViewModel.capoFret - newCapoFret;
@@ -1239,8 +1226,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     public static class WrapContentViewPager extends ViewPager {
 
-        private int mCurrentPagePosition = 0;
-
         public WrapContentViewPager(Context context) {
             super(context);
         }
@@ -1251,6 +1236,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int mCurrentPagePosition = 0;
             try {
                 boolean wrapHeight = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST;
                 if(wrapHeight) {
@@ -1284,10 +1270,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
 
-        public void reMeasureCurrentPage(int position) {
-            mCurrentPagePosition = position;
-            requestLayout();
-        }
     }
 
     public static class EditChordTextDialog extends DialogFragment {

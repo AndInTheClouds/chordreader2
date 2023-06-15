@@ -8,35 +8,21 @@ import android.preference.PreferenceManager;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
-import org.hollowbamboo.chordreader2.util.UtilLogger;
 
 public class PreferenceHelper {
-	
-	private static float textSize = -1;
+
 	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
 	private static String searchEngineURL = null;
 	private static String storageLocation = null;
 
-	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.helper.PreferenceHelper.class);
-	
 	public static void clearCache() {
-		textSize = -1;
 		colorScheme = null;
 		noteNaming = null;
 		searchEngineURL = null;
 		storageLocation = null;
 	}
-	
-	private static void cacheTextsize(Context context, int dimenId) {
-		
-		float unscaledSize = context.getResources().getDimension(dimenId);
-		
-		log.d("unscaledSize is %g", unscaledSize);
-		
-		textSize = unscaledSize;
-	}
-	
+
 	public static void setFirstRunPreference(Context context, boolean bool) {
 
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -67,18 +53,6 @@ public class PreferenceHelper {
 		}
 		
 		return colorScheme;
-		
-	}
-		
-	public static void setColorScheme(Context context, ColorScheme colorScheme) {
-		
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = sharedPrefs.edit();
-		
-		editor.putString(context.getString(R.string.pref_scheme).toString(), 
-				context.getText(colorScheme.getNameResource()).toString());
-		
-		editor.apply();
 		
 	}
 
@@ -114,13 +88,6 @@ public class PreferenceHelper {
 		}
 
 		return searchEngineURL;
-	}
-
-	public static void setSearchEngineURL(Context context, String searchEngineURL) {
-		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-		Editor editor = sharedPrefs.edit();
-		editor.putString(context.getString(R.string.pref_search_engine), searchEngineURL);
-		editor.apply();
 	}
 
 	public static Uri getStorageLocation(Context context) {

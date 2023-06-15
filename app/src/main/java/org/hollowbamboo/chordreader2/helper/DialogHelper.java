@@ -10,10 +10,10 @@ import org.hollowbamboo.chordreader2.R;
 
 public class DialogHelper {
 	
-	public static int CAPO_MIN = 0;
-	public static int CAPO_MAX = 6;
-	public static int TRANSPOSE_MIN = -6;
-	public static int TRANSPOSE_MAX = 6;
+	public static final int CAPO_MIN = 0;
+	public static final int CAPO_MAX = 6;
+	public static final int TRANSPOSE_MIN = -6;
+	public static final int TRANSPOSE_MAX = 6;
 
 	public static View createTransposeDialogView(Context context, int capoFret, int transposeHalfSteps) {
 		
@@ -45,8 +45,8 @@ public class DialogHelper {
 		
 		minTextView.setText(Integer.toString(min));
 		// check if we need to distinguish between negative and positive
-		maxTextView.setText((min < 0 && max > 0 ? "+" : "") + Integer.toString(max));
-		progressTextView.setText((min < 0 && defaultValue > 0 ? "+" : "") + Integer.toString(defaultValue));
+		maxTextView.setText((min < 0 && max > 0 ? "+" : "") + max);
+		progressTextView.setText((min < 0 && defaultValue > 0 ? "+" : "") + defaultValue);
 		seekBar.setMax(max - min);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			

@@ -17,30 +17,6 @@ public class Chord implements Cloneable, Serializable {
 	public void setRoot(ChordRoot root) {
 		this.root = root;
 	}
-	public ChordQuality getQuality() {
-		return quality;
-	}
-	public void setQuality(ChordQuality quality) {
-		this.quality = quality;
-	}
-	public ChordExtended getSeventh() {
-		return seventh;
-	}
-	public void setSeventh(ChordExtended seventh) {
-		this.seventh = seventh;
-	}
-	public ChordAdded getAdded() {
-		return added;
-	}
-	public void setAdded(ChordAdded added) {
-		this.added = added;
-	}
-	public ChordSuspended getSuspended() {
-		return suspended;
-	}
-	public void setSuspended(ChordSuspended suspended) {
-		this.suspended = suspended;
-	}
 	
 	
 	
@@ -130,11 +106,8 @@ public class Chord implements Cloneable, Serializable {
 		} else if (!seventh.equals(other.seventh))
 			return false;
 		if (suspended == null) {
-			if (other.suspended != null)
-				return false;
-		} else if (!suspended.equals(other.suspended))
-			return false;
-		return true;
+			return other.suspended == null;
+		} else return suspended.equals(other.suspended);
 	}
 	@Override
 	public String toString() {

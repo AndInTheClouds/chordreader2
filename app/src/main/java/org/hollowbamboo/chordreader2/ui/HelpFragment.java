@@ -20,11 +20,9 @@ If not, see <https://www.gnu.org/licenses/>.
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Layout;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,8 +31,6 @@ import androidx.fragment.app.Fragment;
 
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.databinding.FragmentHelpBinding;
-
-import java.util.Objects;
 
 
 public class HelpFragment extends Fragment {

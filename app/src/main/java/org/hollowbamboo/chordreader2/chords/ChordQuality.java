@@ -14,7 +14,7 @@ public enum ChordQuality {
 	Augmented (Arrays.asList("aug","augmented","+")),
 	Diminished (Arrays.asList("dim","diminished"));
 	
-	private List<String> aliases;
+	private final List<String> aliases;
 	
 	ChordQuality (List<String> aliases) {
 		this.aliases = aliases;
@@ -35,7 +35,7 @@ public enum ChordQuality {
 	}	
 	
 	
-	private static Map<String, org.hollowbamboo.chordreader2.chords.ChordQuality> lookupMap = new HashMap<String, org.hollowbamboo.chordreader2.chords.ChordQuality>();
+	private static final Map<String, org.hollowbamboo.chordreader2.chords.ChordQuality> lookupMap = new HashMap<String, org.hollowbamboo.chordreader2.chords.ChordQuality>();
 	
 	static {
 		for (org.hollowbamboo.chordreader2.chords.ChordQuality value : values()) {

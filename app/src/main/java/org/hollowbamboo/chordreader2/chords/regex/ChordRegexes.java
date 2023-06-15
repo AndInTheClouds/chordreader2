@@ -29,8 +29,6 @@ public class ChordRegexes {
 		String regexString = createRegexString(noteNaming);
 		String regexStringWithParens = createRegexStringWithParens(regexString);
 		
-		chordRegex.setRegexString(regexString);
-		chordRegex.setRegexStringWithParens(regexStringWithParens);
 		chordRegex.setPattern(Pattern.compile(regexString));
 		chordRegex.setPatternWithParens(Pattern.compile(regexStringWithParens));
 		
@@ -70,7 +68,6 @@ public class ChordRegexes {
 	 * with the longest strings first, e.g. ["sus4","sus","sus2"] -->
 	 * 
 	 * (sus4|sus2|sus)
-	 * @param allAliases
 	 * @return
 	 */
 	private static String greedyDisjunction(List<String> aliases, boolean matchingGroup) {
@@ -95,8 +92,8 @@ public class ChordRegexes {
 		}
 		
 		
-		for (String alias : aliases) {;
-			
+		for (String alias : aliases) {
+
 			if (TextUtils.isEmpty(alias)) {
 				continue; // e.g. the "major" quality can be expressed as an empty string, so skip in the regex
 			}

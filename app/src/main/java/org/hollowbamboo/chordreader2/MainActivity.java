@@ -1,7 +1,5 @@
 package org.hollowbamboo.chordreader2;
 
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
-import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 import static android.os.Build.VERSION.SDK_INT;
 
 import android.Manifest;
@@ -38,7 +36,6 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -50,7 +47,6 @@ import com.google.android.material.navigation.NavigationView;
 import org.hollowbamboo.chordreader2.databinding.ActivityMainBinding;
 import org.hollowbamboo.chordreader2.helper.ChordDictionary;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
-import org.hollowbamboo.chordreader2.model.DataViewModel;
 
 import java.util.Objects;
 
@@ -59,15 +55,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int STORAGE_PERMISSION_CODE = 100;
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
     DrawerLayout drawer;
-    DataViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        org.hollowbamboo.chordreader2.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -92,8 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             requestPermission();
 
         showInitialMessage();
-
-        viewModel = new ViewModelProvider(this).get(DataViewModel.class);
     }
 
     @Override
@@ -318,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {};
 
         Runnable runnable = () -> {
-            // your async code goes here.
             ChordDictionary.initialize(this);
             handlerThread.quit();
         };
