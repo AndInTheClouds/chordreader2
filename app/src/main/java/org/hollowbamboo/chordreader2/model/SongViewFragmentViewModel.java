@@ -40,7 +40,6 @@ public class SongViewFragmentViewModel extends ViewModel {
     public int capoFret = 0;
     public int transposeHalfSteps = 0;
     private NoteNaming noteNaming;
-    private Transposition transposition;
     private int bpm;
     private int linkColor;
     private float scrollVelocityCorrectionFactor;
@@ -125,7 +124,6 @@ public class SongViewFragmentViewModel extends ViewModel {
     }
 
     public void setTransposition(Transposition transposition) {
-        this.transposition = transposition;
 
         if(filename != null && transposition != null) {
             capoFret = transposition.getCapo();
@@ -134,10 +132,6 @@ public class SongViewFragmentViewModel extends ViewModel {
             capoFret = 0;
             transposeHalfSteps = 0;
         }
-    }
-
-    public Transposition getTransposition() {
-        return transposition;
     }
 
     public Spannable buildUpChordTextToDisplay() {
@@ -178,10 +172,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         for (int i = 0; i < newStartAndEndPositions.size(); i++) {
 
             Pair<Integer, Integer> newStartAndEndPosition = newStartAndEndPositions.get(i);
-
-            //Log.d("pair is " + newStartAndEndPosition);
-            //Log.d("substr is " + sb.substring(
-            //		newStartAndEndPosition.getFirst(), newStartAndEndPosition.getSecond()));
 
             final Chord chord = chordsInText.get(i).getChord();
 
@@ -226,7 +216,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             if(capoFret != 0 || transposeHalfSteps != 0) {
                 updateChordsInTextForTransposition(-transposeHalfSteps, -capoFret);
             }

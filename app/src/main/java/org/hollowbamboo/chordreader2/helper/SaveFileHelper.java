@@ -34,14 +34,12 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class SaveFileHelper {
 
-    private static UtilLogger log = new UtilLogger(SaveFileHelper.class);
+    private static final UtilLogger log = new UtilLogger(SaveFileHelper.class);
 
     public static boolean checkIfSdCardExists() {
 
@@ -140,21 +138,6 @@ public class SaveFileHelper {
             if (file != null && file.exists()) {
                 file.delete();
             }
-        }
-    }
-
-    public static Date getLastModifiedDate(String filename) {
-
-        File catlogDir = getBaseDirectory();
-
-        File file = new File(catlogDir, filename);
-
-        if (file.exists()) {
-            return new Date(file.lastModified());
-        } else {
-            // shouldn't happen
-            log.e("file last modified date not found: %s", filename);
-            return new Date();
         }
     }
 
@@ -333,7 +316,6 @@ public class SaveFileHelper {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
 
             String setlistContent  = SaveFileHelper.openFile(context, setlist);
@@ -400,7 +382,6 @@ public class SaveFileHelper {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
             message.obj = doSaving(context, fileText, filename);
 

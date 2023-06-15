@@ -36,7 +36,7 @@ import java.util.List;
 
 public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
 
-    private Context context;
+    private final Context context;
     private final List<String> originalData;
     private List<String> filteredData;
     private final LayoutInflater mInflater;

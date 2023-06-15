@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class InternalURLSpan extends ClickableSpan {
-	OnClickListener mListener;
+	final OnClickListener mListener;
 
 	public InternalURLSpan(OnClickListener listener) {
 		mListener = listener;

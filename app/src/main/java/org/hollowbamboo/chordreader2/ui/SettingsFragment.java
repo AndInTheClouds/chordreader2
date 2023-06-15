@@ -54,8 +54,6 @@ import java.util.Objects;
 public class SettingsFragment extends PreferenceFragmentCompat
         implements androidx.preference.Preference.OnPreferenceChangeListener, androidx.preference.Preference.OnPreferenceClickListener {
 
-    public static final String EXTRA_NOTE_NAMING_CHANGED = "noteNamingChanged";
-
     private ListPreference themePreference;
     private Preference noteNamingPreference;
     private EditTextPreference searchEnginePreference;

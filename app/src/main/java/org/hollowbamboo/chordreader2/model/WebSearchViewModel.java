@@ -2,27 +2,22 @@ package org.hollowbamboo.chordreader2.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.navigation.Navigation;
 
 import org.hollowbamboo.chordreader2.ChordWebpage;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
 import org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper;
-import org.hollowbamboo.chordreader2.ui.WebSearchFragmentDirections;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -40,13 +35,11 @@ public class WebSearchViewModel extends ViewModel {
     private String searchEngineURL = null;
     private String searchText;
 
-    private volatile String chordText;
     private String html = null;
     boolean isUrlLoading;
     private NoteNaming noteNaming;
 
     private final CustomWebViewClient client;
-    private FragmentResultListener fragmentResultListener;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -136,7 +129,7 @@ public class WebSearchViewModel extends ViewModel {
 
         Log.d(LOG_TAG,"unknown webpage");
 
-        chordText = WebPageExtractionHelper.extractLikelyChordChart(html, noteNaming);
+        String chordText = WebPageExtractionHelper.extractLikelyChordChart(html, noteNaming);
 
 
         if(chordText == null) { // didn't find a good extraction, so use the entire html
@@ -242,7 +235,6 @@ public class WebSearchViewModel extends ViewModel {
                 };
 
                 Runnable runnable = () -> {
-                    // your async code goes here.
                     try {
                         Thread.sleep(PAGE_WAIT_TIME);
                     } catch (InterruptedException ignored) {
@@ -250,7 +242,6 @@ public class WebSearchViewModel extends ViewModel {
 
                     Message message = new Message();
                     message.obj = taskCounter.incrementAndGet();
-                    ;
 
                     asyncHandler.sendMessage(message);
                 };

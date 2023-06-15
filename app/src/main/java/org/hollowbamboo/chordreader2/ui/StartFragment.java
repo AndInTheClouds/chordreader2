@@ -143,13 +143,6 @@ public class StartFragment extends Fragment implements View.OnClickListener, Tex
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-
-        RelativeLayout root = binding.startActivityMainView;
-
-//        Log.d("StartFragment onConfCh", "onConfigurationChanged newConfig: " +
-//                newConfig.screenWidthDp + "x" + newConfig.screenHeightDp + " root: "+root.getWidth() +
-//                "x" + root.getHeight() + " view: " + textureView.getWidth() + "x" + textureView.getHeight());
-
         // necessary to recalculate media player textureview correctly after orientation change
         textureView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 

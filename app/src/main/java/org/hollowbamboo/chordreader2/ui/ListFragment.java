@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,7 +51,6 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuHost;
@@ -245,8 +243,6 @@ public class ListFragment extends Fragment implements TextWatcher {
         if(!checkSdCard()) {
             return;
         }
-
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         final EditText editText = new EditText(requireContext());
         editText.setSingleLine();
@@ -565,7 +561,6 @@ public class ListFragment extends Fragment implements TextWatcher {
         };
 
         Runnable runnable = () -> {
-            // your async code goes here.
             Message message = new Message();
             message.obj = SaveFileHelper.getSavedFileNames(requireContext(), fileExtension);
 

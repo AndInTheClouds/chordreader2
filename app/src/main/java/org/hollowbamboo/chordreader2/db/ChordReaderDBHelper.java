@@ -34,7 +34,7 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 
 	
 	// private variables
-	private SQLiteDatabase db;
+	private final SQLiteDatabase db;
 	
 	public ChordReaderDBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -109,8 +109,6 @@ public class ChordReaderDBHelper extends SQLiteOpenHelper {
 				if(cursor.moveToNext()) {
 					Transposition transposition = new Transposition();
 					
-					transposition.setId(cursor.getInt(0));
-					transposition.setFilename(cursor.getString(1));
 					transposition.setTranspose(cursor.getInt(2));
 					transposition.setCapo(cursor.getInt(3));
 					

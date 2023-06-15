@@ -53,11 +53,9 @@ import java.util.Objects;
 
 public class DraggableListFragment extends Fragment implements OnItemClickListener, StartDragListener {
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter mAdapter;
 
     private ItemTouchHelper touchHelper;
 
-    private FragmentDraggableListBinding binding;
     private DataViewModel dataViewModel;
 
     @Override
@@ -67,7 +65,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         dataViewModel =
                 new ViewModelProvider(requireActivity()).get(DataViewModel.class);
 
-        binding = FragmentDraggableListBinding.inflate(inflater, container, false);
+        org.hollowbamboo.chordreader2.databinding.FragmentDraggableListBinding binding = FragmentDraggableListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView = binding.recyclerView;
@@ -116,7 +114,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private void setupRecyclerView() {
 
-        mAdapter = new RecyclerViewAdapter(dataViewModel.setListSongs, this, this);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(dataViewModel.setListSongs, this, this);
 
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback(mAdapter);

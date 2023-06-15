@@ -11,38 +11,33 @@ import org.hollowbamboo.chordreader2.R;
 public enum ColorScheme {
 	
 	Dark (R.string.pref_scheme_dark, R.color.scheme_dark_background, 
-			R.color.scheme_dark_foreground, R.color.scheme_dark_bubble, R.color.scheme_dark_link,
-			R.drawable.app_selector),
+			R.color.scheme_dark_foreground, R.color.scheme_dark_link
+	),
 	Light (R.string.pref_scheme_light, R.color.scheme_light_background, 
-			R.color.scheme_light_foreground, R.color.scheme_light_bubble, R.color.scheme_light_link,
-			R.drawable.app_selector_light),
+			R.color.scheme_light_foreground, R.color.scheme_light_link
+	),
 	Android (R.string.pref_scheme_android, R.color.scheme_android_background, 
-			R.color.scheme_android_foreground, R.color.scheme_android_bubble, R.color.scheme_android_link,
-			R.drawable.app_selector_android),
+			R.color.scheme_android_foreground, R.color.scheme_android_link
+	),
 	;
 	
-	private int nameResource;
-	private int backgroundColorResource;
-	private int foregroundColorResource;
-	private int bubbleColorResource;
-	private int linkColorResource;
-	private int selectorResource;
+	private final int nameResource;
+	private final int backgroundColorResource;
+	private final int foregroundColorResource;
+	private final int linkColorResource;
 	
 	private int backgroundColor = -1;
 	private int foregroundColor = -1;
-	private int bubbleColor = -1;
 	private int linkColor = -1;
 	
-	private static Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
+	private static final Map<String, ColorScheme> preferenceNameToColorScheme = new HashMap<String, ColorScheme>();
 	
 	ColorScheme(int nameResource, int backgroundColorResource, int foregroundColorResource,
-				int bubbleColorResource, int linkColorResource, int selectorResource) {
+				int linkColorResource) {
 		this.nameResource = nameResource;
 		this.backgroundColorResource = backgroundColorResource;
 		this.foregroundColorResource = foregroundColorResource;
-		this.bubbleColorResource = bubbleColorResource;
 		this.linkColorResource = linkColorResource;
-		this.selectorResource = selectorResource;
 
 	}
 
@@ -70,17 +65,6 @@ public enum ColorScheme {
 			linkColor = context.getResources().getColor(linkColorResource);
 		}
 		return linkColor;
-	}
-	
-	public int getBubbleColor(Context context) {
-		if(bubbleColor == -1) {
-			bubbleColor = context.getResources().getColor(bubbleColorResource);
-		}
-		return bubbleColor;
-	}
-	
-	public int getSelectorResource() {
-		return selectorResource;
 	}
 
 	public static ColorScheme findByPreferenceName(String name, Context context) {

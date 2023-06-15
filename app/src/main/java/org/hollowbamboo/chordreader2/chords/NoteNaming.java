@@ -61,11 +61,11 @@ public enum NoteNaming {
 			.build()),
 	;
 	
-	private EnumMap<ChordRoot, List<String>> noteNames;
-	private Map<String,ChordRoot> lookupMap = new HashMap<String, ChordRoot>();
-	private int printableNameResource;
+	private final EnumMap<ChordRoot, List<String>> noteNames;
+	private final Map<String,ChordRoot> lookupMap = new HashMap<String, ChordRoot>();
+	private final int printableNameResource;
 	
-	private NoteNaming(int printableNameResource,
+	NoteNaming(int printableNameResource,
 			EnumMap<ChordRoot, List<String>> noteNames) {
 		if (noteNames.size() != 12) {
 			throw new IllegalArgumentException("must have 12 notes");
@@ -80,11 +80,7 @@ public enum NoteNaming {
 		}
 	}
 
-	public EnumMap<ChordRoot, List<String>> getNoteNames() {
-		return noteNames;
-	}
-	
-	
+
 	public List<String> getAllNames() {
 		List<String> result = new ArrayList<String>();
 		
