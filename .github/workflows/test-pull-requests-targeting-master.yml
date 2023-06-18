@@ -1,0 +1,22 @@
+name: Test pull requests targeting `master`
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Process the test report
+        uses: asadmansr/android-test-report-action@v1.2.0
+        if: ${{ always() }}
