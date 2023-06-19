@@ -9,6 +9,7 @@ public class DataViewModel extends ViewModel {
 
     public String mode;
     public ArrayList<String> setListSongs;
+    public boolean isSetListChanged;
 
     private MutableLiveData<String> setListMLD = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> setListSongsMLD;

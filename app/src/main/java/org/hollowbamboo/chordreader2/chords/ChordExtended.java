@@ -14,8 +14,8 @@ public enum ChordExtended {
 
 	
 	// sevenths
-	Major7 (Major, Arrays.asList("Maj7", "maj7", "M7", "+7")),
-	Minor7 (Minor, Arrays.asList("Min7", "m7", "min7", "minor7")),
+	Major7 (Major, Arrays.asList("maj7", "Maj7", "M7", "+7")),
+	Minor7 (Minor, Arrays.asList("m7", "Min7", "min7", "minor7")),
 	Dominant7 (Major, Arrays.asList("7", "dom7", "dominant7")),
 	Diminished7 (Diminished, Arrays.asList("dim7", "diminished7")),
 	
@@ -33,10 +33,7 @@ public enum ChordExtended {
 	Major7Add9 (Major, Arrays.asList("7/9","7(add9)", "7(9)")),
 	Minor7Add9 (Minor, Arrays.asList("m7/9", "min7(add9)", "m9", "minor9", "min9", "m7(add9)", "-7/9", "-7(add9)", "min7/9", "min7(add9)", "m7+9")),
 
-	/**
-	 * TODO: add additional seventh chords
-	 */
-
+	//TODO: add additional seventh chords
 	;
 
 	private final List<String> aliases;
@@ -53,8 +50,7 @@ public enum ChordExtended {
 
 	/**
 	 * A chord quality is inherent to every type of seventh.  See the wikipedia page for more info.
-	 * http://en.wikipedia.org/wiki/Seventh_chord#Types_of_seventh_chords
-	 * @return
+	 * <a href="http://en.wikipedia.org/wiki/Seventh_chord#Types_of_seventh_chords">...</a>
 	 */
 	public ChordQuality getChordQuality() {
 		return chordQuality;
@@ -62,7 +58,7 @@ public enum ChordExtended {
 	
 	
 	public static List<String> getAllAliases() {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		
 		for (org.hollowbamboo.chordreader2.chords.ChordExtended chordSeventh : values()) {
 			result.addAll(chordSeventh.aliases);
@@ -72,7 +68,7 @@ public enum ChordExtended {
 	}		
 	
 	
-	private static final Map<String, org.hollowbamboo.chordreader2.chords.ChordExtended> lookupMap = new HashMap<String, org.hollowbamboo.chordreader2.chords.ChordExtended>();
+	private static final Map<String, org.hollowbamboo.chordreader2.chords.ChordExtended> lookupMap = new HashMap<>();
 	
 	static {
 		for (org.hollowbamboo.chordreader2.chords.ChordExtended value : values()) {

@@ -107,5 +107,7 @@
     <string name="storage_access">Accès au stockage</string>
     <string name="grant_storage_access">Veuillez accorder l\'autorisation d\'accès au stockage pour le dossier chord_reader_2.</string>
     <string name="select_storage_location">Veuillez sélectionner votre emplacement de stockage ou créer un nouveau dossier pour le stockage local de vos chansons.</string>
+    <string name="share">Partager</string>
+    <string name="add_song">ajouter chanson</string>
 
 </resources>

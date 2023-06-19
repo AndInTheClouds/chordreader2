@@ -10,7 +10,6 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -24,7 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WebSearchViewModel extends ViewModel {
-    // TODO: Implement the
 
     private static final String LOG_TAG = "WebSearchViewModel";
     private static final long PAGE_WAIT_TIME = 3000;
@@ -112,7 +110,7 @@ public class WebSearchViewModel extends ViewModel {
         this.url = url;
         this.chordWebpage = findKnownWebpage(url);
 
-        handler.post(() -> getHtmlFromWebView());
+        handler.post(this::getHtmlFromWebView);
 
     }
 
@@ -153,7 +151,7 @@ public class WebSearchViewModel extends ViewModel {
 
         if(matcher.find()) {
             String match = matcher.group(1);
-            if(searchEngineURL.contains(match))
+            if (match != null && searchEngineURL.contains(match))
                 return false; // skip page - we're on the search results page
         }
 
@@ -171,7 +169,7 @@ public class WebSearchViewModel extends ViewModel {
         String chordChart = WebPageExtractionHelper.extractChordChart(
                 chordWebpage, html, noteNaming);
 
-        Log.d("chordChart is %s...", chordChart != null ? (chordChart.substring(0, Math.min(chordChart.length(), 30))) : chordChart);
+        Log.d("chordChart is %s...", chordChart != null ? (chordChart.substring(0, Math.min(chordChart.length(), 30))) : null);
 
         boolean result = ChordParser.containsLineWithChords(chordChart, noteNaming);
 

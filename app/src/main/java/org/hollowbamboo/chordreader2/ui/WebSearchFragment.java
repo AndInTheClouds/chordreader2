@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -60,7 +61,6 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -139,6 +139,8 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         messageTextView = binding.findChordsMessageTextView;
 
+        applyPreferences();
+
         handleBackButton();
         prepareQuerySaver();
         setUpInstanceData();
@@ -173,7 +175,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         assert getArguments() != null;
         getArguments().putBundle("webViewState", bundle);
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
     }
 
@@ -209,6 +211,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     private void setUpWebView() {
         webView.setWebViewClient(webSearchViewModel.getClient());
 
@@ -225,10 +228,6 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             if(event.getPointerCount() == 2) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        scaleGestureDetector.onTouchEvent(event);
-                        break;
 
                     case MotionEvent.ACTION_MOVE:
                         // Disallow ScrollView to intercept touch events.
@@ -286,12 +285,8 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             performSearch();
         } else if(id == R.id.find_chords_message_secondary_view) {
             showConfirmChordChartDialog(webSearchViewModel.analyzeHtml());
-// TODO: remove evtl.       } else if(id == R.id.find_chords_edit_text) {// I think it's intuitive to select the whole text when you click here
-//            if(!TextUtils.isEmpty(searchEditText.getText())) {
-//                searchEditText.setSelection(0, searchEditText.getText().length());
-//            }
         } else if(id == R.id.find_chords_edit_text) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             searchEditText.requestFocus();
 
             // show keyboard
@@ -302,40 +297,19 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     private void setObserversForLiveData() {
 
-        webSearchViewModel.getUrlMLD().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String urlMLD) {
-                loadUrl(urlMLD);
-            }
-        });
+        webSearchViewModel.getUrlMLD().observe(getViewLifecycleOwner(), this::loadUrl);
 
-        webSearchViewModel.getHTMLurlMLD().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String htmlUrlMLD) {
-                loadUrl(htmlUrlMLD);
-            }
-        });
+        webSearchViewModel.getHTMLurlMLD().observe(getViewLifecycleOwner(), this::loadUrl);
 
-        webSearchViewModel.getIsUrlLoadingMLD().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                urlLoading();
-            }
-        });
+        webSearchViewModel.getIsUrlLoadingMLD().observe(getViewLifecycleOwner(), aBoolean -> urlLoading());
     }
 
     private void prepareQuerySaver() {
         long queryLimit = System.currentTimeMillis() - HISTORY_WINDOW;
-        ChordReaderDBHelper dbHelper = null;
-        try {
-            dbHelper = new ChordReaderDBHelper(requireContext());
+        try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext())) {
             List<String> queries = dbHelper.findAllQueries(queryLimit, "");
-            queryAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, queries);
+            queryAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, queries);
             searchEditText.setAdapter(queryAdapter);
-        } finally {
-            if(dbHelper != null) {
-                dbHelper.close();
-            }
         }
     }
 
@@ -357,15 +331,16 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     private void setUpInstanceData() {
 
         String searchText = null;
-        try { // If activity is started from song list
+        // If activity is started from song list
+        if (getArguments() != null) {
             searchText = WebSearchFragmentArgs.fromBundle(getArguments()).getSearchText();
-        } catch (Exception ignored) { }
+        }
 
-        if(!(searchText == null)) {
+        if (!(searchText == null)) {
             searchEditText.setText(searchText);
             performSearch();
         } else {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); //show keyboard immediately
+            requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); //show keyboard immediately
         }
 
     }
@@ -393,11 +368,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     @JavascriptInterface
     public void showHTML(String html) {
 
-        Log.d(LOG_TAG,"html is %s..." + (html != null ? (html.substring(0, Math.min(html.length(), 30))) : html));
+        Log.d(LOG_TAG,"html is %s..." + (html != null ? (html.substring(0, Math.min(html.length(), 30))) : null));
 
         webSearchViewModel.setHtml(html);
 
-        handler.post(() -> urlAndHtmlLoaded());
+        handler.post(this::urlAndHtmlLoaded);
 
     }
 
@@ -436,7 +411,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
 
         // dismiss soft keyboard
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
 
         String searchText = (searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim());
@@ -468,19 +443,12 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         Log.d(LOG_TAG,"saving: '%s' " + searchText);
 
-        ChordReaderDBHelper dbHelper = null;
-
-        try {
-            dbHelper = new ChordReaderDBHelper(requireContext());
+        try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext())) {
             boolean newQuerySaved = dbHelper.saveQuery(searchText);
 
             // don't add duplicates
-            if(newQuerySaved) {
+            if (newQuerySaved) {
                 queryAdapter.insert(searchText, 0); // add first so it shows up first
-            }
-        } finally {
-            if(dbHelper != null) {
-                dbHelper.close();
             }
         }
 
@@ -499,7 +467,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     private void showConfirmChordChartDialog(String chordInputText) {
 
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
         editText.setText(chordInputText);
@@ -523,8 +491,6 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String chordText = editText.getText().toString();
 
-//                    WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
-//                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), null, chordText, webSearchViewModel.getBPM());
                     WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
                             WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), chordText);
                     action.setBpm(webSearchViewModel.getBPM());

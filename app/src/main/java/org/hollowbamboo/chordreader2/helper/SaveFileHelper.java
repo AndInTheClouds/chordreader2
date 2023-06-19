@@ -4,6 +4,7 @@ import static android.os.Build.VERSION.SDK_INT;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -17,8 +18,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.util.UtilLogger;
 
 import java.io.BufferedOutputStream;
@@ -60,7 +63,7 @@ public class SaveFileHelper {
             ArrayList<Uri> fileUris = getFileUri(context, fileNames);
             Uri fileUri = fileUris.isEmpty() ? null : fileUris.get(0);
 
-            if(fileUri != null) {
+            if (fileUri != null) {
                 InputStream inputStream = null;
                 try {
                     inputStream = context.getContentResolver().openInputStream(fileUri);
@@ -103,7 +106,7 @@ public class SaveFileHelper {
             ArrayList<Uri> fileUris = getFileUri(context, Arrays.asList(fileNames));
 
             for (Uri uri : fileUris) {
-                DocumentFile file = DocumentFile.fromSingleUri(context,uri);
+                DocumentFile file = DocumentFile.fromSingleUri(context, uri);
                 if (file != null) {
                     existingFileNames.add(file.getName());
                 }
@@ -176,13 +179,11 @@ public class SaveFileHelper {
                 ContentResolver contentResolver = context.getContentResolver();
                 Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(documentFile.getUri(),
                         DocumentsContract.getDocumentId(documentFile.getUri()));
-                Cursor cursor = null;
 
-                try {
-                    cursor = contentResolver.query(childrenUri, new String[]{
-                            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                            DocumentsContract.Document.COLUMN_DISPLAY_NAME
-                    }, null, null, null);
+                try (Cursor cursor = contentResolver.query(childrenUri, new String[]{
+                        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                        DocumentsContract.Document.COLUMN_DISPLAY_NAME
+                }, null, null, null)) {
 
                     while (cursor.moveToNext()) {
                         final String fileName = cursor.getString(1);
@@ -192,10 +193,6 @@ public class SaveFileHelper {
 
                 } catch (Exception e) {
                     Log.w("SaveFileHelper_ListFile", "Failed query get all file names: " + e);
-                } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
                 }
             }
         }
@@ -225,6 +222,7 @@ public class SaveFileHelper {
     public static String openFile(Context context, String filename) {
 
         BufferedReader bufferedReader = null;
+        ParcelFileDescriptor inputPFD = null;
 
         if (SDK_INT < Build.VERSION_CODES.O) {
             File baseDir = getBaseDirectory();
@@ -250,16 +248,16 @@ public class SaveFileHelper {
 
             Uri fileUri = fileUris.get(0);
 
-			FileInputStream fileInputStream;
+            FileInputStream fileInputStream;
 
             try {
-                if (fileUri != null) {
-                    ParcelFileDescriptor inputPFD = context.getContentResolver().openFileDescriptor(fileUri, "r");
-
-					fileInputStream = new FileInputStream(inputPFD.getFileDescriptor());
-
-                } else
+                if (fileUri == null)
                     return "";
+
+                inputPFD = context.getContentResolver().openFileDescriptor(fileUri, "r");
+
+                fileInputStream = new FileInputStream(inputPFD.getFileDescriptor());
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
@@ -283,6 +281,10 @@ public class SaveFileHelper {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
+
+                    if (inputPFD != null) {
+                        inputPFD.close();
+                    }
                 } catch (IOException e) {
                     log.e(e, "couldn't close buffered reader");
                 }
@@ -318,7 +320,7 @@ public class SaveFileHelper {
         Runnable runnable = () -> {
             Message message = new Message();
 
-            String setlistContent  = SaveFileHelper.openFile(context, setlist);
+            String setlistContent = SaveFileHelper.openFile(context, setlist);
 
             if (setlistContent.length() == 0) {
                 message.obj = new String[0];
@@ -333,7 +335,8 @@ public class SaveFileHelper {
             ArrayList<String> tempList = new ArrayList<>();
 
             for (String file : existingFiles) {
-                tempList.add(file.replace(".txt", ""));
+                if (file != null)
+                    tempList.add(file.replace(".txt", ""));
             }
 
             if (tempList.size() == 1 && tempList.get(0).equals(""))
@@ -416,21 +419,14 @@ public class SaveFileHelper {
                 return false;
             }
 
-            PrintStream out = null;
-
-            try {
+            try (PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(newFile, false), 8192))) {
                 // specifying 8192 gets rid of an annoying warning message
-                out = new PrintStream(new BufferedOutputStream(new FileOutputStream(newFile, false), 8192));
 
                 out.print(fileText);
 
             } catch (FileNotFoundException ex) {
                 log.e(ex, "unexpected exception");
                 return false;
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
             }
 
         } else {
@@ -484,6 +480,46 @@ public class SaveFileHelper {
         return true;
     }
 
+    public static Intent shareFiles(Context context, String[] fileNames) {
+
+        ArrayList<Uri> uriArrayList = new ArrayList<>();
+
+        if (SDK_INT < Build.VERSION_CODES.O) {
+            File catalogDir = getBaseDirectory();
+
+            for (String filename : fileNames) {
+                File file = new File(catalogDir, filename);
+
+                if (file.exists()) {
+                    //Uri shareFileUri = Uri.fromFile(file);
+                    Uri shareFileUri = FileProvider.getUriForFile(
+                            context,
+                            "org.hollowbamboo.chordreader2.fileprovider",
+                            file);
+
+                    uriArrayList.add(shareFileUri);
+                }
+            }
+        } else {
+            uriArrayList = getFileUri(context, Arrays.asList(fileNames));
+        }
+
+        Intent sharingIntent;
+        if (fileNames.length > 1) {
+            sharingIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            sharingIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriArrayList);
+        } else {
+            sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, uriArrayList.get(0));
+        }
+
+        String[] mimeTypes = {"application/txt", "application/pl","text/*"};
+        sharingIntent.setType("*/*");
+        sharingIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+        return Intent.createChooser(sharingIntent, context.getString(R.string.share));
+    }
+
     private static File getBaseDirectory() {
 
         File sdcardDir = Environment.getExternalStorageDirectory();
@@ -509,13 +545,10 @@ public class SaveFileHelper {
                     DocumentsContract.getDocumentId(documentFile.getUri())
             );
 
-            Cursor cursor = null;
-
-            try {
-                cursor = contentResolver.query(childrenUri, new String[]{
-                        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                        DocumentsContract.Document.COLUMN_DISPLAY_NAME
-                }, null, null, null);
+            try (Cursor cursor = contentResolver.query(childrenUri, new String[]{
+                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                    DocumentsContract.Document.COLUMN_DISPLAY_NAME
+            }, null, null, null)) {
 
                 Uri[] existingFilesUris = new Uri[requestedFileNames.size()];
 
@@ -538,10 +571,6 @@ public class SaveFileHelper {
 
             } catch (Exception e) {
                 Log.w("SaveFileHelper_getUri", "Failed query: " + e);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
             }
         }
         return new ArrayList<>();

@@ -18,12 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
@@ -70,7 +71,6 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -201,6 +201,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 } else if(itemId == R.id.menu_add_to_setlist) {
                     createSetListDialog();
                     return true;
+                } else if(itemId == R.id.menu_share_file) {
+                    shareFile();
+                    return true;
                 } else if(itemId == android.R.id.home) {
                     howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
                     checkForSaving();
@@ -237,6 +240,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setUpWidgets() {
         viewingTextView = binding.chordsViewingTextView;
         viewingScrollView = binding.chordsViewingScrollView;
@@ -297,10 +301,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             } else {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        scaleGestureDetector.onTouchEvent(event);
-                        break;
 
                     case MotionEvent.ACTION_MOVE:
                         // Disallow ScrollView to intercept touch events.
@@ -335,70 +335,43 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private void setObserversForLiveData() {
 
-        songViewFragmentViewModel.getFragmentTitle().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String title) {
-                setTitle(title);
-            }
+        songViewFragmentViewModel.getFragmentTitle().observe(getViewLifecycleOwner(), this::setTitle);
+
+        songViewFragmentViewModel.getChordTextMLD().observe(getViewLifecycleOwner(), finalChordText -> {
+            applyLinkifiedChordsTextToTextView(finalChordText);
+            viewingTextView.post(() -> viewingScrollView.calculateAutoScrollVelocity());
         });
 
-        songViewFragmentViewModel.getChordTextMLD().observe(getViewLifecycleOwner(), new Observer<Spannable>() {
-            @Override
-            public void onChanged(@Nullable Spannable finalChordText) {
-                applyLinkifiedChordsTextToTextView(finalChordText);
-                viewingTextView.post(() -> viewingScrollView.calculateAutoScrollVelocity());
+        songViewFragmentViewModel.getTextSize().observe(getViewLifecycleOwner(), textSize -> {
+            if(textSize == 0) {
+                return;
             }
+
+            viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
         });
 
-        songViewFragmentViewModel.getTextSize().observe(getViewLifecycleOwner(), new Observer<Float>() {
-            @Override
-            public void onChanged(Float textSize) {
-                if(textSize == 0) {
-                    return;
-                }
+        songViewFragmentViewModel.getBpmMLD().observe(getViewLifecycleOwner(), bpm -> viewingScrollView.setBpm(bpm));
 
-                viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
-            }
-        });
-
-        songViewFragmentViewModel.getBpmMLD().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer bpm) {
-                viewingScrollView.setBpm(bpm);
-            }
-        });
-
-       songViewFragmentViewModel.getScrollVelocityCorrFactorMLD().observe(getViewLifecycleOwner(), new Observer<Float>() {
-           @Override
-           public void onChanged(Float scrollVelocityCorrectionFactor) {
-               if(scrollVelocityCorrectionFactor > 0)
-                   viewingScrollView.setScrollVelocityCorrectionFactor(scrollVelocityCorrectionFactor);
-               else {
-                   viewingScrollView.setScrollVelocityCorrectionFactor(1);
-               }
+       songViewFragmentViewModel.getScrollVelocityCorrFactorMLD().observe(getViewLifecycleOwner(), scrollVelocityCorrectionFactor -> {
+           if(scrollVelocityCorrectionFactor > 0)
+               viewingScrollView.setScrollVelocityCorrectionFactor(scrollVelocityCorrectionFactor);
+           else {
+               viewingScrollView.setScrollVelocityCorrectionFactor(1);
            }
        });
 
-        songViewFragmentViewModel.getShowChordPopupMLD().observe(getViewLifecycleOwner(), new Observer<Chord>() {
-            @Override
-            public void onChanged(Chord chord) {
-                showChordPopup(chord);
-            }
-        });
+        songViewFragmentViewModel.getShowChordPopupMLD().observe(getViewLifecycleOwner(), this::showChordPopup);
 
-        songViewFragmentViewModel.getSaveResultMLD().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean successfullySavedLog) {
+        songViewFragmentViewModel.getSaveResultMLD().observe(getViewLifecycleOwner(), successfullySavedLog -> {
 
-                if(successfullySavedLog) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
+            if(successfullySavedLog) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
 
-                    songViewFragmentViewModel.isEditedTextToSave = false;
-                    songViewFragmentViewModel.filename = filename;
+                songViewFragmentViewModel.isEditedTextToSave = false;
+                songViewFragmentViewModel.filename = filename;
 
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.unable_to_save_file), Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.unable_to_save_file), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -408,7 +381,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         if(songViewFragmentViewModel.getFragmentTitle().getValue() == null ||
             songViewFragmentViewModel.chordText == null) {
 
-            String songTitle = SongViewFragmentArgs.fromBundle(getArguments()).getSongTitle();
+            String songTitle = null;
+            if (getArguments() != null) {
+                songTitle = SongViewFragmentArgs.fromBundle(getArguments()).getSongTitle();
+            }
             filename = SongViewFragmentArgs.fromBundle(getArguments()).getFilename();
             String chordText = SongViewFragmentArgs.fromBundle(getArguments()).getChordText();
             songViewFragmentViewModel.setBpm(SongViewFragmentArgs.fromBundle(getArguments()).getBpm());
@@ -432,7 +408,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             songViewFragmentViewModel.filename = filename;
             songViewFragmentViewModel.setNoteNaming(getNoteNaming());
             songViewFragmentViewModel.setTransposition(transposition);
-            songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(getActivity().getBaseContext()).getLinkColor(getActivity().getBaseContext()));
+            songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(requireActivity().getBaseContext()).getLinkColor(requireActivity().getBaseContext()));
             songViewFragmentViewModel.setChordText(chordText);
         }
 
@@ -546,12 +522,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         Handler handlerInMainThread = new Handler(looper);
 
-        Runnable yourRunnable = new Runnable() {
-            @Override
-            public void run() {
-                toolbar.setTitle(titleText);
-            }
-        };
+        Runnable yourRunnable = () -> toolbar.setTitle(titleText);
 
         handlerInMainThread.post(yourRunnable);
     }
@@ -726,7 +697,9 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         SongViewFragmentDirections.ActionNavSongViewSelf action =
                 SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null);
 
-        Navigation.findNavController(getParentFragment().getView()).navigate(action);
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+        }
     }
 
     private void changeAutoScrollFactor(boolean acceleration) {
@@ -829,6 +802,15 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         SaveFileHelper.saveFile(requireContext(), resultText.toString(),setlist);
     }
 
+
+    private void shareFile() {
+        String[] fileNames = new String[1];
+        fileNames[0] = songViewFragmentViewModel.filename.concat(".txt");
+        Intent intent = SaveFileHelper.shareFiles(requireContext(),fileNames);
+
+        startActivity(intent);
+    }
+
     // Dialogs
 
     private void showSavePromptDialog() {
@@ -867,22 +849,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         editText.setSingleLine();
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            InputMethodManager imm = (InputMethodManager)
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                if (v.requestFocus())
-                    editText.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                    });
-                else
-                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            if (v.requestFocus())
+                editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
+            else
+                imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
         });
 
         editText.setText(songViewFragmentViewModel.filename);
@@ -947,11 +921,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popup_chord, null);
 
-        ImageButton nextChordButton = (ImageButton) view.findViewById(R.id.next_chord_button);
-        ImageButton previousChordButton = (ImageButton) view.findViewById(R.id.previous_chord_button);
+        ImageButton nextChordButton = view.findViewById(R.id.next_chord_button);
+        ImageButton previousChordButton = view.findViewById(R.id.previous_chord_button);
 
         List<String> guitarChords = ChordDictionary.getGuitarChordsForChord(chord);
 
@@ -988,7 +962,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 });
             }
 
-            TextView chordVisuTextView = (TextView) view.findViewById(R.id.chord_visualisation_text_view);
+            TextView chordVisuTextView = view.findViewById(R.id.chord_visualisation_text_view);
             String currentVarOfTotal = "Var: " + 1 + getString(R.string.of) + chordPagerAdapter.getCount();
             chordVisuTextView.setText(currentVarOfTotal);
 
@@ -1021,7 +995,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 }
             });
         } else {
-            TextView chordVisuTextView = (TextView) view.findViewById(R.id.chord_visualisation_text_view);
+            TextView chordVisuTextView = view.findViewById(R.id.chord_visualisation_text_view);
             chordVisuTextView.setText(getString(R.string.no_guitar_chord_available));
         }
 
@@ -1033,7 +1007,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 .setNeutralButton("Edit",(dialog, which) -> {
                     SongViewFragmentDirections.ActionNavSongViewToNavChordDictEdit action =
                             SongViewFragmentDirections.actionNavSongViewToNavChordDictEdit(chord);
-                    Navigation.findNavController(getParentFragment().getView()).navigate(action);
+
+                    if (getParentFragment() != null) {
+                        Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+                    }
                 })
                 .setPositiveButton(android.R.string.ok, null);
 
@@ -1107,15 +1084,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 .setSingleChoiceItems(listItems, checkedItem[0], (dialog, which) -> {
                     checkedItem[0] = which;
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String setList = listItems[checkedItem[0]];
+                .setPositiveButton("OK", (dialog, which) -> {
+                    String setList = listItems[checkedItem[0]];
 
-                        appendSongToSetlist(setList);
+                    appendSongToSetlist(setList);
 
-                        dialog.dismiss();
-                    }
+                    dialog.dismiss();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {})
                 .create()
@@ -1277,6 +1251,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         EditText editText;
         EditTextDialogViewModel editTextDialogViewModel;
 
+        @SuppressLint("InflateParams")
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -1290,7 +1265,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 chordText = editTextDialogViewModel.chordText;
 
             // from showConfirmChordChartDialog()
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
             editText.setText(chordText);

@@ -17,9 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -36,11 +38,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -120,12 +120,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         deleteFilterTextButton = binding.deleteFilterTextButton;
 
         searchWebButton = binding.searchTheWebButton;
-        searchWebButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                  startWebView();
-            }
-        });
+        searchWebButton.setOnClickListener(view -> startWebView());
 
         textView = binding.listViewTextView;
 
@@ -162,7 +157,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     public void onPause() {
         super.onPause();
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(filterEditText.getWindowToken(), 0);
     }
 
@@ -188,9 +183,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                     menu.findItem(R.id.menu_manage_files).setVisible(true);
                 }
 
-                if(fileListAdapter == null)
-                    menu.findItem(R.id.menu_manage_files).setVisible(false);
-                else if (fileListAdapter.isEmpty())
+                if(fileListAdapter == null || fileListAdapter.isEmpty())
                     menu.findItem(R.id.menu_manage_files).setVisible(false);
             }
 
@@ -206,7 +199,6 @@ public class ListFragment extends Fragment implements TextWatcher {
                         startSongView(null);
                     else
                         newSetListDialog();
-
                     return true;
                 } else if(itemId == R.id.menu_cancel_selection) {
                     cancelSelectionMode();
@@ -216,6 +208,9 @@ public class ListFragment extends Fragment implements TextWatcher {
                     return true;
                 } else if(itemId == R.id.menu_delete) {
                     verifyDelete();
+                    return true;
+                } else if(itemId == R.id.menu_share_files) {
+                    shareSelectedFiles();
                     return true;
                 }
 
@@ -248,22 +243,14 @@ public class ListFragment extends Fragment implements TextWatcher {
         editText.setSingleLine();
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager)
-                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            InputMethodManager imm = (InputMethodManager)
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                if (v.requestFocus())
-                    editText.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                    });
-                else
-                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            if (v.requestFocus())
+                editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
+            else
+                imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
         });
 
         editText.setText(R.string.new_setlist);
@@ -309,12 +296,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         builder.setTitle(R.string.save_file)
                 .setCancelable(true)
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        editText.clearFocus();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> editText.clearFocus())
                 .setPositiveButton(android.R.string.ok, onClickListener)
                 .setMessage(R.string.enter_filename)
                 .setView(editText);
@@ -353,9 +335,12 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     protected void setUpInstance() {
 
-        dataViewModel.mode = ListFragmentArgs.fromBundle(getArguments()).getMode();
+        if (getArguments() != null) {
+            dataViewModel.mode = ListFragmentArgs.fromBundle(getArguments()).getMode();
+        }
 
         if(dataViewModel.mode.equals(MODE_SONGS))
             dataViewModel.resetData();
@@ -384,12 +369,9 @@ public class ListFragment extends Fragment implements TextWatcher {
                 filenames = getFileNames(".txt");
 
                 okButton.setVisibility(View.VISIBLE);
-                okButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        if (getParentFragment() != null) {
-                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-                        }
+                okButton.setOnClickListener(view -> {
+                    if (getParentFragment() != null) {
+                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
                     }
                 });
 
@@ -432,51 +414,44 @@ public class ListFragment extends Fragment implements TextWatcher {
         fileList.setAdapter(fileListAdapter);
 
         //initial empty list
-        if(dataViewModel.mode.equals(MODE_SONGS))
-        searchWebButton.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
+        if (dataViewModel.mode.equals(MODE_SONGS))
+            searchWebButton.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
+
         textView.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
 
-        if(dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION))
+        if (dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION))
             setFileSelection();
 
-        fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String filename = (String) adapterView.getAdapter().getItem(i);
-                view.setBackgroundColor(Color.GRAY);
+        fileList.setOnItemClickListener((adapterView, view, i, l) -> {
+            String filename = (String) adapterView.getAdapter().getItem(i);
+            view.setBackgroundColor(Color.GRAY);
 
-                if(IsSelectionModeActive) {
-                    fileListAdapter.switchSelectionForIndex(i);
-                } else
-                    switch (dataViewModel.mode) {
-                        case MODE_SONGS:
-                            startSongView(filename);
-                            break;
-                        case MODE_SETLIST:
-                            startSetListList(filename);
-                            break;
-                    }
-            }
+            if(IsSelectionModeActive) {
+                fileListAdapter.switchSelectionForIndex(i);
+                if (Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION))
+                    dataViewModel.isSetListChanged = true;
+            } else
+                switch (dataViewModel.mode) {
+                    case MODE_SONGS:
+                        startSongView(filename);
+                        break;
+                    case MODE_SETLIST:
+                        startSetListList(filename);
+                        break;
+                }
         });
 
-        fileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long arg3) {
-                startSelectionMode();
-                fileListAdapter.switchSelectionForIndex(pos);
-                return true;
-            }
+        fileList.setOnItemLongClickListener((arg0, arg1, pos, arg3) -> {
+            startSelectionMode();
+            fileListAdapter.switchSelectionForIndex(pos);
+            return true;
         });
 
         filterEditText.addTextChangedListener(this);
 
-        deleteFilterTextButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                filterEditText.setText("");
-                return true;
-            }
+        deleteFilterTextButton.setOnTouchListener((view, motionEvent) -> {
+            filterEditText.setText("");
+            return true;
         });
     }
 
@@ -509,6 +484,8 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_cancel_selection).setVisible(true);
         menu.findItem(R.id.menu_select_all).setVisible(true);
+        if(Objects.equals(dataViewModel.mode, MODE_SONGS))
+            menu.findItem(R.id.menu_share_files).setVisible(true);
 
         if (dataViewModel.mode.equals(MODE_SONGS))
             setTitle(getString(R.string.manage_saved_files));
@@ -527,6 +504,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_delete).setVisible(false);
         menu.findItem(R.id.menu_cancel_selection).setVisible(false);
         menu.findItem(R.id.menu_select_all).setVisible(false);
+        menu.findItem(R.id.menu_share_files).setVisible(false);
 
         fileListAdapter.unselectAll();
 
@@ -646,8 +624,10 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         dataViewModel.setSetListSongs(filesList);
         dataViewModel.setSetListMLD(setlist);
+        dataViewModel.isSetListChanged = false;
 
-        Navigation.findNavController(getParentFragment().getView()).navigate(R.id.nav_drag_list_view);
+        if (getParentFragment() != null)
+            Navigation.findNavController(getParentFragment().requireView()).navigate(R.id.nav_drag_list_view);
     }
 
     private void startSongView(String filename) {
@@ -657,7 +637,9 @@ public class ListFragment extends Fragment implements TextWatcher {
         ListFragmentDirections.ActionNavListFragmentToNavSongView action =
                 ListFragmentDirections.actionNavListFragmentToNavSongView(songTitle, filename,null);
 
-        Navigation.findNavController(getParentFragment().getView()).navigate(action);
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+        }
     }
 
     private void startWebView() {
@@ -665,9 +647,26 @@ public class ListFragment extends Fragment implements TextWatcher {
          ListFragmentDirections.ActionNavListFragmentToNavWebSearch action =
                 ListFragmentDirections.actionNavListFragmentToNavWebSearch(searchText);
 
-        Navigation.findNavController(getParentFragment().getView()).navigate(action);
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+        }
 
 
     }
 
+    private void shareSelectedFiles() {
+        ArrayList<String> fileNames = fileListAdapter.getSelectedFiles();
+
+        for (int i = 0; i < fileNames.size() ; i++) {
+            String songName = fileNames.get(i);
+            if (!songName.endsWith(".txt"))
+                fileNames.set(i,songName + ".txt");
+        }
+
+        Intent intent = SaveFileHelper.shareFiles(requireContext(),fileNames.toArray(new String[0]));
+
+        startActivity(intent);
+
+        cancelSelectionMode();
+    }
 }

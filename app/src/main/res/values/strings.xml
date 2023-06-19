@@ -126,5 +126,7 @@
     <string name="storage_access">Storage access</string>
     <string name="grant_storage_access">Please grant storage access permission for folder chord_reader_2.</string>
     <string name="select_storage_location">Please select your storage location or create new folder for local storage of your songs.</string>
+    <string name="share">Share</string>
+    <string name="add_song">Add song</string>
 
 </resources>

@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +34,6 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -58,8 +58,6 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private DataViewModel dataViewModel;
 
-    private boolean isSetListChanged = false;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -72,14 +70,12 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         recyclerView = binding.recyclerView;
 
-        setTitle(dataViewModel.getSetListMLD().getValue().replace(".pl", ""));
+        String title = dataViewModel.getSetListMLD().getValue();
 
-        dataViewModel.getSetListSongsMLD().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<String> setListSongs) {
-                setupRecyclerView();
-            }
-        });
+        if (title != null)
+            setTitle(title.replace(".pl", ""));
+
+        dataViewModel.getSetListSongsMLD().observe(getViewLifecycleOwner(), setListSongs -> setupRecyclerView());
 
         setupRecyclerView();
 
@@ -93,7 +89,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     public void onPause() {
         super.onPause();
 
-        if (isSetListChanged)
+        if (dataViewModel.isSetListChanged)
             saveSetListToFile();
     }
 
@@ -129,7 +125,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
             public void onChanged() {
                 super.onChanged();
 
-                isSetListChanged = true;
+                dataViewModel.isSetListChanged = true;
             }
         });
 
@@ -147,7 +143,9 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.list_view_menu, menu);
+                menu.findItem(R.id.menu_new_file).setTitle(R.string.add_song);
                 menu.findItem(R.id.menu_new_file).setVisible(true);
+                menu.findItem(R.id.menu_share_files).setVisible(true);
             }
 
             @Override
@@ -156,6 +154,11 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
                 if (itemId == R.id.menu_new_file) {
                     startListView();
+                    return true;
+                }
+
+                if (itemId == R.id.menu_share_files) {
+                    shareSetList();
                     return true;
                 }
 
@@ -171,14 +174,17 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
                 DraggableListFragmentDirections.actionNavDragListViewToNavSongView(
                         filename.replace(".txt", ""), filename, null);
 
-        Navigation.findNavController(getParentFragment().getView()).navigate(action);
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+        }
     }
 
     private void startListView() {
         DraggableListFragmentDirections.ActionNavDragListViewToNavListView action =
                 DraggableListFragmentDirections.actionNavDragListViewToNavListView("SetlistSongsSelection");
-        View view = getParentFragment().getView();
-        Navigation.findNavController(view).navigate(action);
+        if (getParentFragment() != null) {
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+        }
     }
 
     private void saveSetListToFile() {
@@ -193,5 +199,24 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         }
 
         SaveFileHelper.saveFile(requireContext(), resultText.toString(), fileName);
+    }
+
+    private void shareSetList() {
+        ArrayList<String> fileNames = new ArrayList<>();
+
+        String setlistName = dataViewModel.getSetListMLD().getValue();
+        if (setlistName != null && !setlistName.endsWith(".pl")) setlistName = setlistName + ".pl";
+
+        fileNames.add(setlistName);
+
+        for (String songName : Objects.requireNonNull(dataViewModel.getSetListSongsMLD().getValue())) {
+            if (!songName.endsWith(".txt"))
+                songName = songName + ".txt";
+            fileNames.add(songName);
+        }
+
+        Intent intent = SaveFileHelper.shareFiles(requireContext(),fileNames.toArray(new String[0]));
+
+        startActivity(intent);
     }
 }

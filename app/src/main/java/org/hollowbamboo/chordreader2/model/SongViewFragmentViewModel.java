@@ -1,6 +1,5 @@
 package org.hollowbamboo.chordreader2.model;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -10,7 +9,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -57,7 +55,8 @@ public class SongViewFragmentViewModel extends ViewModel {
     private final MutableLiveData<Float> scrollVelocityCorrFactorMLD = new MutableLiveData<>();
     private final MutableLiveData<Boolean> saveResultMLD = new MutableLiveData<>();
 
-    public SongViewFragmentViewModel() {    }
+    public SongViewFragmentViewModel() {
+    }
 
     public MutableLiveData<Float> getTextSize() {
         return textSizeMLD;
@@ -99,7 +98,7 @@ public class SongViewFragmentViewModel extends ViewModel {
         this.chordText = chordText;
 
         // BPMs and AutoScrollSpeed
-        if(bpm == null) //If bpm was retrieved from web extraction, it is already set
+        if (bpm < 0)
             bpm = (int) extractAutoScrollParam(chordText, "bpm");
         bpm = bpm < 0 ? 100 : bpm;
 
@@ -130,7 +129,7 @@ public class SongViewFragmentViewModel extends ViewModel {
 
     public void setTransposition(Transposition transposition) {
 
-        if(filename != null && transposition != null) {
+        if (filename != null && transposition != null) {
             capoFret = transposition.getCapo();
             transposeHalfSteps = transposition.getTranspose();
         } else {
@@ -211,9 +210,7 @@ public class SongViewFragmentViewModel extends ViewModel {
                 super.handleMessage(msg);
                 Spannable newText = (Spannable) msg.obj;
 
-                Runnable runnable = () -> {
-                    chordTextMLD.setValue(newText);
-                };
+                Runnable runnable = () -> chordTextMLD.setValue(newText);
 
                 uiThread.post(runnable);
                 handlerThread.quit();
@@ -221,7 +218,7 @@ public class SongViewFragmentViewModel extends ViewModel {
         };
 
         Runnable runnable = () -> {
-            if(capoFret != 0 || transposeHalfSteps != 0) {
+            if (capoFret != 0 || transposeHalfSteps != 0) {
                 updateChordsInTextForTransposition(-transposeHalfSteps, -capoFret);
             }
 
@@ -249,40 +246,41 @@ public class SongViewFragmentViewModel extends ViewModel {
         Matcher matcher;
         int matchGroup;
 
-        if(text == null || autoScrollParam == null)
+        if (text == null || autoScrollParam == null)
             return -1;
 
-        if(autoScrollParam.equals("bpm")) {
+        if (autoScrollParam.equals("bpm")) {
             Pattern bpmPattern = Pattern.compile("(\\d{2,3})(\\s*bpm)", Pattern.CASE_INSENSITIVE);
             matcher = bpmPattern.matcher(text);
             matchGroup = 1;
-        } else if(autoScrollParam.equals("scrollVelocityCorrectionFactor")) {
+        } else if (autoScrollParam.equals("scrollVelocityCorrectionFactor")) {
             Pattern scrollVelocityCorrectionFactorPattern = Pattern.compile("(autoscrollfactor|asf):?\\s*(\\d+[.|,]\\d+)", Pattern.CASE_INSENSITIVE);
             matcher = scrollVelocityCorrectionFactorPattern.matcher(text);
             matchGroup = 2;
         } else
             return -1;
 
-        if(matcher.find()) {
+        if (matcher.find()) {
             String match = matcher.group(matchGroup);
-            if(match != null)
+            if (match != null) {
                 match = match.replace(",", ".");
-            return Float.parseFloat(match);
-        } else
-            return -1;
+                return Float.parseFloat(match);
+            }
+        }
+        return -1;
     }
 
     public void checkAndAddAutoScrollParams() {
         ArrayList<String> lines = new ArrayList<>();
         String firstLine = "";
 
-        if(!(chordText == null)) {
+        if (!(chordText == null)) {
             lines = new ArrayList<>(Arrays.asList(StringUtil.split(chordText
                     , "\n")));
             firstLine = lines.get(0).toLowerCase();
         }
 
-        if(!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor"))) {
+        if (!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor"))) {
             lines.add(0, "*** " + bpm + " BPM - AutoScrollFactor: " + scrollVelocityCorrectionFactor + " ***");
 
             StringBuilder resultText = new StringBuilder();
@@ -294,14 +292,15 @@ public class SongViewFragmentViewModel extends ViewModel {
     }
 
     public FragmentResultListener getFragmentResultListener() {
-        if(fragmentResultListener == null) {
-            fragmentResultListener = new FragmentResultListener() {
-                @Override
-                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                    if(requestKey.equals("EditChordTextDialog")) {
-                        setChordText(result.getString("NewChordText"));
-                        isEditedTextToSave = true;
-                    }
+        if (fragmentResultListener == null) {
+            fragmentResultListener = (requestKey, result) -> {
+                if (requestKey.equals("EditChordTextDialog")) {
+                    String newChordText = result.getString("NewChordText");
+
+                    bpm = (int) extractAutoScrollParam(newChordText, "bpm");
+
+                    setChordText(newChordText);
+                    isEditedTextToSave = true;
                 }
             };
         }

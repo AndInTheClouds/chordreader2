@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/menu_transpose"
@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_menu_music_up"
         android:title="@string/transpose"
         app:showAsAction="ifRoom|withText"
-        tools:ignore="AppCompatResource"/>
+        tools:ignore="AppCompatResource" />
 
     <item
         android:id="@+id/menu_edit_file"
@@ -17,7 +17,7 @@
         android:icon="@drawable/ic_menu_edit"
         android:title="@string/edit"
         app:showAsAction="ifRoom|withText"
-        tools:ignore="AppCompatResource"/>
+        tools:ignore="AppCompatResource" />
 
     <item
         android:id="@+id/menu_save_chords"
@@ -26,11 +26,19 @@
         android:title="@string/save_chords"
         app:showAsAction="ifRoom|withText"
         tools:ignore="AppCompatResource" />
+
     <item
         android:id="@+id/menu_add_to_setlist"
-        android:title="@string/add_to_setlist"
         android:icon="@drawable/ic_menu_add"
+        android:title="@string/add_to_setlist"
         app:showAsAction="ifRoom|withText"
-        tools:ignore="AppCompatResource"/>
+        tools:ignore="AppCompatResource" />
+
+    <item
+        android:id="@+id/menu_share_file"
+        android:icon="@drawable/baseline_share_24"
+        android:title="@string/share"
+        app:showAsAction="ifRoom|withText"
+        tools:ignore="AppCompatResource" />
 
 </menu>
