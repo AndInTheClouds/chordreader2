@@ -1,0 +1,2 @@
+- New Feature: Share files - active song, selection from song list, active setlist
+- Improve behaviour saving of setlist

@@ -82,12 +82,9 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.1.4?</b> \n\n
-        <li>Changelog added to F-Droid</li>\n
-        <li>Web extraction: now extracts BPM if provided</li>\n
-        <li>Bug fix: Save setlist only when changed</li>\n
-        <li>Bug fix: catch null pointers while wakelock acquiring and restore app from background</li>\n
-        <li>Bug fix: Improve Web extraction - fixed lost whitespaces after multiple new lines</li>\n
+    <string name="first_run_message">\n<b>What\'s new in version 2.1.5?</b> \n\n
+        <li>New Feature: Share files - active song, selection from song list, active setlist</li>\n
+        <li>Improve behaviour of saving of setlist</li>\n
         \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>

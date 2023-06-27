@@ -12,6 +12,17 @@ RepoType: git
 Repo: https://github.com/AndInTheClouds/chordreader2
 
 Builds:
+  - versionName: 2.1.5
+    versionCode: 7
+    commit: v2.1.5
+    subdir: app
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
   - versionName: 2.1.4
     versionCode: 6
     commit: v2.1.4

@@ -65,12 +65,9 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.4 ?</b>\n\n
-        <li>ChangeLog ajouté à F-droid</li>\n
-        <li>Extraction Web: extrait maintenant le BPM si fourni</li>\n
-        <li>Correction de bug: enregistrer la setlist uniquement lorsqu\'il est modifié</li>\n
-        <li>Correction de bugs: attraper des pointeurs nuls pendant que Wakelock acquérir et restaurer l\'application à partir de l\'arrière-plan</li>\n
-        <li>Correction de bugs: améliorer l\'extraction Web - Correction des espaces blancs perdus après plusieurs nouvelles lignes</li>\n
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.5 ?</b>\n\n
+        <li>Nouvelle fonctionnalité: partager des fichiers - Song actuel, sélection de la liste des chansons, setlist actuel</li>\n
+        <li>Améliorer le comportement de la sauvegarde de la setlist</li>\n
         \nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
