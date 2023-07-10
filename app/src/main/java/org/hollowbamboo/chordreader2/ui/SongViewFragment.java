@@ -385,6 +385,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             if (getArguments() != null) {
                 songTitle = SongViewFragmentArgs.fromBundle(getArguments()).getSongTitle();
             }
+
+            if (songTitle == null) {
+                songTitle = getResources().getString(R.string.new_file);
+            }
+
             filename = SongViewFragmentArgs.fromBundle(getArguments()).getFilename();
             String chordText = SongViewFragmentArgs.fromBundle(getArguments()).getChordText();
             songViewFragmentViewModel.setBpm(SongViewFragmentArgs.fromBundle(getArguments()).getBpm());
