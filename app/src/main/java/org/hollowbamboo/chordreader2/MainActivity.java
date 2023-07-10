@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
         if(itemId == R.id.nav_web_search) {
             MobileNavigationDirections.ActionDrawerToWebSearchFragment action =
-                    MobileNavigationDirections.actionDrawerToWebSearchFragment("");
+                    MobileNavigationDirections.actionDrawerToWebSearchFragment("", null);
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
         } else if(itemId == R.id.nav_list_view) {
             MobileNavigationDirections.ActionDrawerToListFragment action =

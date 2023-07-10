@@ -645,7 +645,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     private void startWebView() {
         String searchText = filterEditText.getText().toString();
          ListFragmentDirections.ActionNavListFragmentToNavWebSearch action =
-                ListFragmentDirections.actionNavListFragmentToNavWebSearch(searchText);
+                ListFragmentDirections.actionNavListFragmentToNavWebSearch(searchText, null);
 
         if (getParentFragment() != null) {
             Navigation.findNavController(getParentFragment().requireView()).navigate(action);

@@ -99,7 +99,7 @@ public class StartFragment extends Fragment implements View.OnClickListener, Tex
         int id = view.getId();
         if(id == R.id.button_web_search) {
             StartFragmentDirections.ActionNavStartToWebSearchFragment action =
-                    StartFragmentDirections.actionNavStartToWebSearchFragment("");
+                    StartFragmentDirections.actionNavStartToWebSearchFragment("", null);
             Navigation.findNavController(view).navigate(action);
         } else if(id == R.id.button_local_songs) {
             StartFragmentDirections.ActionNavStartToListFragment action =
