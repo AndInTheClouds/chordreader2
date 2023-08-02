@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel;
 import org.hollowbamboo.chordreader2.ChordWebpage;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.chords.regex.ChordParser;
+import org.hollowbamboo.chordreader2.helper.MetadataExtractionHelper;
 import org.hollowbamboo.chordreader2.helper.WebPageExtractionHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -142,6 +143,17 @@ public class WebSearchViewModel extends ViewModel {
 //		}
 
         return chordText;
+    }
+
+    public String getSuggestedFilename() {
+        MetadataExtractionHelper extractionHelper = new MetadataExtractionHelper();
+        String suggestedFilenameFromHTML = extractionHelper.extractSuggestedFilename(url, html);
+
+        if (suggestedFilenameFromHTML != null) {
+            return suggestedFilenameFromHTML;
+        }
+
+        return searchText;
     }
 
     public boolean checkHtmlOfUnknownWebpage() {
