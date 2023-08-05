@@ -119,8 +119,6 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         NoteNaming noteNaming = PreferenceHelper.getNoteNaming(requireContext());
 
         chordTitleTextView.setText(new StringBuilder().append("* * *  ").append(CHORD.toPrintableString(noteNaming)).append("  * * *").toString());
-        //chordTitleTextView.setTextSize(R.dimen.drawer_text_size);
-
         List<String> guitarChords = ChordDictionary.getGuitarChordsForChord(CHORD);
 
         if(guitarChords.size() == 0) {

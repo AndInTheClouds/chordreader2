@@ -491,7 +491,6 @@ public class SaveFileHelper {
                 File file = new File(catalogDir, filename);
 
                 if (file.exists()) {
-                    //Uri shareFileUri = Uri.fromFile(file);
                     Uri shareFileUri = FileProvider.getUriForFile(
                             context,
                             "org.hollowbamboo.chordreader2.fileprovider",

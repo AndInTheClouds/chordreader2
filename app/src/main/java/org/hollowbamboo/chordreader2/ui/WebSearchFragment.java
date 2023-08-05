@@ -116,8 +116,6 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         binding = FragmentWebSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         mainView = binding.findChordsFindingView;
         searchEditText = binding.findChordsEditText;
 

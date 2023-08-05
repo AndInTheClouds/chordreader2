@@ -150,9 +150,6 @@ public class SongViewFragmentViewModel extends ViewModel {
                 new ArrayList<>(chordsInText.size());
 
         for (ChordInText chordInText : chordsInText) {
-
-            //Log.d("chordInText is " + chordInText);
-
             sb.append(chordText, lastEndIndex, chordInText.getStartIndex());
 
             String chordAsString = chordInText.getChord().toPrintableString(noteNaming);
@@ -169,8 +166,6 @@ public class SongViewFragmentViewModel extends ViewModel {
         sb.append(chordText.substring(lastEndIndex));
 
         Spannable spannable = new Spannable.Factory().newSpannable(sb.toString());
-
-        //Log.d("new start and end positions are: " + newStartAndEndPositions);
 
         // add a hyperlink to each chord
         for (int i = 0; i < newStartAndEndPositions.size(); i++) {
