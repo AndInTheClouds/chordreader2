@@ -1,7 +1,11 @@
 package org.hollowbamboo.chordreader2.helper;
 
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
+
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -37,11 +41,14 @@ public class DialogHelper {
 	}
 
 	private static void setUpEnhancedSeekBar(View view, final int min, int max, int defaultValue) {
-		
+		SeekBar seekBar = (SeekBar) view.findViewById(R.id.seek_bar_main);
 		TextView minTextView = (TextView) view.findViewById(R.id.seek_bar_min_text_view);
 		TextView maxTextView = (TextView) view.findViewById(R.id.seek_bar_max_text_view);
+
+		setupOnTouchListenerForTextViewToChangeSeekBarProgress(minTextView, seekBar, -1, min, max);
+		setupOnTouchListenerForTextViewToChangeSeekBarProgress(maxTextView, seekBar, +1, min, max);
+
 		final TextView progressTextView = (TextView) view.findViewById(R.id.seek_bar_main_text_view);
-		SeekBar seekBar = (SeekBar) view.findViewById(R.id.seek_bar_main);
 		
 		minTextView.setText(Integer.toString(min));
 		// check if we need to distinguish between negative and positive
@@ -76,6 +83,35 @@ public class DialogHelper {
 		});
 		seekBar.setProgress(defaultValue - min); // initialize to default value
 		
+	}
+
+	private static void setupOnTouchListenerForTextViewToChangeSeekBarProgress(
+			final TextView textView,
+			SeekBar seekBar,
+			final int change,
+			final int minimumValue,
+			final int maximumValue
+	) {
+		textView.setOnTouchListener((view, motionEvent) -> {
+			if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+				updateSeekBarProgress(seekBar, change, minimumValue, maximumValue);
+			}
+			return false;
+		});
+	}
+
+	private static void updateSeekBarProgress(
+			SeekBar seekBar,
+			final int change,
+			final int minimumValue,
+			final int maximumValue
+	) {
+		int currentValue = seekBar.getProgress() + minimumValue;
+
+		// Make sure the new value does not exceed the bounds
+		int newValue = min(maximumValue, max(minimumValue, currentValue + change));
+
+		seekBar.setProgress(newValue - minimumValue);
 	}
 	
 }
