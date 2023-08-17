@@ -3,7 +3,9 @@ package org.hollowbamboo.chordreader2.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
@@ -43,17 +45,31 @@ public class PreferenceHelper {
 	public static ColorScheme getColorScheme(Context context) {
 		
 		if(colorScheme == null) {
-		
+			String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			String colorSchemeName = sharedPrefs.getString(
 					context.getText(R.string.pref_scheme).toString(), 
 					context.getText(ColorScheme.Dark.getNameResource()).toString());
-			
-			colorScheme = ColorScheme.findByPreferenceName(colorSchemeName, context);
+
+			if (colorSchemeName.equals(automaticColorSchemeName)) {
+				colorScheme = isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;
+			} else {
+				colorScheme = ColorScheme.findByPreferenceName(colorSchemeName, context);
+			}
 		}
 		
 		return colorScheme;
-		
+	}
+
+	private static boolean isNightModeActive(Context context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			return context.getResources().getConfiguration().isNightModeActive();
+		} else {
+			int nightModeFlags = context.getResources().getConfiguration().uiMode &
+					Configuration.UI_MODE_NIGHT_MASK;
+
+			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+		}
 	}
 
 	public static NoteNaming getNoteNaming(Context context) {
