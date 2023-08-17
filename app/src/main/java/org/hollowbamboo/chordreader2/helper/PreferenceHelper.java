@@ -13,13 +13,11 @@ import org.hollowbamboo.chordreader2.data.ColorScheme;
 
 public class PreferenceHelper {
 
-	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
 	private static String searchEngineURL = null;
 	private static String storageLocation = null;
 
 	public static void clearCache() {
-		colorScheme = null;
 		noteNaming = null;
 		searchEngineURL = null;
 		storageLocation = null;
@@ -53,19 +51,14 @@ public class PreferenceHelper {
 	}
 	
 	public static ColorScheme getColorScheme(Context context) {
-		
-		if(colorScheme == null) {
-			String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
-			String colorSchemeName = getColorSchemeName(context);
+		String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
+		String colorSchemeName = getColorSchemeName(context);
 
-			if (colorSchemeName.equals(automaticColorSchemeName)) {
-				colorScheme = isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;
-			} else {
-				colorScheme = ColorScheme.findByPreferenceName(colorSchemeName, context);
-			}
+		if (colorSchemeName.equals(automaticColorSchemeName)) {
+			return isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;
+		} else {
+			return ColorScheme.findByPreferenceName(colorSchemeName, context);
 		}
-		
-		return colorScheme;
 	}
 
 	private static boolean isNightModeActive(Context context) {
