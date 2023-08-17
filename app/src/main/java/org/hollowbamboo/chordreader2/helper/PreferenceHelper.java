@@ -49,7 +49,7 @@ public class PreferenceHelper {
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			String colorSchemeName = sharedPrefs.getString(
 					context.getText(R.string.pref_scheme).toString(), 
-					context.getText(ColorScheme.Dark.getNameResource()).toString());
+					automaticColorSchemeName);
 
 			if (colorSchemeName.equals(automaticColorSchemeName)) {
 				colorScheme = isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;
