@@ -41,15 +41,22 @@ public class PreferenceHelper {
 		return sharedPrefs.getBoolean(context.getString(R.string.pref_first_run), true);
 
 	}
+
+	public static String getColorSchemeName(Context context) {
+		String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		return sharedPrefs.getString(
+				context.getText(R.string.pref_scheme).toString(),
+				automaticColorSchemeName
+		);
+	}
 	
 	public static ColorScheme getColorScheme(Context context) {
 		
 		if(colorScheme == null) {
 			String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
-			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-			String colorSchemeName = sharedPrefs.getString(
-					context.getText(R.string.pref_scheme).toString(), 
-					automaticColorSchemeName);
+			String colorSchemeName = getColorSchemeName(context);
 
 			if (colorSchemeName.equals(automaticColorSchemeName)) {
 				colorScheme = isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;

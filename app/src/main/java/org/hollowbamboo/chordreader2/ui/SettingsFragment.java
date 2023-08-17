@@ -98,7 +98,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         themePreference = findPreference(getString(R.string.pref_scheme));
         themePreference.setOnPreferenceChangeListener(this);
 
-        CharSequence themeSummary = getString(PreferenceHelper.getColorScheme(requireContext()).getNameResource());
+        String themeSummary = PreferenceHelper.getColorSchemeName(requireContext());
         themePreference.setSummary(themeSummary);
 
         noteNamingPreference = findPreference(getString(R.string.pref_note_naming));
