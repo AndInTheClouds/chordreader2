@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             requestPermission();
 
         showInitialMessage();
+
+        attemptToOpenWebViewWithUrlFromIntent(getIntent());
     }
 
     @Override
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
         if(itemId == R.id.nav_web_search) {
             MobileNavigationDirections.ActionDrawerToWebSearchFragment action =
-                    MobileNavigationDirections.actionDrawerToWebSearchFragment("");
+                    MobileNavigationDirections.actionDrawerToWebSearchFragment("", null);
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
         } else if(itemId == R.id.nav_list_view) {
             MobileNavigationDirections.ActionDrawerToListFragment action =
@@ -314,5 +316,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             handlerThread.quit();
         };
         asyncHandler.post(runnable);
+    }
+
+    private void attemptToOpenWebViewWithUrlFromIntent(Intent intent) {
+        if (intent.getType() == null || !intent.getType().equals("text/plain") ||
+                !intent.getAction().equals(Intent.ACTION_SEND)) {
+            return;
+        }
+
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (text != null && text.length() > 0) {
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(MobileNavigationDirections.actionDrawerToWebSearchFragment(null, text));
+        }
     }
 }

@@ -331,14 +331,18 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     private void setUpInstanceData() {
 
         String searchText = null;
+        String url = null;
         // If activity is started from song list
         if (getArguments() != null) {
             searchText = WebSearchFragmentArgs.fromBundle(getArguments()).getSearchText();
+            url = WebSearchFragmentArgs.fromBundle(getArguments()).getUrl();
         }
 
         if (!(searchText == null)) {
             searchEditText.setText(searchText);
             performSearch();
+        } else if (url != null) {
+            loadUrl(url);
         } else {
             requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); //show keyboard immediately
         }
