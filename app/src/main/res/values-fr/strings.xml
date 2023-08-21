@@ -65,9 +65,11 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.5 ?</b>\n\n
-        <li>Nouvelle fonctionnalité: partager des fichiers - Song actuel, sélection de la liste des chansons, setlist actuel</li>\n
-        <li>Améliorer le comportement de la sauvegarde de la setlist</li>\n
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.1.6 ?</b>\n\n
+        <li>Nouvelle fonctionnalité: Ouvrir des URL partagées</li>\n
+        <li>Nouvelle fonctionnalité: Le nouveau thème \"Automatic\" s\'inspire du \"Night Mode\" d\'Android</li>\n
+        <li>Changez de transposition en appuyant sur les étiquettes situées à côté de la barre de recherche</li>\n
+        <li>Amélioration du nom de fichier pour les accords ultimate-guitar.com</li>\n
         \nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
