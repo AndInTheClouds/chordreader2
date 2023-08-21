@@ -555,16 +555,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void releaseWakeLock() {
-
-        //Log.d(LOG_TAG,"Releasing wakelock in 5min");
-
         releaseWakeLockCountDownTimer = new CountDownTimer(300000, 1000) {
 
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
-                //Log.d(LOG_TAG,"Wakelock released");
                 try {
                     requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 } catch (IllegalStateException e) {

@@ -443,7 +443,6 @@ public class ChordVisualisationView extends View {
                 canvas.drawRect(rectBarre, paint);
                 break;
             default:
-                //Log.d("ChordVisuView", "Normal Chord " + chord);
                 break;
         }
     }
