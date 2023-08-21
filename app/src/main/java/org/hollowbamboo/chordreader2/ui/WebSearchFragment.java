@@ -496,7 +496,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                     String chordText = editText.getText().toString();
 
                     WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
-                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSearchText(), chordText);
+                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSuggestedFilename(), chordText);
                     action.setBpm(webSearchViewModel.getBPM());
                     if (getParentFragment() != null) {
                         Navigation.findNavController(getParentFragment().requireView()).navigate(action);
