@@ -53,6 +53,7 @@
 
     <string name="pref_scheme" translatable="false">color_scheme</string>
     <string name="pref_scheme_title">Color Scheme</string>
+    <string name="pref_scheme_system" translatable="false">Automatic</string>
     <string name="pref_scheme_dark" translatable="false">Dark</string>
     <string name="pref_scheme_light" translatable="false">Light</string>
     <string name="pref_scheme_android" translatable="false">Android</string>

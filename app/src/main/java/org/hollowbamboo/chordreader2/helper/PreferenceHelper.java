@@ -3,7 +3,9 @@ package org.hollowbamboo.chordreader2.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
@@ -11,13 +13,11 @@ import org.hollowbamboo.chordreader2.data.ColorScheme;
 
 public class PreferenceHelper {
 
-	private static ColorScheme colorScheme = null;
 	private static NoteNaming noteNaming = null;
 	private static String searchEngineURL = null;
 	private static String storageLocation = null;
 
 	public static void clearCache() {
-		colorScheme = null;
 		noteNaming = null;
 		searchEngineURL = null;
 		storageLocation = null;
@@ -39,21 +39,37 @@ public class PreferenceHelper {
 		return sharedPrefs.getBoolean(context.getString(R.string.pref_first_run), true);
 
 	}
+
+	public static String getColorSchemeName(Context context) {
+		String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		return sharedPrefs.getString(
+				context.getText(R.string.pref_scheme).toString(),
+				automaticColorSchemeName
+		);
+	}
 	
 	public static ColorScheme getColorScheme(Context context) {
-		
-		if(colorScheme == null) {
-		
-			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-			String colorSchemeName = sharedPrefs.getString(
-					context.getText(R.string.pref_scheme).toString(), 
-					context.getText(ColorScheme.Dark.getNameResource()).toString());
-			
-			colorScheme = ColorScheme.findByPreferenceName(colorSchemeName, context);
+		String automaticColorSchemeName = context.getText(R.string.pref_scheme_system).toString();
+		String colorSchemeName = getColorSchemeName(context);
+
+		if (colorSchemeName.equals(automaticColorSchemeName)) {
+			return isNightModeActive(context) ? ColorScheme.Dark : ColorScheme.Light;
+		} else {
+			return ColorScheme.findByPreferenceName(colorSchemeName, context);
 		}
-		
-		return colorScheme;
-		
+	}
+
+	private static boolean isNightModeActive(Context context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			return context.getResources().getConfiguration().isNightModeActive();
+		} else {
+			int nightModeFlags = context.getResources().getConfiguration().uiMode &
+					Configuration.UI_MODE_NIGHT_MASK;
+
+			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+		}
 	}
 
 	public static NoteNaming getNoteNaming(Context context) {

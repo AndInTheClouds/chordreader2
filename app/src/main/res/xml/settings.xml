@@ -6,7 +6,7 @@
 		<ListPreference android:key="@string/pref_scheme"
 			android:title="@string/pref_scheme_title" android:persistent="true"
 			android:entries="@array/color_schemes" android:entryValues="@array/color_schemes"
-			android:defaultValue="@string/pref_scheme_dark" />	
+			android:defaultValue="@string/pref_scheme_system" />
 				
 	</PreferenceCategory>
 	
