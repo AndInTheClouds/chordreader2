@@ -9,7 +9,7 @@
             android:title="@string/web_search" />
         <item
             android:id="@+id/nav_list_view"
-            android:title="Songs" />
+            android:title="@string/songs" />
         <item
             android:id="@+id/nav_list_view_setlists"
             android:title="Setlists" />
