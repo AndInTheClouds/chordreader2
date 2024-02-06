@@ -9,7 +9,7 @@ sourceCompatibility = 1.11 // java version 11
 android {
 
     compileSdkVersion 32
-    buildToolsVersion '32.1.0-rc1'
+    buildToolsVersion '34.0.0'
     namespace 'org.hollowbamboo.chordreader2'
 
     defaultConfig {
@@ -60,6 +60,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.9'
+    testImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 }
 
 

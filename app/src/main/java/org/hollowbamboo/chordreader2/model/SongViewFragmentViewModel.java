@@ -34,9 +34,9 @@ public class SongViewFragmentViewModel extends ViewModel {
     private static final String LOG_TAG = "SongViewFragmentVM";
 
     public String filename, chordText;
+
     public List<ChordInText> chordsInText;
-    public int capoFret = 0;
-    public int transposeHalfSteps = 0;
+    public int capoFret, transposeHalfSteps = 0;
     private NoteNaming noteNaming;
     private Integer bpm;
     private int linkColor;
@@ -50,7 +50,7 @@ public class SongViewFragmentViewModel extends ViewModel {
     private final MutableLiveData<Spannable> chordTextMLD = new MutableLiveData<>();
     private final MutableLiveData<Float> textSizeMLD = new MutableLiveData<>();
     private final MutableLiveData<Chord> showChordPopupMLD = new MutableLiveData<>();
-
+    private final MutableLiveData<Boolean> showTranspositionProgressMLD = new MutableLiveData<>();
     private final MutableLiveData<Integer> bpmMLD = new MutableLiveData<>();
     private final MutableLiveData<Float> scrollVelocityCorrFactorMLD = new MutableLiveData<>();
     private final MutableLiveData<Boolean> saveResultMLD = new MutableLiveData<>();
@@ -74,6 +74,10 @@ public class SongViewFragmentViewModel extends ViewModel {
         return showChordPopupMLD;
     }
 
+    public MutableLiveData<Boolean> getShowTranspositionProgressMLD() {
+        return showTranspositionProgressMLD;
+    }
+
     public MutableLiveData<Integer> getBpmMLD() {
         return bpmMLD;
     }
@@ -91,11 +95,12 @@ public class SongViewFragmentViewModel extends ViewModel {
     }
 
     public void setSongTitle(String songTitle) {
-        fragmentTitle.setValue(songTitle);
+        fragmentTitle.postValue(songTitle);
     }
 
-    public void setChordText(String chordText) {
-        this.chordText = chordText;
+    public void setChordText(String chordText, Transposition transposition) {
+        if (chordText != null)
+            this.chordText = chordText;
 
         // BPMs and AutoScrollSpeed
         if (bpm < 0)
@@ -105,16 +110,30 @@ public class SongViewFragmentViewModel extends ViewModel {
         scrollVelocityCorrectionFactor = extractAutoScrollParam(chordText, "scrollVelocityCorrectionFactor");
         scrollVelocityCorrectionFactor = scrollVelocityCorrectionFactor < 0 ? 1 : scrollVelocityCorrectionFactor;
 
-        bpmMLD.setValue(bpm);
-        scrollVelocityCorrFactorMLD.setValue(scrollVelocityCorrectionFactor);
+        bpmMLD.postValue(bpm);
+        scrollVelocityCorrFactorMLD.postValue(scrollVelocityCorrectionFactor);
 
         checkAndAddAutoScrollParams();
 
-        // Chords
-        chordsInText = null;
-        chordsInText = ChordParser.findChordsInText(this.chordText, noteNaming);
+        parseChordsInText();
 
         Log.d(LOG_TAG, "found " + chordsInText.size() + " chords");
+
+        // Transposition
+        if (transposition == null) { // try to extract (capo param) from file
+            int capoParam = findCapoParamInText(chordText).getSecond();
+
+            Transposition newTransposition = new Transposition();
+            newTransposition.setCapo(capoParam);
+            newTransposition.setTranspose(0);
+
+            transposition = newTransposition;
+        } else {
+            // save Capo changes to file, migrate from DB
+            isEditedTextToSave = true;
+        }
+
+        setTransposition(transposition);
 
         showChordView();
     }
@@ -129,13 +148,26 @@ public class SongViewFragmentViewModel extends ViewModel {
 
     public void setTransposition(Transposition transposition) {
 
-        if (filename != null && transposition != null) {
+        if (transposition != null) {
+
+            //Transposition directly stored in text, therefore transposed chords have to be updated,
+            // stored chordText and again parsed to keep their index positions
+            if (transposition.getTranspose() != 0) {
+                updateChordsInTextForTransposition(-transposition.getTranspose(), 0);
+
+                this.chordText = String.valueOf(buildUpChordTextToDisplay());
+
+                parseChordsInText();
+            }
+
+            // Capo initially kept in variable and only stored in text when save to file
             capoFret = transposition.getCapo();
-            transposeHalfSteps = transposition.getTranspose();
-        } else {
-            capoFret = 0;
-            transposeHalfSteps = 0;
         }
+    }
+
+    private void parseChordsInText() {
+        chordsInText = null;
+        chordsInText = ChordParser.findChordsInText(this.chordText, noteNaming);
     }
 
     public Spannable buildUpChordTextToDisplay() {
@@ -174,7 +206,7 @@ public class SongViewFragmentViewModel extends ViewModel {
 
             final Chord chord = chordsInText.get(i).getChord();
 
-            InternalURLSpan urlSpan = new InternalURLSpan(v -> showChordPopupMLD.setValue(chord)) {
+            InternalURLSpan urlSpan = new InternalURLSpan(v -> showChordPopupMLD.postValue(chord)) {
                 @Override
                 public void updateDrawState(TextPaint ds) {
                     ds.setUnderlineText(false);
@@ -205,7 +237,8 @@ public class SongViewFragmentViewModel extends ViewModel {
                 super.handleMessage(msg);
                 Spannable newText = (Spannable) msg.obj;
 
-                Runnable runnable = () -> chordTextMLD.setValue(newText);
+                chordTextMLD.postValue(newText);
+                Runnable runnable = () -> chordTextMLD.postValue(newText);
 
                 uiThread.post(runnable);
                 handlerThread.quit();
@@ -213,8 +246,9 @@ public class SongViewFragmentViewModel extends ViewModel {
         };
 
         Runnable runnable = () -> {
-            if (capoFret != 0 || transposeHalfSteps != 0) {
-                updateChordsInTextForTransposition(-transposeHalfSteps, -capoFret);
+
+            if (capoFret != 0) {
+                updateChordsInTextForTransposition(0, -capoFret);
             }
 
             Message message = new Message();
@@ -286,15 +320,84 @@ public class SongViewFragmentViewModel extends ViewModel {
         }
     }
 
+    public Pair<String, Integer> findCapoParamInText(String chordText) {
+
+        Pattern capoPattern = Pattern.compile("([K,C](apodaster|apo).?\\s?)(\\d{1,2})", Pattern.CASE_INSENSITIVE);
+
+        if (!(chordText == null)) {
+            Matcher matcher = capoPattern.matcher(chordText);
+            if (matcher.find()) {
+                String match = matcher.group(0);
+                String capoValString = matcher.group(3);
+                int capoVal = 0;
+
+                if (capoValString != null)
+                    capoVal = Integer.parseInt(capoValString);
+
+                int startIndex = matcher.start();
+
+                int startIndexFirstChord;
+
+                try {
+                    startIndexFirstChord = chordsInText.get(0).getStartIndex();
+                } catch (Exception e) {
+                    startIndexFirstChord = 9999999;
+                }
+
+                if (match != null && startIndex <= startIndexFirstChord) {
+
+                    return new Pair<>(match, capoVal);
+                }
+            }
+        }
+
+        return new Pair<>("", 0);
+    }
+
+    public void replaceOrAddCapoParamToText(int newCapoPosition) {
+
+        String newCapoText;
+
+        if (newCapoPosition == 0)
+            newCapoText = "";
+        else
+            newCapoText = "Capo: " + newCapoPosition;
+
+        Pair<String, Integer> capoParam = findCapoParamInText(chordText);
+        String oldCapoText = capoParam.getFirst();
+
+        if (oldCapoText.equals("")) {
+            ArrayList<String> lines = new ArrayList<>();
+
+            if (!(chordText == null)) {
+                lines = new ArrayList<>(Arrays.asList(StringUtil.split(chordText
+                        , "\n")));
+                if (lines.get(1) != "")
+                    lines.add(1, "");
+
+                lines.add(2, newCapoText);
+
+                if (lines.get(3) != "")
+                    lines.add(3, "");
+            }
+
+            StringBuilder resultText = new StringBuilder();
+            for (String line : lines) {
+                resultText.append(line).append("\n");
+            }
+            chordText = resultText.toString();
+        } else {
+            chordText = chordText.replace(oldCapoText, newCapoText);
+        }
+    }
+
     public FragmentResultListener getFragmentResultListener() {
         if (fragmentResultListener == null) {
             fragmentResultListener = (requestKey, result) -> {
                 if (requestKey.equals("EditChordTextDialog")) {
                     String newChordText = result.getString("NewChordText");
 
-                    bpm = (int) extractAutoScrollParam(newChordText, "bpm");
-
-                    setChordText(newChordText);
+                    setChordText(newChordText, null);
                     isEditedTextToSave = true;
                 }
             };
