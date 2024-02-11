@@ -1,21 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="wrap_content"
-	android:paddingLeft="12dip" android:paddingRight="12dip"
-	android:paddingTop="2dp" android:paddingBottom="2dp"
-	android:orientation="vertical" android:gravity="center_horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="12dip"
+    android:paddingTop="2dp"
+    android:paddingRight="12dip"
+    android:paddingBottom="2dp">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        android:orientation="horizontal">
 
-	<TextView android:text="@string/transpose_title" android:textStyle="bold"
-		android:textSize="16sp" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding"
+            android:text="@string/pref_note_naming_title" />
 
-	<include android:id="@+id/transpose_include" layout="@layout/enhanced_seek_bar" />
+        <Spinner
+            android:id="@+id/transpose_note_naming_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
 
-	<TextView android:text="@string/capo_title" android:textStyle="bold"
-		android:textSize="16sp" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+    </LinearLayout>
 
-	<include android:id="@+id/capo_include" layout="@layout/enhanced_seek_bar" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginBottom="@dimen/padding"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding"
+        android:text="@string/transpose_title"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <include
+        android:id="@+id/transpose_include"
+        layout="@layout/enhanced_seek_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/capo_title"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <include
+        android:id="@+id/capo_include"
+        layout="@layout/enhanced_seek_bar" />
 </LinearLayout>

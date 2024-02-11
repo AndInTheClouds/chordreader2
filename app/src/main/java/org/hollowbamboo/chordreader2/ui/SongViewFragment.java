@@ -60,6 +60,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -927,7 +928,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());//new ContextThemeWrapper(this, android.R.style.Theme_Dialog));
 
-        builder.setTitle(chord.toPrintableString(getNoteNaming()))
+        builder.setTitle(chord.toPrintableString(songViewFragmentViewModel.getNoteNaming()))
                 .setView(view)
                 .setNeutralButton("Edit", (dialog, which) -> {
                     SongViewFragmentDirections.ActionNavSongViewToNavChordDictEdit action =
@@ -950,15 +951,24 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         final View view = DialogHelper.createTransposeDialogView(requireContext(),
                 songViewFragmentViewModel.capoFret,
-                songViewFragmentViewModel.transposeHalfSteps);
+                songViewFragmentViewModel.transposeHalfSteps,
+                songViewFragmentViewModel.getNoteNaming());
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.transpose)
                 .setCancelable(true)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                    // grab the user's chosen values for the capo and the transposition
 
+                    // get Note naming of spinner and update song setting
+                    Spinner spinner = view.findViewById(R.id.transpose_note_naming_spinner);
+                    int noteNamingIndex = DialogHelper.getSpinnerIndex(spinner);
+                    List<String> list= Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
+                    String str = list.get(noteNamingIndex);
+                    NoteNaming noteNaming = NoteNaming.valueOf(str);
+                    songViewFragmentViewModel.setNoteNaming(noteNaming);
+
+                    // grab the user's chosen values for the capo and the transposition
                     View transposeView = view.findViewById(R.id.transpose_include);
                     View capoView = view.findViewById(R.id.capo_include);
 

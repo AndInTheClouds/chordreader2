@@ -142,6 +142,10 @@ public class SongViewFragmentViewModel extends ViewModel {
         this.noteNaming = noteNaming;
     }
 
+    public NoteNaming getNoteNaming() {
+        return this.noteNaming;
+    }
+
     public void setLinkColor(int linkColor) {
         this.linkColor = linkColor;
     }
