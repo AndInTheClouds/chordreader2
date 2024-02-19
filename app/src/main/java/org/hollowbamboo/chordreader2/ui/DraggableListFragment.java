@@ -172,7 +172,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
     private void startSongView(String filename) {
         DraggableListFragmentDirections.ActionNavDragListViewToNavSongView action =
                 DraggableListFragmentDirections.actionNavDragListViewToNavSongView(
-                        filename.replace(".txt", ""), filename, null);
+                        filename.replace(".txt", ""), filename, null, null);
 
         if (getParentFragment() != null) {
             Navigation.findNavController(getParentFragment().requireView()).navigate(action);

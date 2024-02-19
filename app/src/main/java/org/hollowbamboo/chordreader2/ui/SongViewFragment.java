@@ -30,9 +30,7 @@ import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.Message;
 import android.text.InputType;
 import android.text.Layout;
 import android.text.Spannable;
@@ -404,6 +402,16 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             String chordText = SongViewFragmentArgs.fromBundle(getArguments()).getChordText();
             songViewFragmentViewModel.setBpm(SongViewFragmentArgs.fromBundle(getArguments()).getBpm());
 
+            String noteNamingString = SongViewFragmentArgs.fromBundle(getArguments()).getNoteNaming();
+            NoteNaming noteNaming;
+
+            if (noteNamingString == null)
+                noteNaming = getNoteNaming();
+            else
+                noteNaming = NoteNaming.valueOf(noteNamingString);
+
+            songViewFragmentViewModel.setNoteNaming(noteNaming);
+
             Transposition transposition = null;
 
             if (filename == null) {
@@ -423,7 +431,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
             songViewFragmentViewModel.setSongTitle(songTitle);
             songViewFragmentViewModel.filename = filename;
-            songViewFragmentViewModel.setNoteNaming(getNoteNaming());
             songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(requireActivity().getBaseContext()).getLinkColor(requireActivity().getBaseContext()));
             songViewFragmentViewModel.setChordText(chordText, transposition);
         }
@@ -614,7 +621,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             subsequentSong = dataViewModel.setListSongs.get(indexCurrentSong - 1);
 
         SongViewFragmentDirections.ActionNavSongViewSelf action =
-                SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null);
+                SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null, null);
 
         if (getParentFragment() != null) {
             Navigation.findNavController(getParentFragment().requireView()).navigate(action);
@@ -953,6 +960,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 songViewFragmentViewModel.capoFret,
                 songViewFragmentViewModel.transposeHalfSteps,
                 songViewFragmentViewModel.getNoteNaming());
+
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.transpose)
                 .setCancelable(true)
@@ -1240,25 +1248,20 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             if (editTextDialogViewModel.chordText != null)
                 chordText = editTextDialogViewModel.chordText;
 
-            // from showConfirmChordChartDialog()
-            LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View view = DialogHelper.createConfirmChordsDialogView(requireContext(),
+                    chordText,
+                    PreferenceHelper.getNoteNaming(requireContext()));
 
-            editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
+            LinearLayout linearLayout = view.findViewById(R.id.conf_chords_note_naming_linear_layout);
+            linearLayout.setVisibility(View.GONE);
+
+            editText = (EditText) view.findViewById(R.id.conf_chord_edit_text);
             editText.setText(chordText);
-            editText.setBackgroundColor(PreferenceHelper.getColorScheme(requireContext()).getBackgroundColor(requireContext()));
-            editText.setTextColor(PreferenceHelper.getColorScheme(requireContext()).getForegroundColor(requireContext()));
 
-            //set AlertDialog theme according app theme
-            int alertDialogTheme;
-            if (PreferenceHelper.getColorScheme(requireContext()) == ColorScheme.Dark)
-                alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
-            else
-                alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), alertDialogTheme);
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.edit_chords)
                     .setInverseBackgroundForced(true)
-                    .setView(editText)
+                    .setView(view)
                     .setCancelable(true)
                     .setNegativeButton(android.R.string.cancel, null)
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {

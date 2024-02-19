@@ -3,17 +3,21 @@ package org.hollowbamboo.chordreader2.helper;
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
+import org.hollowbamboo.chordreader2.data.ColorScheme;
 
 import java.util.Objects;
 
@@ -29,7 +33,7 @@ public class DialogHelper {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.transpose_dialog, null);
 
-		Spinner spinner = setUpNoteNamingSpinner(context, view.findViewById(R.id.transpose_note_naming_spinner), noteNaming);
+		setUpNoteNamingSpinner(context, view.findViewById(R.id.transpose_note_naming_spinner), noteNaming);
 
 		View transposeView = view.findViewById(R.id.transpose_include);
 		View capoView = view.findViewById(R.id.capo_include);
@@ -40,7 +44,28 @@ public class DialogHelper {
 		return view;
 	}
 
-	private static Spinner setUpNoteNamingSpinner (Context context, Spinner spinner, NoteNaming noteNaming) {
+	public static View createConfirmChordsDialogView(Context context, String chordInputText, NoteNaming noteNaming) {
+
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.confirm_chords_dialog, null);
+
+		int bgColor = PreferenceHelper.getColorScheme(context).getBackgroundColor(context);
+		int textColor = PreferenceHelper.getColorScheme(context).getForegroundColor(context);
+
+		final EditText editText = (EditText) view.findViewById(R.id.conf_chord_edit_text);
+		editText.setText(chordInputText);
+		editText.setTypeface(Typeface.MONOSPACE);
+		editText.setBackgroundColor(bgColor);
+		editText.setTextColor(textColor);
+
+		Spinner spinner = view.findViewById(R.id.transpose_note_naming_spinner_conf_chords);
+
+		setUpNoteNamingSpinner(context, spinner, noteNaming);
+
+		return view;
+	}
+
+	private static void setUpNoteNamingSpinner (Context context, Spinner spinner, NoteNaming noteNaming) {
 		ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(context, R.array.note_namings, R.layout.spinner_chord_edit);
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
@@ -54,8 +79,6 @@ public class DialogHelper {
 				spinner.setSelection(i);
 			}
 		}
-
-		return spinner;
 	}
 
 	public static int getSpinnerIndex(Spinner spinner) {

@@ -51,6 +51,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,15 +66,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.hollowbamboo.chordreader2.R;
+import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
 import org.hollowbamboo.chordreader2.databinding.FragmentWebSearchBinding;
 import org.hollowbamboo.chordreader2.db.ChordReaderDBHelper;
+import org.hollowbamboo.chordreader2.helper.DialogHelper;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
 import org.hollowbamboo.chordreader2.model.DataViewModel;
 import org.hollowbamboo.chordreader2.model.WebSearchViewModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -469,32 +473,31 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     private void showConfirmChordChartDialog(String chordInputText) {
 
-        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = DialogHelper.createConfirmChordsDialogView(requireContext(),
+                chordInputText,
+                webSearchViewModel.getNoteNaming());
 
-        final EditText editText = (EditText) inflater.inflate(R.layout.confirm_chords_edit_text, null);
-        editText.setText(chordInputText);
-        editText.setTypeface(Typeface.MONOSPACE);
-        editText.setBackgroundColor(PreferenceHelper.getColorScheme(requireContext()).getBackgroundColor(requireContext()));
-        editText.setTextColor(PreferenceHelper.getColorScheme(requireContext()).getForegroundColor(requireContext()));
+        EditText editText = (EditText) view.findViewById(R.id.conf_chord_edit_text);
 
-        //set AlertDialog theme according app theme
-        int alertDialogTheme;
-        if(PreferenceHelper.getColorScheme(requireContext()) == ColorScheme.Dark)
-            alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
-        else
-            alertDialogTheme = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), alertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.confirm_chordchart)
                 .setInverseBackgroundForced(true)
-                .setView(editText)
+                .setView(view)
                 .setCancelable(true)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+
+                    // get Note naming of spinner and update song setting
+                    Spinner spinner = view.findViewById(R.id.transpose_note_naming_spinner_conf_chords);
+                    int noteNamingIndex = DialogHelper.getSpinnerIndex(spinner);
+                    List<String> list= Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
+                    String noteNamingString = list.get(noteNamingIndex);
+
                     String chordText = editText.getText().toString();
 
                     WebSearchFragmentDirections.ActionNavWebSearchToNavSongView action =
-                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(webSearchViewModel.getSuggestedFilename(), chordText);
+                            WebSearchFragmentDirections.actionNavWebSearchToNavSongView(
+                                    webSearchViewModel.getSuggestedFilename(), chordText, noteNamingString);
                     action.setBpm(webSearchViewModel.getBPM());
                     if (getParentFragment() != null) {
                         Navigation.findNavController(getParentFragment().requireView()).navigate(action);

@@ -635,7 +635,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         if(filename == null)
             songTitle = getString(R.string.new_file);
         ListFragmentDirections.ActionNavListFragmentToNavSongView action =
-                ListFragmentDirections.actionNavListFragmentToNavSongView(songTitle, filename,null);
+                ListFragmentDirections.actionNavListFragmentToNavSongView(songTitle, filename,null,null);
 
         if (getParentFragment() != null) {
             Navigation.findNavController(getParentFragment().requireView()).navigate(action);

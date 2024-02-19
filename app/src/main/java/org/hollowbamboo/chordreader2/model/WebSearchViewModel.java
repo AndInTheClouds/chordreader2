@@ -92,6 +92,10 @@ public class WebSearchViewModel extends ViewModel {
         this.noteNaming = noteNaming;
     }
 
+    public NoteNaming getNoteNaming() {
+        return this.noteNaming;
+    }
+
     private void loadUrl(String url) {
         Log.d("url is: %s", url);
 
