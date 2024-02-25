@@ -128,5 +128,8 @@
     <string name="select_storage_location">Please select your storage location or create new folder for local storage of your songs.</string>
     <string name="share">Share</string>
     <string name="add_song">Add song</string>
+    <string name="use_db_transpose_data">However, transpositions have been saved directly in the song file since version 2.1.7. Should the transposition still be applied from your local app database?</string>
+    <string name="db_transpose_data_found">Transposition data was found in your local app database:</string>
+    <string name="use_transposition">Apply transposition?</string>
 
 </resources>

@@ -106,7 +106,6 @@ import java.util.TimerTask;
 public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private static final String LOG_TAG = "SongViewFragment";
-    private static final int PROGRESS_DIALOG_MIN_TIME = 600;
     private static final int POST_SAVE_PROCEEDING_EXIT = 100;
     private static final int POST_SAVE_PROCEEDING_NEXT_SONG = 200;
     private static final int POST_SAVE_PROCEEDING_PREVIOUS_SONG = 201;
@@ -384,8 +383,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private void setInstanceData() {
 
-        songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
-
         if (songViewFragmentViewModel.getFragmentTitle().getValue() == null ||
                 songViewFragmentViewModel.chordText == null) {
 
@@ -427,14 +424,20 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
                 transposition = getTranspositionFromDB(filename);
             }
+
             songTitle = Character.toUpperCase(songTitle.charAt(0)) + songTitle.substring(1);
 
             songViewFragmentViewModel.setSongTitle(songTitle);
             songViewFragmentViewModel.filename = filename;
             songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(requireActivity().getBaseContext()).getLinkColor(requireActivity().getBaseContext()));
-            songViewFragmentViewModel.setChordText(chordText, transposition);
-        }
 
+            if (transposition == null) {
+                songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
+                songViewFragmentViewModel.setChordText(chordText, null);
+            } else {
+                showUseDbTranspositionPrompt(chordText, transposition);
+            }
+        }
 
         getParentFragmentManager().setFragmentResultListener("EditChordTextDialog", this, songViewFragmentViewModel.getFragmentResultListener());
     }
@@ -1002,6 +1005,54 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void showUseDbTranspositionPrompt(String chordText, Transposition transposition) {
+
+        int capo = transposition.getCapo();
+        int transpose = transposition.getTranspose();
+
+        String transVals = " Capo: " + capo + " Transp.: " + transpose;
+
+        String str = getString(R.string.db_transpose_data_found) +
+                transVals +
+                "\n\n" +
+                getString(R.string.use_db_transpose_data);
+
+        TextView textView = new TextView(requireContext());
+        textView.setText(str);
+
+        LinearLayout linearLayout = new LinearLayout(requireContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(40,20,40,20);
+        linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        LinearLayout.LayoutParams llParam = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        llParam.gravity = Gravity.CENTER_HORIZONTAL;
+        linearLayout.setLayoutParams(llParam);
+
+        textView.setLayoutParams(llParam);
+
+        linearLayout.addView(textView);
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.use_transposition)
+                .setView(linearLayout)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
+                    songViewFragmentViewModel.setChordText(chordText, transposition);
+
+                    //dialog.dismiss();
+                })
+                .setNegativeButton(R.string.no, (dialog, which) -> {
+                    songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
+                    songViewFragmentViewModel.setChordText(chordText, null);
+                    //dialog.dismiss();
+                })
+                .create()
+                .show();
+    }
+
     private void showProgressDialog(Boolean showDialog) {
 
         if (progressDialog == null) {
@@ -1064,9 +1115,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.add_to_setlist)
-                .setSingleChoiceItems(listItems, checkedItem[0], (dialog, which) -> {
-                    checkedItem[0] = which;
-                })
+                .setSingleChoiceItems(listItems, checkedItem[0], (dialog, which) -> checkedItem[0] = which)
                 .setPositiveButton("OK", (dialog, which) -> {
                     String setList = listItems[checkedItem[0]];
 
@@ -1134,15 +1183,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             return true;
         }
 
-        @Override
-        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
-
-            return true;
-        }
-
-        @Override
-        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
-        }
     }
 
     // LinkMovementMethod/onTouchEvent needs to be adapted as otherwise linkified chord links will
@@ -1255,7 +1295,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             LinearLayout linearLayout = view.findViewById(R.id.conf_chords_note_naming_linear_layout);
             linearLayout.setVisibility(View.GONE);
 
-            editText = (EditText) view.findViewById(R.id.conf_chord_edit_text);
+            editText = view.findViewById(R.id.conf_chord_edit_text);
             editText.setText(chordText);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -1275,11 +1315,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(alertDialog.getWindow().getAttributes());
+            lp.copyFrom(Objects.requireNonNull(alertDialog.getWindow()).getAttributes());
             lp.width = WindowManager.LayoutParams.MATCH_PARENT;
             lp.height = WindowManager.LayoutParams.MATCH_PARENT;
             alertDialog.getWindow().setAttributes(lp);
-
 
             return alertDialog;
         }

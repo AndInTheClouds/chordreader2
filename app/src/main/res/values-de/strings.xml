@@ -107,5 +107,8 @@
     <string name="select_storage_location">Bitte wähle den Speicherort oder erstelle einen neuen Ordner für die lokale Speicherung deiner Songs.</string>
     <string name="share">Teilen</string>
     <string name="add_song">Song hinzufügen</string>
+    <string name="use_db_transpose_data">Transponierungen werden allerdings seit Version 2.1.7 direkt in der Song-Datei gespeichert. Soll trotzdem die Transponierung aus deiner lokalen APP-Datenbank angewendet werden?</string>
+    <string name="db_transpose_data_found">Es wurden Transponierungsdaten in deiner lokalen APP-Datenbank gefunden:\n\n</string>
+    <string name="use_transposition">Transponierung anwenden?</string>
 
 </resources>
