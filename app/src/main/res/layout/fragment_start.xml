@@ -47,7 +47,7 @@
             android:layout_marginTop="5dp"
             android:background="@android:drawable/progress_horizontal"
             android:padding="10dp"
-            android:text="Songs"
+            android:text="@string/songs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_web_search" />
@@ -60,7 +60,7 @@
             android:layout_marginTop="5dp"
             android:background="@android:drawable/progress_horizontal"
             android:padding="10dp"
-            android:text="Setlists"
+            android:text="@string/setlists"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_local_songs" />
