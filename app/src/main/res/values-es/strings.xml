@@ -88,6 +88,9 @@
     <string name="drawer_close">Cerrar el cajón de navegación</string>
     <string name="drawer_open">Abrir el cajón de navegación</string>
     <string name="web_search">Búsqueda Web</string>
+    <string name="use_db_transpose_data">Las transposiciones, sin embargo, se guardan directamente en el archivo de canción desde la versión 2.1.7. Deseas aplicar la transposición de tu base de datos local de la aplicación de todos modos?</string>
+    <string name="db_transpose_data_found">Se encontraron datos de transposición en la base de datos de la aplicación local:</string>
+    <string name="use_transposition">Aplicar transposición?</string>
     <string name="songs">Canciones</string>
     <string name="setlists">Setlists</string>
     <string name="cancel">Cancelar</string>
