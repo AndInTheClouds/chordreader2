@@ -109,6 +109,8 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="web_search">Web Search</string>
+    <string name="songs">Songs</string>
+    <string name="setlists">Setlists</string>
     <string name="cancel">Cancel</string>
     <string name="select_all">Select all</string>
     <string name="delete">Delete</string>

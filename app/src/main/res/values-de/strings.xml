@@ -88,6 +88,8 @@
     <string name="drawer_close">Schließe Navigation</string>
     <string name="drawer_open">Navigation öffnen</string>
     <string name="web_search">Web Suche</string>
+    <string name="songs">Songs</string>
+    <string name="setlists">Setlists</string>
     <string name="cancel">Abbrechen</string>
     <string name="select_all">Alles auswählen</string>
     <string name="delete">Löschen</string>
