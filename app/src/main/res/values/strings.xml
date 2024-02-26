@@ -83,11 +83,12 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.1.6?</b> \n\n
-        <li>New feature: Open shared URLs</li>\n
-        <li>New feature: New theme \"Automatic\" follows Android\'s \"Night Mode\"</li>\n
-        <li>Change transposition by tapping the labels next to the seek bar</li>\n
-        <li>Improved filenames for chords from ultimate-guitar.com</li>\n
+    <string name="first_run_message">\n<b>What\'s new in version 2.2.0?</b> \n\n
+        <li>spanish translation</li>\n
+        <li>Chord parsing for unicode # and b</li>\n
+        <li>New Feature: transposition data now stored to song file, not app database</li>\n
+        <li>Note naming selection added to confirmation chords dialog (web search) and transposition dialog (song view)</li>\n
+        <li>removed auto save: always prompt for saving changes of song</li>\n
         \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>

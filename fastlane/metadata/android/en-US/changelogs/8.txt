@@ -1,0 +1,4 @@
+- New feature: Open shared URLs
+- New feature: New theme "Automatic" follows Android's "Night Mode"
+- Change transposition by tapping the labels next to the seek bar
+- Improved filenames for chords from ultimate-guitar.com

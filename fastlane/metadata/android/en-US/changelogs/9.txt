@@ -1,0 +1,5 @@
+- spanish translation added
+- Chord parsing for unicode # and b added
+- New Feature: transposition data now stored to song file, not app database
+- Note naming selection added to confirmation chords dialog (web search) and transposition dialog (song view) added
+- removed auto save: always prompt for saving changes of song
