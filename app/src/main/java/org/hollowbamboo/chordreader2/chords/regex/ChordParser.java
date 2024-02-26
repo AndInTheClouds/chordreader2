@@ -15,7 +15,7 @@ public class ChordParser {
 
 	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.chords.regex.ChordParser.class);
 	// characters that may show up in a written chord
-	private static final Pattern TOKEN_PATTERN = Pattern.compile("[\\w#+/]+");
+	private static final Pattern TOKEN_PATTERN = Pattern.compile("[\\w#♯♭+/]+"); //support unicode #,b
 	private static final Pattern LOWERCASE_WORD_PATTERN = Pattern.compile("[a-z]+");
 	
 	

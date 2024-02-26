@@ -1042,12 +1042,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
                     songViewFragmentViewModel.setChordText(chordText, transposition);
 
-                    //dialog.dismiss();
+                    dialog.dismiss();
                 })
                 .setNegativeButton(R.string.no, (dialog, which) -> {
                     songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
                     songViewFragmentViewModel.setChordText(chordText, null);
-                    //dialog.dismiss();
+                    dialog.dismiss();
                 })
                 .create()
                 .show();
