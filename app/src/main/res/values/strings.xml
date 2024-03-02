@@ -84,7 +84,7 @@
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
     <string name="first_run_message">\n<b>What\'s new in version 2.2.0?</b> \n\n
-        <li>spanish translation</li>\n
+        <li>Spanish translation</li>\n
         <li>Chord parsing for unicode # and b</li>\n
         <li>New Feature: transposition data now stored to song file, not app database</li>\n
         <li>Note naming selection added to confirmation chords dialog (web search) and transposition dialog (song view)</li>\n
