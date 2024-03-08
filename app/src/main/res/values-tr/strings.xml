@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name" translatable="false">Chordreader2</string>
+  <string name="about_chord_reader">Chord Reader 2 Hakkında</string>
+  <string name="find_chords_intro_message">İlk olarak, akorları bulmak için internette arama yapın.</string>
+  <string name="find_chords_second_message">İstediğiniz akorları bulduktan sonra buraya tıklayın.</string>
+  <string name="loading">Yükleniyor...</string>
+  <string name="chord_search_hint">Şarkı/sanatçı adı girin</string>
+  <string name="chords_keyword">akorlar</string>
+  <string name="chords_found">Akorlar belirlendi. Onaylamak için buraya tıklayın.</string>
+  <string name="confirm_chordchart">Akorları Onayla</string>
+  <string name="enter_filename">SD karta kaydetmek için bir dosya adı girin:</string>
+  <string name="save_chordchart">Akor Grafiğini Kaydet</string>
+  <string name="sd_card_not_found">SD kart bulunamadı.</string>
+  <string name="save_file">Dosyayı Kaydet</string>
+  <string name="file_saved">Dosya kaydedildi.</string>
+  <string name="unable_to_save_file">Dosya kaydedilemiyor.</string>
+  <string name="enter_good_filename">Lütfen geçerli bir dosya adı girin.</string>
+  <string name="save">Kaydet</string>
+  <string name="about">Hakkında</string>
+  <string name="new_file">Yeni Dosya</string>
+  <string name="open_file">Dosya Aç</string>
+  <string name="manage_saved_files">Şarkıları Yönet</string>
+  <string name="no_saved_files">Kaydedilmiş dosya bulunamadı.</string>
+  <string name="search_for_chords">Ara</string>
+  <string name="save_chords">Kaydet</string>
+  <string name="overwrite_file">Mevcut dosyanın üzerine yazılacak.</string>
+  <string name="overwrite_file_title">Dosyanın Üzerine Yaz</string>
+  <string name="transpose">Transpoze</string>
+  <string name="select_files_to_delete">Silinecek dosyaları seçin.</string>
+  <string name="delete_all">Tümünü Sil</string>
+  <string name="delete_saved_file">Dosyaları Sil</string>
+  <string name="are_you_sure">Emin misiniz? %d dosya silinecek.</string>
+  <string name="files_deleted">%d dosya silindi.</string>
+  <string name="capo_title">Capo on Fret:</string>
+  <string name="transpose_title">Transpoze (yarım adım):</string>
+  <string name="refresh">Yenile</string>
+  <string name="stop">Durdur</string>
+  <string name="stopping">Durduruluyor...</string>
+  <string name="transposing">Transpoze</string>
+  <string name="please_wait">Lütfen bekleyin...</string>
+  <string name="loading_title">Yükleniyor</string>
+  <string name="sort_az">A'dan Z'ye Sırala</string>
+  <string name="sort_by_date">Tarihe Göre Sırala</string>
+  <string name="edit">Düzenle</string>
+  <string name="edit_chords">Akorları Düzenle</string>
+  <string name="no_guitar_chord_available">Gitar parmaklama yok.</string>
+  <string name="variation" translatable="false">Var.</string>
+  <string name="pref_text_size" translatable="false">text_size</string>
+  <string name="pref_text_size_title">Metin Boyutu</string>
+  <string name="pref_scheme" translatable="false">renk_şeması</string>
+  <string name="pref_scheme_title">Renk uyumu</string>
+  <string name="pref_scheme_system" translatable="false">Otomatik</string>
+  <string name="pref_scheme_dark" translatable="false">Koyu</string>
+  <string name="pref_scheme_light" translatable="false">Açık</string>
+  <string name="pref_scheme_android" translatable="false">Android</string>
+  <string name="pref_category_appearance">Görünüm</string>
+  <string name="pref_category_configuration">Yapılandırma</string>
+  <string name="pref_note_naming" translatable="false">note_naming</string>
+  <string name="pref_note_naming_title">Not Adlandırma</string>
+  <string name="pref_note_naming_value_english" translatable="false">İngilizce</string>
+  <string name="pref_note_naming_value_northern" translatable="false">Kuzey Avrupa</string>
+  <string name="pref_note_naming_value_southern" translatable="false">Güney Avrupa</string>
+  <string name="pref_note_naming_english">İngilizce</string>
+  <string name="pref_note_naming_northern">Kuzey Avrupa</string>
+  <string name="pref_note_naming_southern">Güney Avrupa</string>
+  <string name="pref_note_naming_explanation_english">A, B, C, D, vb.</string>
+  <string name="pref_note_naming_explanation_northern">A, H, C, D, vb.</string>
+  <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa vb.</string>
+  <string name="pref_note_naming_default" translatable="false">@string/pref_note_naming_value_english</string>
+  <string name="pref_search_engine" translatable="false">searchEngineURL</string>
+  <string name="pref_search_engine_default" translatable="false">https://www.startpage.com/sp/search?q=</string>
+  <string name="pref_storage_location" translatable="false">storageLocation</string>
+  <string name="pref_storage_location_default" translatable="false">içerik: // com.android.externalstorage.documents/tree/primary % 3Achord_reader_2</string>
+  <string name="settings">Ayarlar</string>
+  <string name="pref_first_run" translatable="false">first_run3</string>
+  <string name="pref_first_run_title">Girişi Sıfırla</string>
+  <string name="pref_first_run_summary">Tanıtım mesajını tekrar göster.</string>
+  <string name="first_run_title">Akor Okuyucu 2 'ye hoş geldiniz!</string>
+  <string name="first_run_message">\n<b>Sürüm 2.2.0 'daki yenilikler nelerdir?</b> \n\n
+        <li>ispanyolca çeviri</li>\n
+        <li>Unicode # ve b için akor ayrıştırma</li>\n
+        <li>Yeni Özellik: verileri uygulama veritabanına değil şarkı dosyasına aktarın</li>\n
+        <li>Not adlandırma seçimi, onay akorları iletişim kutusuna (web araması) ve aktarım iletişim kutusuna (şarkı görünümü) eklendi</li>\n
+        <li>otomatik kaydetme kaldırıldı: şarkının değişikliklerini kaydetmek için her zaman bilgi iste</li>\n
+        \nKorun Okuyucu 2 <b>açık kaynaklı yazılım</b>.\n</string>
+  <string name="unsaved_changes">Kaydedilmemiş Değişiklikler</string>
+  <string name="unsaved_changes_message">Değişikliklerinizi kaydetmek istiyor musunuz?</string>
+  <string name="closing_chordreader">ChordReader'ı Kapatma</string>
+  <string name="closing_chordreader_message">ChordReader'ı kapatmak istediğinizden emin misiniz?</string>
+  <string name="yes">Evet</string>
+  <string name="no">Hayır</string>
+  <string name="No_BPM_found">Bpm değeri bulunamadı. Lütfen ilk satırda istediğiniz değeri ayarlayın.</string>
+  <string name="pref_search_engine_title">Arama motoru URL'si</string>
+  <string name="chord_variation_editing">Akor varyasyonu düzenleme</string>
+  <string name="no_chord_available_add">Gitar parmaklama yok. Lütfen ekleyin.</string>
+  <string name="new_setlist">Yeni Set Listesi</string>
+  <string name="manage_saved_setlists">Ayar Listelerini Yönet</string>
+  <string name="slower_auto_scroll" translatable="false">daha yavaş otomatik kaydırma</string>
+  <string name="start_auto_scroll" translatable="false">otomatik kaydırmayı başlat</string>
+  <string name="stop_auto_scroll" translatable="false">otomatik kaydırmayı durdur</string>
+  <string name="faster_auto_scroll" translatable="false">daha hızlı otomatik kaydırma</string>
+  <string name="enter_text_to_filter">Filtrelenecek metni girin</string>
+  <string name="drawer_close">Gezinti çekmecesini kapat</string>
+  <string name="drawer_open">Gezinti çekmecesini aç</string>
+  <string name="web_search">Web Araması</string>
+  <string name="songs">Şarkılar</string>
+  <string name="setlists">Setlist'ler</string>
+  <string name="cancel">İptal</string>
+  <string name="select_all">Tümünü seç</string>
+  <string name="delete">Sil</string>
+  <string name="of"> of </string>
+  <string name="help">Yardım</string>
+  <string name="file_selection_for_setlist">Şarkı listesi için şarkı seçin</string>
+  <string name="no_local_songs">Cihazınızda şarkı bulunamadı. Web araması yapın.</string>
+  <string name="no_setlists">Cihazınızda depolanmış hiçbir ayar listesi yok. Yeni bir tane oluşturun.</string>
+  <string name="add_to_setlist">Bir şarkı listesine ekle</string>
+  <string name="storage_location">Depolama yeri</string>
+  <string name="help_page"><![CDATA[<h2>1. Temel konsept</h2><p>Chordreader 2, dijital bir şarkı kitabı olarak kullanılmak üzere tasarlanmıştır. İnternette akorları ve şarkı sözlerini aramak veya kendiniz oluşturmak için bu uygulamayı kullanabilirsiniz. Bunlar daha sonra cihazınızda yerel olarak temel dizindeki chord_reader_2 dizininde bir metin dosyası olarak depolanır. Böylece şarkı sözlerini ihtiyaçlarınıza göre özelleştirebilir ve bireysel şarkı versiyonlarınızı paylaşabilir veya yazdırabilirsiniz. Ayar listeleri de metin dosyaları olarak kaydedilir ve aynı şekilde kullanılabilir.</p><p> Navigasyon için Gezinti Sürgüsü, ekranın sol kenarından sağa doğru kaydırılarak her zaman kullanılabilir.</p><p> Syncthing veya Nextcloud gibi ek uygulamalarla kişisel şarkı sürümlerinizi birden fazla cihazda kolayca senkronize edebilir veya başkalarıyla paylaşabilirsiniz.</p> <h2>2. Web Araması</h2><p> Web Araması ile en sevdiğiniz arama motorunu kullanarak akorlar ve şarkı sözleri için internette arama yapabilirsiniz (bkz. Ayarlar). Akorları içeren doğru sayfayı bulduğunuzda, Akor Okuyucu 2 akorları ve şarkı sözlerini çıkarır. Mavi çerçeveli internet tarayıcısının üzerindeki mavi düğmeye dokunduğunuzda, sonuç size gösterilecektir. Onaylandığında, şarkı Şarkı Görünümünde görüntülenir ve daha sonra kaydedilebilir.</p> <h2>3. Şarkı Görünümü</h2><p> Şarkı Görünümünde, iki parmakla yakınlaştırmayı kullanarak metin boyutunu ayarlayabilirsiniz. Metin boyutu daha sonra uygulamanın dahili veritabanında ilgili şarkı için kaydedilir.</p> <p>Şarkı Görünümü bir otomatik kaydırma işlevi sunar. Bpm değeri Beats per Minute ve dosyanın başlığında saklanan otomatik kaydırma düzeltme faktörüne göre kaydırma hızı hesaplanır. Bunun için aşağıdaki temel varsayım yapılır:<i> İki satır için (metin satırı + üzerindeki akorlar) 4 atım varsayılır.</i><br> Bpm değeri ayrıca metronomun yanıp sönme hızını da belirler (mavi yanıp sönen oynatma düğmesi). Otomatik kaydırma düzeltme faktörü kaydırma hızını ayarlar ve artı ve eksi düğmeleriyle dinamik olarak değiştirilebilir. Bu, örneğin bir akıllı telefonda bir şarkı dosyası oluşturulmuşsa ve daha sonra bir tablette görüntülenecekse gerekli olabilir. Oynat düğmesi ile otomatik kaydırma başlatılır ve durdurulur. Bu, ekrana iki kez dokunarak da başlatılabilir ve durdurulabilir.</p><p> Şarkı Görünümünün renk stili ayarlarda Açık veya Koyu arasında değiştirilebilir.</p><p>Transpoze işlevi, bir yandan akorların ses perdesini transpoze sürgüsü aracılığıyla ses perdesine göre ayarlama imkanı sunar. Öte yandan, seçilen perdede bir capo kullanıyormuş gibi akorları değiştirmek için Capo kaydırıcısını kullanabilirsiniz. Bu, örneğin, biri capo ve ikincisi akorları ayarlanmış, ancak capo içermeyen iki gitarla çalarken kullanışlıdır.</p> <h2>4. Setlists</h2><p>Setlists, cihazda bir dosya olarak saklanan şarkıları önceden tanımlanmış bir sırayla görüntülemek ve aralarında doğrudan geçiş yapmak için kullanılır.</p><p> Yeni bir Setlist oluşturduktan sonra, bir seçim ekranında şarkı ekleyebilirsiniz. Sipariş daha sonra sürükle ve bırak (mavi çift çubuk) kullanılarak ayarlanabilir. Tek tek şarkılar silme düğmesi (mavi çöp kutusu) ile ilgili şarkı listesinden kaldırılabilir. Şarkı görünümünden, mevcut şarkı menü aracılığıyla bir şarkı listesine de eklenebilir.</p> Şarkı listesi<p> görünümünden bir şarkı açıldığında, şarkı görünümünde iki ek düğme (sol/sağ ok) mevcuttur. Bunlarla, doğrudan ileri veya geri şarkılar arasındaki şarkı listesinin sırasına göre değiştirilebilir.</p>]]></string>
+  <string name="storage_access">Depolama erişimi</string>
+  <string name="grant_storage_access">Lütfen chord_reader_2 klasörü için depolama erişim izni verin.</string>
+  <string name="select_storage_location">Lütfen depolama konumunuzu seçin veya şarkılarınızın yerel olarak depolanması için yeni klasör oluşturun.</string>
+  <string name="share">Paylaş</string>
+  <string name="add_song">Şarkı ekle</string>
+  <string name="use_db_transpose_data">Bununla birlikte, transpozisyonlar sürüm 2.1.7 'den bu yana doğrudan şarkı dosyasına kaydedilmiştir. Aktarma işlemi yine de yerel uygulama veritabanınızdan uygulanmalı mı?</string>
+  <string name="db_transpose_data_found">Yerel uygulama veritabanınızda aktarım verileri bulundu:</string>
+  <string name="use_transposition">Transpozisyon uygulansın mı?</string>
+</resources>
