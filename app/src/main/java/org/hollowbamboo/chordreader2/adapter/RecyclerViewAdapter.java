@@ -60,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     data.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, data.size());
+                    //notifyItemRangeRemoved(position, data.size());
                 }
                 return true;
             }

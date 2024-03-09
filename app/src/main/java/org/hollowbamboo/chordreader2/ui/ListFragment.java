@@ -28,6 +28,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
@@ -90,6 +91,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     private ListView fileList;
     private TextView textView;
     private int foregroundColor;
+    private Toolbar toolbar;
 
     private SelectableFilterAdapter fileListAdapter;
     private static Menu menu;
@@ -125,6 +127,8 @@ public class ListFragment extends Fragment implements TextWatcher {
         textView = binding.listViewTextView;
 
         okButton = binding.listViewOkBtn;
+
+        toolbar = requireActivity().findViewById(R.id.toolbar);
 
         setUpInstance();
 
@@ -456,8 +460,18 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
     private void setTitle(String titleText) {
-        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(titleText);
+
+        // have to use original thread, else exception
+        Looper looper = toolbar.getContext().getMainLooper();
+
+        if (looper == null)
+            return;
+
+        Handler handlerInMainThread = new Handler(looper);
+
+        Runnable yourRunnable = () -> toolbar.setTitle(titleText);
+
+        handlerInMainThread.post(yourRunnable);
     }
 
     private void setFileSelection() {

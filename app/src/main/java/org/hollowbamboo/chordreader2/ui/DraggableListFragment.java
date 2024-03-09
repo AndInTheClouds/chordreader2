@@ -127,6 +127,13 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
                 dataViewModel.isSetListChanged = true;
             }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+
+                dataViewModel.isSetListChanged = true;
+            }
         });
 
         recyclerView.setAdapter(mAdapter);

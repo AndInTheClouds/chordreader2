@@ -111,7 +111,7 @@
     <string name="select_storage_location">Veuillez sélectionner votre emplacement de stockage ou créer un nouveau dossier pour le stockage local de vos chansons.</string>
     <string name="share">Partager</string>
     <string name="add_song">ajouter chanson</string>
-    <string name="use_db_transpose_data">Les transpositions sont cependant enregistrées directement dans le fichier de chanson depuis la version 2.1.7. Voulez-vous quand même appliquer la transposition de la base de données locale de votre application?</string>
+    <string name="use_db_transpose_data">Les transpositions sont cependant enregistrées directement dans le fichier de chanson depuis la version 2.2.0. Voulez-vous quand même appliquer la transposition de la base de données locale de votre application?</string>
     <string name="db_transpose_data_found">Des données de transposition ont été trouvées dans la base de données de votre application locale:</string>
     <string name="use_transposition">Appliquer la transposition?</string>
 

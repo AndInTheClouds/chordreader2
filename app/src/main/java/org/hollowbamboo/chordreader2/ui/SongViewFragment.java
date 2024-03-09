@@ -431,12 +431,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             songViewFragmentViewModel.filename = filename;
             songViewFragmentViewModel.setLinkColor(PreferenceHelper.getColorScheme(requireActivity().getBaseContext()).getLinkColor(requireActivity().getBaseContext()));
 
-            if (transposition == null) {
-                songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
-                songViewFragmentViewModel.setChordText(chordText, null);
-            } else {
-                showUseDbTranspositionPrompt(chordText, transposition);
-            }
+            evaluateTranspositionData(chordText, transposition);
         }
 
         getParentFragmentManager().setFragmentResultListener("EditChordTextDialog", this, songViewFragmentViewModel.getFragmentResultListener());
@@ -601,6 +596,26 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private NoteNaming getNoteNaming() {
         return PreferenceHelper.getNoteNaming(requireContext());
+    }
+
+    private void evaluateTranspositionData(String chordText, Transposition transposition) {
+
+        if (transposition == null) {
+            songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
+            songViewFragmentViewModel.setChordText(chordText, null);
+            return;
+        }
+
+        int capo = transposition.getCapo();
+        int transpose = transposition.getTranspose();
+
+        if (capo == 0 && transpose == 0) {
+            songViewFragmentViewModel.getShowTranspositionProgressMLD().setValue(true);
+            songViewFragmentViewModel.setChordText(chordText, null);
+            removeTranspositionFromDB(songViewFragmentViewModel.filename);
+        } else {
+            showUseDbTranspositionPrompt(chordText, transposition);
+        }
     }
 
     private Transposition getTranspositionFromDB(String filename) {
