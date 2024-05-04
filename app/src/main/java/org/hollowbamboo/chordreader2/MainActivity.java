@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        initializeChordDictionary();
-
         if(!areStoragePermissionsGranted())
             requestPermission();
 
@@ -300,22 +298,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-
-    private void initializeChordDictionary() {
-        // do in the background to avoid jank
-
-        HandlerThread handlerThread = new HandlerThread("InitializeChordDictionary");
-        handlerThread.start();
-
-        Handler asyncHandler = new Handler(handlerThread.getLooper()) {};
-
-        Runnable runnable = () -> {
-            ChordDictionary.initialize(this);
-            handlerThread.quit();
-        };
-        asyncHandler.post(runnable);
     }
 
     private void attemptToOpenWebViewWithUrlFromIntent(Intent intent) {

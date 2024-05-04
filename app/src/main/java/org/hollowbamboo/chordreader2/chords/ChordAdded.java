@@ -9,10 +9,16 @@ import java.util.*;
  */
 public enum ChordAdded {
 
+	Add6 (Arrays.asList("add6")),
 	Add9 (Arrays.asList("add9", "2")),
 	Add11 (Arrays.asList("add11", "4")),
+	Augmented9 (Arrays.asList("aug9","+9")),
+	AugmentedMajor9 (Arrays.asList("augmaj9","+M9")),
 	Major6 (Arrays.asList("6","maj6","major6", "M6")),
-	SixNine (Arrays.asList("6/9")),
+	Major6Flat5 (Arrays.asList("6b5")),
+	SixNine (Arrays.asList("6/9","6add9","6/add9","69")),
+	NineFlat5 (Arrays.asList("9b5")),
+	NineSharp5 (Arrays.asList("9#5")),
 	PowerChord (Arrays.asList("5")), // duh duh DUH, duh duh DUH-duh, duh duh DUH, duh duh ((c) Deep Purple)
 	;
 	

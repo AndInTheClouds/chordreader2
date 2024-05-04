@@ -867,18 +867,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private void showChordPopup(final Chord chord) {
 
-        if (!ChordDictionary.isInitialized()) {
-            // it could take a second or two to initialize, so just wait until then...
-            return;
-        }
-
         final LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popup_chord, null);
 
         ImageButton nextChordButton = view.findViewById(R.id.next_chord_button);
         ImageButton previousChordButton = view.findViewById(R.id.previous_chord_button);
 
-        List<String> guitarChords = ChordDictionary.getGuitarChordsForChord(chord);
+        List<String> guitarChords = ChordDictionary.getFingerPositionsForChord(requireContext(), chord, null);
 
         if (guitarChords.size() > 0) {
 
@@ -955,21 +950,21 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         builder.setTitle(chord.toPrintableString(songViewFragmentViewModel.getNoteNaming()))
                 .setView(view)
-                .setNeutralButton("Edit", (dialog, which) -> {
-                    SongViewFragmentDirections.ActionNavSongViewToNavChordDictEdit action =
-                            SongViewFragmentDirections.actionNavSongViewToNavChordDictEdit(chord);
-
-                    if (getParentFragment() != null) {
-                        Navigation.findNavController(getParentFragment().requireView()).navigate(action);
-                    }
-                })
+//                .setNeutralButton("Edit", (dialog, which) -> {
+//                    SongViewFragmentDirections.ActionNavSongViewToNavChordDictEdit action =
+//                            SongViewFragmentDirections.actionNavSongViewToNavChordDictEdit(chord);
+//
+//                    if (getParentFragment() != null) {
+//                        Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+//                    }
+//                })
                 .setPositiveButton(android.R.string.ok, null);
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
         //TODO: didn't found a solution to let alert dialog wrap content, so set fixed pixel density dependent value
-        alertDialog.getWindow().setLayout((int) (220 * Resources.getSystem().getDisplayMetrics().density), (int) (270 * Resources.getSystem().getDisplayMetrics().density));
+        alertDialog.getWindow().setLayout((int) (240 * Resources.getSystem().getDisplayMetrics().density), (int) (290 * Resources.getSystem().getDisplayMetrics().density));
     }
 
     private void createTransposeDialog() {

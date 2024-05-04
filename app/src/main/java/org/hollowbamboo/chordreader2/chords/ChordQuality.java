@@ -11,7 +11,7 @@ public enum ChordQuality {
 
 	Major (Arrays.asList("", "major", "maj", "M")),
 	Minor (Arrays.asList("m", "minor", "min")),
-	Augmented (Arrays.asList("aug","augmented","+")),
+	Augmented (Arrays.asList("aug","augmented","+","#5")),
 	Diminished (Arrays.asList("dim","diminished"));
 	
 	private final List<String> aliases;
