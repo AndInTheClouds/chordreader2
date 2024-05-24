@@ -58,7 +58,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private Preference noteNamingPreference;
     private EditTextPreference searchEnginePreference;
     private Preference storageLocationPreference;
-
+    private ListPreference instrumentPreference;
     private ActivityResultLauncher<Intent> directoryPickerResultLauncher;
 
     @Override
@@ -67,6 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         setUpPreferences();
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,21 +119,30 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         if (SDK_INT < Build.VERSION_CODES.O)
             storageLocationPreference.setVisible(false);
+
+        instrumentPreference = findPreference(getString(R.string.pref_instrument));
+        instrumentPreference.setOnPreferenceChangeListener(this);
+
+        String instrumentSummary = PreferenceHelper.getInstrument(requireContext());
+        instrumentPreference.setSummary(instrumentSummary);
     }
 
     @Override
     public boolean onPreferenceChange(@NonNull androidx.preference.Preference preference, Object newValue) {
 
-        if(preference.getKey().equals(getString(R.string.pref_scheme))) {
+        if (preference.getKey().equals(getString(R.string.pref_scheme))) {
             themePreference.setSummary(newValue.toString());
             return true;
-        } else if(preference.getKey().equals(getString(R.string.pref_search_engine))) {
+        } else if (preference.getKey().equals(getString(R.string.pref_search_engine))) {
             searchEnginePreference.setSummary(newValue.toString());
             return true;
-        } else if(preference.getKey().equals(getString(R.string.pref_storage_location))) {
+        } else if (preference.getKey().equals(getString(R.string.pref_storage_location))) {
             storageLocationPreference.setSummary(newValue.toString());
             return true;
-        }else {
+        } else if (preference.getKey().equals(getString(R.string.pref_instrument))) {
+            instrumentPreference.setSummary(newValue.toString());
+            return true;
+        } else {
             return true;
         }
     }

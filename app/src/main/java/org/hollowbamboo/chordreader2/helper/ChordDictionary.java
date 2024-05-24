@@ -29,15 +29,20 @@ public class ChordDictionary {
 
     public static List<String> getFingerPositionsForChord(Context context, Chord chord, String instrument) {
 
+        if (instrument == null) {
+            instrument = PreferenceHelper.getInstrument(context);
+        }
 
         List<String[][]> chordList = new ArrayList<>();
 
-        try {
-            chordList = getGuitarChordFromJSON(context,
-                    chord.toPrintableString(NoteNaming.English),
-                    chord.toPrintableString(NoteNaming.NorthernEuropean));
-        } catch (Exception e) {
-            Log.e(LOG_TAG," unable to parse chord db");
+        switch (instrument) {
+            case ("Guitar"):
+                chordList = getGuitarChordFromJSON(context,
+                        chord.toPrintableString(NoteNaming.English),
+                        chord.toPrintableString(NoteNaming.NorthernEuropean));
+                break;
+            case ("Ukulele"):
+                chordList = getUkuleleChordFromJSON(context, chord);
         }
 
         if (chordList.isEmpty())
@@ -54,6 +59,10 @@ public class ChordDictionary {
                 sb.append(s).append("-");
             }
             sb.deleteCharAt(sb.length() - 1);
+
+            //FIXME: just temporary
+            if (chordData[0].length == 4)
+                sb.append("-x-x");
 
             //TODO: use fingerings chordData[1]
 
@@ -112,7 +121,7 @@ public class ChordDictionary {
 
     }
 
-    public static List<String[][]> getGuitarChordFromJSON(Context context, String chord, String chord2) throws IOException {
+    public static List<String[][]> getGuitarChordFromJSON(Context context, String chord, String chord2) {
 
         List<String[][]> result = new ArrayList<>();
         BufferedReader bufferedReader = null;
@@ -194,10 +203,155 @@ public class ChordDictionary {
             e.printStackTrace();
         } finally {
             assert bufferedReader != null;
-            bufferedReader.close();
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, " unable to close BufferedReader");
+            }
 
             assert reader != null;
-            reader.close();
+            try {
+                reader.close();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, " unable to close JSONReader");
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    private static List<String[][]> getUkuleleChordFromJSON(Context context, Chord chord) {
+
+        String chordStr1 = chord.toPrintableString(NoteNaming.English);
+        String chordStr2 = chord.toPrintableString(NoteNaming.NorthernEuropean);
+        String chordRoot = String.valueOf(chord.getRoot());
+
+        List<String[][]> result = new ArrayList<>();
+        BufferedReader bufferedReader = null;
+        JsonReader reader = null;
+
+        try {
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(context.getResources().openRawResource(R.raw.ukulele_chords)));
+            reader = new JsonReader(bufferedReader);
+
+            reader.beginObject();
+
+            while (reader.hasNext()) {
+                String key = reader.nextName();
+                if (key.equals("chords")) {
+                    reader.beginObject();
+
+                    while (reader.hasNext()) {
+                        String chordName = reader.nextName();
+                        if (chordName.equals(chordRoot)) {
+                            reader.beginArray();
+
+                            while (reader.hasNext()) {
+                                reader.beginObject();
+
+                                String chordKey = null;
+                                String chordSuffix = null;
+
+                                while (reader.hasNext()) {
+                                    String name = reader.nextName();
+                                    if (name.equals("key")) {
+                                        chordKey = reader.nextString();
+                                    } else if (name.equals("suffix")) {
+                                        chordSuffix = reader.nextString();
+                                    } else if (name.equals("positions")) {
+                                        if (chordStr1.equals(chordKey + chordSuffix) || chordStr2.equals(chordKey + chordSuffix)) {
+                                            reader.beginArray();
+
+                                            while (reader.hasNext()) {
+                                                reader.beginObject();
+
+                                                String[] positions = null;
+                                                String[] fingerings = null;
+                                                try {
+                                                    while (reader.hasNext()) {
+                                                        String innerName = reader.nextName();
+                                                        if (innerName.equals("frets")) {
+                                                            if (reader.peek() == JsonToken.BEGIN_ARRAY) {
+                                                                reader.beginArray();
+                                                                positions = new String[4];
+                                                                int i = 0;
+                                                                while (reader.hasNext()) {
+                                                                    positions[i] = reader.nextString();
+                                                                    i++;
+                                                                }
+                                                                reader.endArray();
+                                                            }
+                                                        } else if (innerName.equals("fingers")) {
+                                                            if (reader.peek() == JsonToken.BEGIN_ARRAY) {
+                                                                reader.beginArray();
+                                                                fingerings = new String[4];
+                                                                int i = 0;
+                                                                while (reader.hasNext()) {
+                                                                    fingerings[i] = reader.nextString();
+                                                                    i++;
+                                                                }
+                                                            }
+                                                            reader.endArray();
+                                                        } else {
+                                                            reader.skipValue();
+                                                        }
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                if (positions != null && fingerings != null) {
+                                                    result.add(new String[][]{positions, fingerings});
+                                                }
+
+                                                reader.endObject();
+                                            }
+
+                                            reader.endArray();
+
+                                            return  result;
+                                        } else {
+                                            reader.skipValue();
+                                        }
+                                    } else {
+                                        reader.skipValue();
+                                    }
+                                }
+
+                                reader.endObject();
+                            }
+
+                            reader.endArray();
+                        } else {
+                            reader.skipValue();
+                        }
+                    }
+
+                    reader.endObject();
+                } else {
+                    reader.skipValue();
+                }
+            }
+
+            reader.endObject();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert bufferedReader != null;
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, " unable to close BufferedReader");
+            }
+
+            assert reader != null;
+            try {
+                reader.close();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, " unable to close JSONReader");
+            }
         }
 
         return new ArrayList<>();

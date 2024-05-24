@@ -43,14 +43,14 @@
     <string name="edit">Éditer</string>
     <string name="edit_chords">Éditer accords</string>
 
-    <string name="no_guitar_chord_available">Aucun doigté de guitare disponible.</string>
+    <string name="no_chord_available">Aucun doigté de guitare disponible.</string>
 
     <string name="pref_text_size_title">Taille du texte</string>
 
     <string name="pref_scheme_title">Thème</string>
 
     <string name="pref_category_appearance">Apparence</string>
-    <string name="pref_category_configuration">Configuration</string>
+    <string name="pref_category_basic_configuration">Configuration de base</string>
 
     <string name="pref_note_naming_title">Nom des notes</string>
     <string name="pref_note_naming_english">Anglais</string>
@@ -114,5 +114,9 @@
     <string name="use_db_transpose_data">Les transpositions sont cependant enregistrées directement dans le fichier de chanson depuis la version 2.2.0. Voulez-vous quand même appliquer la transposition de la base de données locale de votre application?</string>
     <string name="db_transpose_data_found">Des données de transposition ont été trouvées dans la base de données de votre application locale:</string>
     <string name="use_transposition">Appliquer la transposition?</string>
+    <string name="pref_category_musical_configuration">Configuration musicale</string>
+    <string name="pref_instrument_title">Instrument</string>
+    <string name="guitar">Guitare</string>
+    <string name="ukulele">Ukulélé</string>
 
 </resources>

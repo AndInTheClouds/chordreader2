@@ -942,7 +942,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             });
         } else {
             TextView chordVisuTextView = view.findViewById(R.id.chord_visualisation_text_view);
-            chordVisuTextView.setText(getString(R.string.no_guitar_chord_available));
+            chordVisuTextView.setText(getString(R.string.no_chord_available));
         }
 
 

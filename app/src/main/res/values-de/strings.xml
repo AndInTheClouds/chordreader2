@@ -43,14 +43,14 @@
     <string name="edit">Bearbeiten</string>
     <string name="edit_chords">Akkorde bearbeiten</string>
     
-    <string name="no_guitar_chord_available">Keine Gitarrengriffe verfügbar.</string>
+    <string name="no_chord_available">Keine Gitarrengriffe verfügbar.</string>
 
     <string name="pref_text_size_title">Text Größe</string>
 
     <string name="pref_scheme_title">Farbschema</string>
 
     <string name="pref_category_appearance">Erscheinung</string>
-    <string name="pref_category_configuration">Konfiguration</string>
+    <string name="pref_category_basic_configuration">Basiskonfiguration</string>
 
     <string name="pref_note_naming_title">Noten Bezeichnung</string>
     <string name="pref_note_naming_english">Englisch</string>
@@ -113,5 +113,9 @@
     <string name="use_db_transpose_data">Transponierungen werden allerdings seit Version 2.2.0 direkt in der Song-Datei gespeichert. Soll trotzdem die Transponierung aus deiner lokalen APP-Datenbank angewendet werden?</string>
     <string name="db_transpose_data_found">Es wurden Transponierungsdaten in deiner lokalen APP-Datenbank gefunden:\n\n</string>
     <string name="use_transposition">Transponierung anwenden?</string>
+    <string name="pref_category_musical_configuration">Musikalische Konfiguration</string>
+    <string name="pref_instrument_title">Instrument</string>
+    <string name="guitar">Gitarre</string>
+    <string name="ukulele">Ukulele</string>
 
 </resources>

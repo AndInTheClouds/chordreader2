@@ -44,13 +44,13 @@
     <string name="edit">Editar</string>
     <string name="edit_chords">Editar Acordes</string>
 
-    <string name="no_guitar_chord_available">No hay digitación de guitarra disponible.</string>
+    <string name="no_chord_available">No hay digitación de guitarra disponible.</string>
 
     <string name="pref_text_size_title">Tamaño de letra</string>
 
     <string name="pref_scheme_title">Tema</string>
     <string name="pref_category_appearance">Apariencia</string>
-    <string name="pref_category_configuration">Configuración</string>
+    <string name="pref_category_basic_configuration">Configuración básica</string>
 
     <string name="pref_note_naming_title">Nomenclatura de las Notas</string>
     <string name="pref_note_naming_english">Inglesa</string>
@@ -113,4 +113,8 @@
     <string name="select_storage_location">Por favor, selecciona una localización para el almacenamiento o crea una nueva carpeta para el almacenamiento local de tus canciones.</string>
     <string name="share">Compartir</string>
     <string name="add_song">Añadir canción</string>
+    <string name="pref_category_musical_configuration">Configuración musical</string>
+    <string name="pref_instrument_title">Instrumento</string>
+    <string name="guitar">Guitarra</string>
+    <string name="ukulele">Ukelele</string>
 </resources>

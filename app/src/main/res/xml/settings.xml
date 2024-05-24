@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="@string/pref_category_appearance">
+    <PreferenceCategory android:title="@string/pref_category_appearance">
 
-		<ListPreference android:key="@string/pref_scheme"
-			android:title="@string/pref_scheme_title" android:persistent="true"
-			android:entries="@array/color_schemes" android:entryValues="@array/color_schemes"
-			android:defaultValue="@string/pref_scheme_system" />
-				
-	</PreferenceCategory>
-	
-	<PreferenceCategory android:title="@string/pref_category_configuration">
+        <ListPreference
+            android:defaultValue="@string/pref_scheme_system"
+            android:entries="@array/color_schemes"
+            android:entryValues="@array/color_schemes"
+            android:key="@string/pref_scheme"
+            android:persistent="true"
+            android:title="@string/pref_scheme_title" />
 
-		<Preference
-			android:key="@string/pref_storage_location"
-			android:title="@string/storage_location"
-			android:persistent="true"
-			android:defaultValue="@string/pref_storage_location_default"/>
+    </PreferenceCategory>
 
-		<EditTextPreference
-			android:defaultValue="@string/pref_search_engine_default"
-			android:key="searchEngineURL"
-			android:persistent="true"
-			android:title="@string/pref_search_engine_title" />
+    <PreferenceCategory android:title="@string/pref_category_basic_configuration">
 
-		<Preference android:key="@string/pref_note_naming"
-			android:title="@string/pref_note_naming_title"
-			android:persistent="true" 
-			android:defaultValue="@string/pref_note_naming_default"/>
-			
-		<CheckBoxPreference android:key="@string/pref_first_run"
-			android:title="@string/pref_first_run_title"
-			android:summary="@string/pref_first_run_summary"
-			android:persistent="true" android:defaultValue="true"/>		
-	</PreferenceCategory>
+        <Preference
+            android:defaultValue="@string/pref_storage_location_default"
+            android:key="@string/pref_storage_location"
+            android:persistent="true"
+            android:title="@string/storage_location" />
+
+        <EditTextPreference
+            android:defaultValue="@string/pref_search_engine_default"
+            android:key="searchEngineURL"
+            android:persistent="true"
+            android:title="@string/pref_search_engine_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_first_run"
+            android:persistent="true"
+            android:summary="@string/pref_first_run_summary"
+            android:title="@string/pref_first_run_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_musical_configuration">
+        <Preference
+            android:defaultValue="@string/pref_note_naming_default"
+            android:key="@string/pref_note_naming"
+            android:persistent="true"
+            android:title="@string/pref_note_naming_title" />
+
+        <ListPreference
+            android:defaultValue="@string/pref_instrument_default"
+            android:key="@string/pref_instrument"
+            android:persistent="true"
+            android:title="@string/pref_instrument_title"
+            android:entries="@array/instruments"
+            android:entryValues="@array/instruments_values"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -45,7 +45,7 @@
     <string name="edit">Edit</string>
     <string name="edit_chords">Edit Chords</string>
 
-    <string name="no_guitar_chord_available">No guitar fingering available.</string>
+    <string name="no_chord_available">No fingering available.</string>
     <string name="variation" translatable="false">Var.</string>
 
     <string name="pref_text_size" translatable="false">text_size</string>
@@ -59,7 +59,7 @@
     <string name="pref_scheme_android" translatable="false">Android</string>
 
     <string name="pref_category_appearance">Appearance</string>
-    <string name="pref_category_configuration">Configuration</string>
+    <string name="pref_category_basic_configuration">Basic configuration</string>
 
     <string name="pref_note_naming" translatable="false">note_naming</string>
     <string name="pref_note_naming_title">Note Naming</string>
@@ -77,6 +77,9 @@
     <string name="pref_search_engine_default" translatable="false">https://www.startpage.com/sp/search?q=</string>
     <string name="pref_storage_location" translatable="false">storageLocation</string>
     <string name="pref_storage_location_default" translatable="false">content://com.android.externalstorage.documents/tree/primary%3Achord_reader_2</string>
+    <string name="pref_instrument" translatable="false">instrument</string>
+    <string name="pref_instrument_title">Instrument</string>
+    <string name="pref_instrument_default" translatable="false">Guitar</string>
     <string name="settings">Settings</string>
 
     <string name="pref_first_run" translatable="false">first_run3</string>
@@ -99,7 +102,7 @@
     <string name="No_BPM_found">No BPM value found. Please adjust desired value in first line.</string>
     <string name="pref_search_engine_title">Search engine URL</string>
     <string name="chord_variation_editing">Chord variation editing</string>
-    <string name="no_chord_available_add">No guitar fingering available. Please add.</string>
+    <string name="no_chord_available_add">No fingering available. Please add.</string>
     <string name="new_setlist">New Setlist</string>
     <string name="manage_saved_setlists">Manage Setlists</string>
     <string name="slower_auto_scroll" translatable="false">slower auto scroll</string>
@@ -134,5 +137,8 @@
     <string name="use_db_transpose_data">However, transpositions have been saved directly in the song file since version 2.2.0. Should the transposition still be applied from your local app database?</string>
     <string name="db_transpose_data_found">Transposition data was found in your local app database:</string>
     <string name="use_transposition">Apply transposition?</string>
+    <string name="pref_category_musical_configuration">Musical configuration</string>
+    <string name="guitar">Guitar</string>
+    <string name="ukulele">Ukulele</string>
 
 </resources>

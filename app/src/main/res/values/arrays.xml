@@ -25,6 +25,16 @@
 	    <item>@string/pref_note_naming_explanation_southern</item>	    	    
 	</string-array>
 
+	<string-array name="instruments_values">
+		<item>Guitar</item>
+		<item>Ukulele</item>
+	</string-array>
+
+	<string-array name="instruments">
+		<item>@string/guitar</item>
+		<item>@string/ukulele</item>
+	</string-array>
+
 	<string-array name="chord_tabs">
 		<item>x</item>
 		<item>0</item>
