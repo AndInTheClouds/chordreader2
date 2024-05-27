@@ -118,5 +118,8 @@
     <string name="pref_instrument_title">Instrument</string>
     <string name="guitar">Guitare</string>
     <string name="ukulele">Ukulélé</string>
+    <string name="right_handed">gauchère</string>
+    <string name="left_handed">droitière</string>
+    <string name="pref_laterality_title">Latéralité pour la visualisation des accords</string>
 
 </resources>

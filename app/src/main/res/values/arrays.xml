@@ -35,6 +35,16 @@
 		<item>@string/ukulele</item>
 	</string-array>
 
+	<string-array name="laterality_values">
+		<item>right</item>
+		<item>left</item>
+	</string-array>
+
+	<string-array name="laterality">
+		<item>@string/right_handed</item>
+		<item>@string/left_handed</item>
+	</string-array>
+
 	<string-array name="chord_tabs">
 		<item>x</item>
 		<item>0</item>

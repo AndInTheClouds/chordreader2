@@ -59,6 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private EditTextPreference searchEnginePreference;
     private Preference storageLocationPreference;
     private ListPreference instrumentPreference;
+    private ListPreference lateralityPreference;
     private ActivityResultLauncher<Intent> directoryPickerResultLauncher;
 
     @Override
@@ -125,6 +126,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         String instrumentSummary = PreferenceHelper.getInstrument(requireContext());
         instrumentPreference.setSummary(instrumentSummary);
+
+        lateralityPreference = findPreference(getString(R.string.pref_laterality));
+        lateralityPreference.setOnPreferenceChangeListener(this);
+
+        String lateralitySummary = PreferenceHelper.getLateralityName(requireContext());
+        lateralityPreference.setSummary(lateralitySummary);
     }
 
     @Override
@@ -141,6 +148,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return true;
         } else if (preference.getKey().equals(getString(R.string.pref_instrument))) {
             instrumentPreference.setSummary(newValue.toString());
+            return true;
+        } else if (preference.getKey().equals(getString(R.string.pref_laterality))) {
+
+            String str;
+
+            if (Objects.equals(newValue, "right"))
+                str = requireContext().getString(R.string.right_handed);
+            else
+                str = requireContext().getString(R.string.left_handed);
+
+            lateralityPreference.setSummary(str);
             return true;
         } else {
             return true;

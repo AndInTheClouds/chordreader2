@@ -50,6 +50,14 @@
             android:entries="@array/instruments"
             android:entryValues="@array/instruments_values"/>
 
+        <ListPreference
+            android:defaultValue="@string/pref_laterality_default"
+            android:key="@string/pref_laterality"
+            android:persistent="true"
+            android:title="@string/pref_laterality_title"
+            android:entries="@array/laterality"
+            android:entryValues="@array/laterality_values"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

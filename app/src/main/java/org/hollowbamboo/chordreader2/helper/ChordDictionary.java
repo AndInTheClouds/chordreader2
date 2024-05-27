@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class ChordDictionary {
 
 
     public static List<String> getFingerPositionsForChord(Context context, Chord chord, String instrument) {
+
+        String laterality = PreferenceHelper.getLaterality(context);
 
         if (instrument == null) {
             instrument = PreferenceHelper.getInstrument(context);
@@ -55,7 +58,12 @@ public class ChordDictionary {
             StringBuilder sb = new StringBuilder();
 
             // chord positions
-            for (String s : chordData[0]) {
+            String[] chordPositions = chordData[0];
+
+            if (laterality.equals("left"))
+                Collections.reverse(Arrays.asList(chordPositions));
+
+            for (String s : chordPositions) {
                 sb.append(s).append("-");
             }
             sb.deleteCharAt(sb.length() - 1);

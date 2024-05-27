@@ -117,5 +117,8 @@
     <string name="pref_instrument_title">Instrument</string>
     <string name="guitar">Gitarre</string>
     <string name="ukulele">Ukulele</string>
+    <string name="right_handed">Rechtshändig</string>
+    <string name="left_handed">Linkshändig</string>
+    <string name="pref_laterality_title">Lateralität für die Akkordvisualisierung</string>
 
 </resources>

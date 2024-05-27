@@ -117,4 +117,7 @@
     <string name="pref_instrument_title">Instrumento</string>
     <string name="guitar">Guitarra</string>
     <string name="ukulele">Ukelele</string>
+    <string name="right_handed">diestro</string>
+    <string name="left_handed">zurdo</string>
+    <string name="pref_laterality_title">Lateridad para la visualización de acordes</string>
 </resources>

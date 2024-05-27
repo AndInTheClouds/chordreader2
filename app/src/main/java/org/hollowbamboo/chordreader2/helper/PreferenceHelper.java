@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -12,18 +13,22 @@ import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
 
+import java.util.Objects;
+
 public class PreferenceHelper {
 
     private static NoteNaming noteNaming = null;
     private static String searchEngineURL = null;
     private static String storageLocation = null;
     private static String instrument = null;
+    private static String laterality = null;
 
     public static void clearCache() {
         noteNaming = null;
         searchEngineURL = null;
         storageLocation = null;
         instrument = null;
+        laterality = null;
     }
 
     public static void setFirstRunPreference(Context context, boolean bool) {
@@ -142,4 +147,26 @@ public class PreferenceHelper {
         return instrument;
     }
 
+    public static String getLaterality(Context context) {
+
+        if (laterality == null) {
+
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            laterality = sharedPrefs.getString(context.getString(R.string.pref_laterality),
+                    context.getString(R.string.pref_laterality_default));
+        }
+
+        return laterality;
+    }
+
+    public static String getLateralityName(Context context) {
+        if (laterality == null) {
+
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            laterality = sharedPrefs.getString(context.getString(R.string.pref_laterality),
+                    context.getString(R.string.pref_laterality_default));
+        }
+
+        return Objects.equals(laterality, "right") ? context.getString(R.string.right_handed) : context.getString(R.string.left_handed);
+    }
 }

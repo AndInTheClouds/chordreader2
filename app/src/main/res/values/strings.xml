@@ -140,5 +140,10 @@
     <string name="pref_category_musical_configuration">Musical configuration</string>
     <string name="guitar">Guitar</string>
     <string name="ukulele">Ukulele</string>
+    <string name="right_handed">Right-handed</string>
+    <string name="left_handed">Left-handed</string>
+    <string name="pref_laterality" translatable="false">laterality</string>
+    <string name="pref_laterality_title">Laterality for chord visualization</string>
+    <string name="pref_laterality_default" translatable="false">right</string>
 
 </resources>
