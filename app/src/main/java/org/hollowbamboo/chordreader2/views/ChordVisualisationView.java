@@ -38,6 +38,7 @@ public class ChordVisualisationView extends View {
     private String[] fretPositions;
     private int minFretPos = 100;
     private int minSecondFretPos = 100;
+    private int maxFretPos = 0;
 
     private String chordType = "";
 
@@ -51,26 +52,26 @@ public class ChordVisualisationView extends View {
     private RectF rectFStringLowE;
     private Rect rectBarre;
 
-    private final int desiredViewWidth = dpToPx(150);
-    private final int desiredViewHeight = dpToPx(100);
+    private final int desiredViewWidth = dpToPx(125);
+    private final int desiredViewHeight = dpToPx(200);
 
-    private final int lineStartX = dpToPx(30);
-    private final int lineStopX = dpToPx(175);
-    private final int lineSpacingX = dpToPx(24);
+    private final int lineStartX = dpToPx(12);
+    private final int lineStopX = dpToPx(112);
+    private final int lineSpacingX = dpToPx(20);
 
-    private final int lineStartY = dpToPx(8);
-    private final int lineStopY = dpToPx(83);
-    private final int lineSpacingY = dpToPx(15);
+    private final int lineStartY = dpToPx(25);
+    private final int lineStopY = dpToPx(168);
+    private final int lineSpacingY = dpToPx(24);
 
     private int XPosHighE, XPosH, XPosG, XPosD, XPosA, XPosLowE;
     private int YPosHighE, YPosH, YPosG, YPosD, YPosA, YPosLowE;
 
-    private final int fingerPosOvalXRadius = lineSpacingX / 4;
-    private final int fingerPosOvalYRadius = lineSpacingY / 3;
+    private final int fingerPosOvalXRadius = lineSpacingX / 3;
+    private final int fingerPosOvalYRadius = lineSpacingY / 4;
 
-    private final int textShiftX = dpToPx(-7);
-    private final int textShiftY = dpToPx(5);
-    private final int textSize = dpToPx(15);
+    private final int textShiftX = dpToPx(4);
+    private final int textShiftY = dpToPx(-7);
+    private final int textSize = dpToPx(12);
 
     private int fretPosHighE;
     private int fretPosH;
@@ -114,7 +115,7 @@ public class ChordVisualisationView extends View {
 
         this.chord = chord;
         parseChord();
-        checkChordForBarre();
+        checkChordForType();
         calculatePixelPosOfFingerPos();
 
         rectNut = new Rect();
@@ -139,17 +140,14 @@ public class ChordVisualisationView extends View {
 
         for (int i = 0; i < fretPositions.length; i++) {
             fretPositionsInt[i] = parseFretPosNumber(fretPositions[i]);
-            if(fretPositionsInt[i] < minFretPos && fretPositionsInt[i] >= 0)
+            if (fretPositionsInt[i] < minFretPos && fretPositionsInt[i] >= 0)
                 minFretPos = fretPositionsInt[i];
 
-            if(fretPositionsInt[i] > minFretPos &&
-                    fretPositionsInt[i] < minSecondFretPos )
+            if (fretPositionsInt[i] > minFretPos && fretPositionsInt[i] < minSecondFretPos)
                 minSecondFretPos = fretPositionsInt[i];
-        }
 
-        for (int j : fretPositionsInt) {
-            if(j > minFretPos && j < minSecondFretPos)
-                minSecondFretPos = j;
+            if (fretPositionsInt[i] > maxFretPos)
+                maxFretPos = fretPositionsInt[i];
         }
 
         fretPosLowE = fretPositionsInt[0];
@@ -164,24 +162,23 @@ public class ChordVisualisationView extends View {
     private int parseFretPosNumber(String fretPosNumber) {
         try {
             return Integer.parseInt(fretPosNumber);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return -1;
         }
     }
 
-    private void checkChordForBarre(){
+    private void checkChordForType() {
 
-        if(fretPosLowE == fretPosHighE &&
+        if (fretPosLowE == fretPosHighE &&
                 fretPosLowE == minFretPos &&
                 fretPosLowE <= fretPosA &&
                 fretPosLowE <= fretPosD &&
                 fretPosLowE <= fretPosG &&
                 fretPosLowE <= fretPosH &&
-                minFretPos > 0)
-        {
+                minFretPos > 0) {
             chordType = "ChordStandardBarre";
 
-            if(minFretPos > 2) {
+            if (minFretPos > 2) {
                 fretPosLowE = 2;
                 fretPosA = fretPosA - minFretPos + 2;
                 fretPosD = fretPosD - minFretPos + 2;
@@ -189,37 +186,31 @@ public class ChordVisualisationView extends View {
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = 2;
             }
-            Log.d("ChordVisuView","Chord: "+ chord + " FretPos EADGHE: "+fretPosLowE+"-"+fretPosA+"-"+fretPosD+"-"+fretPosG+"-"+fretPosH+"-"+fretPosHighE+" Barre: ChordBarre" + " MinFretPos: "+minFretPos+" MinSecond: "+minSecondFretPos);
-        }
-
-        else if(fretPosA == fretPosHighE &&
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarre" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+        } else if (fretPosA == fretPosHighE &&
                 fretPosLowE <= 0 &&
                 fretPosD >= fretPosA &&
                 fretPosG >= fretPosA &&
                 fretPosH >= fretPosA &&
-                fretPosA > 0)
-        {
+                fretPosA > 0) {
             chordType = "ChordBarreWithoutLowE";
 
-            if(minFretPos > 2) {
+            if (minFretPos > 2) {
                 fretPosA = fretPosA - minFretPos + 2;
                 fretPosD = fretPosD - minFretPos + 2;
                 fretPosG = fretPosG - minFretPos + 2;
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = 2;
             }
-            Log.d("ChordVisuView","Chord: "+ chord + " FretPos EADGHE: "+fretPosLowE+"-"+fretPosA+"-"+fretPosD+"-"+fretPosG+"-"+fretPosH+"-"+fretPosHighE+" Barre: ChordBarreWithoutLowE" + " MinFretPos: "+minFretPos+" MinSecond: "+minSecondFretPos);
-        }
-
-        else if(fretPosG == fretPosH &&
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarreWithoutLowE" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+        } else if (fretPosG == fretPosH &&
                 fretPosG == fretPosHighE &&
                 fretPosG == fretPosA &&
                 fretPosG == fretPosLowE &&
-                fretPosD == fretPosG - 1)
-        {
+                fretPosD == fretPosG - 1) {
             chordType = "ChordPinkyBarre";
 
-            if(minFretPos > 2) {
+            if (minFretPos > 2) {
                 fretPosLowE = fretPosLowE - minFretPos + 2;
                 fretPosA = fretPosA - minFretPos + 2;
                 fretPosD = fretPosD - minFretPos + 2;
@@ -227,10 +218,8 @@ public class ChordVisualisationView extends View {
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = fretPosHighE - minFretPos + 2;
             }
-            Log.d("ChordVisuView","Chord: "+ chord + " FretPos EADGHE: "+fretPosLowE+"-"+fretPosA+"-"+fretPosD+"-"+fretPosG+"-"+fretPosH+"-"+fretPosHighE+" Barre: ChordPinkyBarre" + " MinFretPos: "+minFretPos+" MinSecond: "+minSecondFretPos);
-        }
-
-        else if(minFretPos <= 0 && minSecondFretPos >= 4) {
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordPinkyBarre" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+        } else if (minFretPos <= 0 && minSecondFretPos >= 4) {
             chordType = "ChordWidespread";
 
             fretPosLowE = fretPosLowE >= 4 ? fretPosLowE - minSecondFretPos + 2 : fretPosLowE;
@@ -240,29 +229,41 @@ public class ChordVisualisationView extends View {
             fretPosH = fretPosH >= 4 ? fretPosH - minSecondFretPos + 2 : fretPosH;
             fretPosHighE = fretPosHighE >= 4 ? fretPosHighE - minSecondFretPos + 2 : fretPosHighE;
 
-            Log.d("ChordVisuView","Chord: "+ chord + " FretPos EADGHE: "+fretPosLowE+"-"+fretPosA+"-"+fretPosD+"-"+fretPosG+"-"+fretPosH+"-"+fretPosHighE+" Barre: ChordWidespread" + " MinFretPos: "+minFretPos+" MinSecond: "+minSecondFretPos);
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordWidespread" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+        } else if (maxFretPos > 6) {
+
+            chordType = "fretSupernatantChord";
+
+            int fretSupernatant = maxFretPos - 6;
+
+            fretPosLowE = fretPosLowE - fretSupernatant;
+            fretPosA = fretPosA - fretSupernatant;
+            fretPosD = fretPosD - fretSupernatant;
+            fretPosG = fretPosG - fretSupernatant;
+            fretPosH = fretPosH - fretSupernatant;
+            fretPosHighE = fretPosHighE - fretSupernatant;
+
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + "Chord: Supernatant:" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
 
         } else
             chordType = "NormalChord";
-
-
     }
 
     private void calculatePixelPosOfFingerPos() {
 
-        XPosHighE = lineStartX + convertFretToPixelPos(fretPosHighE);
-        XPosH = lineStartX + convertFretToPixelPos(fretPosH);
-        XPosG = lineStartX + convertFretToPixelPos(fretPosG);
-        XPosD = lineStartX + convertFretToPixelPos(fretPosD);
-        XPosA = lineStartX + convertFretToPixelPos(fretPosA);
-        XPosLowE = lineStartX + convertFretToPixelPos(fretPosLowE);
+        YPosHighE = lineStartY + convertFretToPixelPos(fretPosHighE);
+        YPosH = lineStartY + convertFretToPixelPos(fretPosH);
+        YPosG = lineStartY + convertFretToPixelPos(fretPosG);
+        YPosD = lineStartY + convertFretToPixelPos(fretPosD);
+        YPosA = lineStartY + convertFretToPixelPos(fretPosA);
+        YPosLowE = lineStartY + convertFretToPixelPos(fretPosLowE);
 
-        YPosHighE = lineStartY;
-        YPosH = lineStartY + lineSpacingY;
-        YPosG = lineStartY + 2 * lineSpacingY;
-        YPosD = lineStartY + 3 * lineSpacingY;
-        YPosA = lineStartY + 4 * lineSpacingY;
-        YPosLowE = lineStartY + 5 * lineSpacingY;
+        XPosLowE = lineStartX;
+        XPosA = lineStartX + lineSpacingX;
+        XPosD = lineStartX + 2 * lineSpacingX;
+        XPosG = lineStartX + 3 * lineSpacingX;
+        XPosH = lineStartX + 4 * lineSpacingX;
+        XPosHighE = lineStartX + 5 * lineSpacingX;
     }
 
     @Override
@@ -309,7 +310,7 @@ public class ChordVisualisationView extends View {
                 throw new IllegalStateException("Unexpected value requestedHeightMode: " + requestedHeightMode);
         }
 
-        setMeasuredDimension(width,height);
+        setMeasuredDimension(width, height);
 
     }
 
@@ -327,18 +328,18 @@ public class ChordVisualisationView extends View {
 
         drawNut(canvas);
 
-        }
+    }
 
     private void drawLines(Canvas canvas) {
-        //horizontal lines = strings
-        canvas.drawLine(lineStartX, lineStartY, lineStopX, lineStartY, paint);
+        //horizontal lines = frets
         canvas.drawLine(lineStartX, lineStartY + lineSpacingY, lineStopX, lineStartY + lineSpacingY, paint);
         canvas.drawLine(lineStartX, lineStartY + 2 * lineSpacingY, lineStopX, lineStartY + 2 * lineSpacingY, paint);
         canvas.drawLine(lineStartX, lineStartY + 3 * lineSpacingY, lineStopX, lineStartY + 3 * lineSpacingY, paint);
         canvas.drawLine(lineStartX, lineStartY + 4 * lineSpacingY, lineStopX, lineStartY + 4 * lineSpacingY, paint);
         canvas.drawLine(lineStartX, lineStartY + 5 * lineSpacingY, lineStopX, lineStartY + 5 * lineSpacingY, paint);
 
-        //vertical lines = frets
+        //vertical lines = strings
+        canvas.drawLine(lineStartX, lineStartY, lineStartX, lineStopY, paint);
         canvas.drawLine(lineStartX + lineSpacingX, lineStartY, lineStartX + lineSpacingX, lineStopY, paint);
         canvas.drawLine(lineStartX + 2 * lineSpacingX, lineStartY, lineStartX + 2 * lineSpacingX, lineStopY, paint);
         canvas.drawLine(lineStartX + 3 * lineSpacingX, lineStartY, lineStartX + 3 * lineSpacingX, lineStopY, paint);
@@ -348,7 +349,7 @@ public class ChordVisualisationView extends View {
 
     private void drawFingerPositions(Canvas canvas) {
 
-        if(isFingerPosToDraw(fretPosHighE)) {
+        if (isFingerPosToDraw(fretPosHighE)) {
             rectFStringHighE.left = -fingerPosOvalXRadius + XPosHighE;
             rectFStringHighE.top = -fingerPosOvalYRadius + YPosHighE;
             rectFStringHighE.right = fingerPosOvalXRadius + XPosHighE;
@@ -357,7 +358,7 @@ public class ChordVisualisationView extends View {
             canvas.drawOval(rectFStringHighE, paint);
         }
 
-        if(isFingerPosToDraw(fretPosH)) {
+        if (isFingerPosToDraw(fretPosH)) {
             rectFStringH.left = -fingerPosOvalXRadius + XPosH;
             rectFStringH.top = -fingerPosOvalYRadius + YPosH;
             rectFStringH.right = fingerPosOvalXRadius + XPosH;
@@ -366,7 +367,7 @@ public class ChordVisualisationView extends View {
             canvas.drawOval(rectFStringH, paint);
         }
 
-        if(isFingerPosToDraw(fretPosG)) {
+        if (isFingerPosToDraw(fretPosG)) {
             rectFStringG.left = -fingerPosOvalXRadius + XPosG;
             rectFStringG.top = -fingerPosOvalYRadius + YPosG;
             rectFStringG.right = fingerPosOvalXRadius + XPosG;
@@ -375,7 +376,7 @@ public class ChordVisualisationView extends View {
             canvas.drawOval(rectFStringG, paint);
         }
 
-        if(isFingerPosToDraw(fretPosD)) {
+        if (isFingerPosToDraw(fretPosD)) {
             rectFStringD.left = -fingerPosOvalXRadius + XPosD;
             rectFStringD.top = -fingerPosOvalYRadius + YPosD;
             rectFStringD.right = fingerPosOvalXRadius + XPosD;
@@ -384,7 +385,7 @@ public class ChordVisualisationView extends View {
             canvas.drawOval(rectFStringD, paint);
         }
 
-        if(isFingerPosToDraw(fretPosA)) {
+        if (isFingerPosToDraw(fretPosA)) {
             rectFStringA.left = -fingerPosOvalXRadius + XPosA;
             rectFStringA.top = -fingerPosOvalYRadius + YPosA;
             rectFStringA.right = fingerPosOvalXRadius + XPosA;
@@ -393,7 +394,7 @@ public class ChordVisualisationView extends View {
             canvas.drawOval(rectFStringA, paint);
         }
 
-        if(isFingerPosToDraw(fretPosLowE)) {
+        if (isFingerPosToDraw(fretPosLowE)) {
             rectFStringLowE.left = -fingerPosOvalXRadius + XPosLowE;
             rectFStringLowE.top = -fingerPosOvalYRadius + YPosLowE;
             rectFStringLowE.right = fingerPosOvalXRadius + XPosLowE;
@@ -404,42 +405,36 @@ public class ChordVisualisationView extends View {
     }
 
     private void drawLeadingFretNumbers(Canvas canvas) {
-
-        canvas.drawText(fretPositions[0], lineStartX + textShiftX, YPosLowE + textShiftY, paint);
-        canvas.drawText(fretPositions[1], lineStartX + textShiftX, YPosA + textShiftY, paint);
-        canvas.drawText(fretPositions[2], lineStartX + textShiftX, YPosD + textShiftY, paint);
-        canvas.drawText(fretPositions[3], lineStartX + textShiftX, YPosG + textShiftY, paint);
-        canvas.drawText(fretPositions[4], lineStartX + textShiftX, YPosH + textShiftY, paint);
-        canvas.drawText(fretPositions[5], lineStartX + textShiftX, YPosHighE + textShiftY, paint);
+        canvas.drawText(fretPositions[0], XPosLowE + textShiftX, lineStartY + textShiftY, paint);
+        canvas.drawText(fretPositions[1], XPosA + textShiftX, lineStartY + textShiftY, paint);
+        canvas.drawText(fretPositions[2], XPosD + textShiftX, lineStartY + textShiftY, paint);
+        canvas.drawText(fretPositions[3], XPosG + textShiftX, lineStartY + textShiftY, paint);
+        canvas.drawText(fretPositions[4], XPosH + textShiftX, lineStartY + textShiftY, paint);
+        canvas.drawText(fretPositions[5], XPosHighE + textShiftX, lineStartY + textShiftY, paint);
     }
 
     private void drawBarreBar(Canvas canvas) {
 
         switch (chordType) {
             case "ChordStandardBarre":
-                rectBarre.left = -fingerPosOvalXRadius + XPosLowE;
-                rectBarre.top = YPosHighE;
-                rectBarre.right = fingerPosOvalXRadius + XPosLowE;
-                rectBarre.bottom = YPosLowE;
-
+                rectBarre.top = -fingerPosOvalYRadius + YPosLowE;
+                rectBarre.right = XPosHighE;
+                rectBarre.bottom = fingerPosOvalYRadius + YPosLowE;
+                rectBarre.left = XPosLowE;
                 canvas.drawRect(rectBarre, paint);
-
                 break;
             case "ChordBarreWithoutLowE":
-                rectBarre.left = -fingerPosOvalXRadius + XPosHighE;
-                rectBarre.top = YPosHighE;
-                rectBarre.right = fingerPosOvalXRadius + XPosHighE;
-                rectBarre.bottom = YPosA;
-
+                rectBarre.top = -fingerPosOvalYRadius + YPosHighE;
+                rectBarre.right = XPosHighE;
+                rectBarre.bottom = fingerPosOvalYRadius + YPosHighE;
+                rectBarre.left = XPosA;
                 canvas.drawRect(rectBarre, paint);
-
                 break;
             case "ChordPinkyBarre":
-                rectBarre.left = -fingerPosOvalXRadius + XPosHighE;
-                rectBarre.top = YPosHighE;
-                rectBarre.right = fingerPosOvalXRadius + XPosHighE;
-                rectBarre.bottom = YPosG;
-
+                rectBarre.top = -fingerPosOvalYRadius + YPosHighE;
+                rectBarre.right = XPosHighE;
+                rectBarre.bottom = fingerPosOvalYRadius + YPosHighE;
+                rectBarre.left = XPosG;
                 canvas.drawRect(rectBarre, paint);
                 break;
             default:
@@ -449,12 +444,12 @@ public class ChordVisualisationView extends View {
 
     private void drawNut(Canvas canvas) {
 
-        if(minFretPos <= 2 || chordType.equals("NormalChord")) {
+        if (minFretPos <= 2 || chordType.equals("NormalChord")) {
 
-            rectNut.left = lineStartX - dpToPx(4);
-            rectNut.top = lineStartY;
-            rectNut.right = lineStartX;
-            rectNut.bottom = lineStopY;
+            rectNut.left = lineStartX;
+            rectNut.top = lineStartY - dpToPx(4);
+            rectNut.right = lineStopX;
+            rectNut.bottom = lineStartY;
 
             canvas.drawRect(rectNut, paint);
         }
@@ -466,10 +461,10 @@ public class ChordVisualisationView extends View {
 
     private int convertFretToPixelPos(int fretPos) {
 
-        if(fretPos <= 0)
-            return  -1;
+        if (fretPos <= 0)
+            return -1;
         else
-            return (lineSpacingX / 2) + lineSpacingX * (fretPos - 1);
+            return (lineSpacingY / 2) + lineSpacingY * (fretPos - 1);
     }
 
     private boolean isFingerPosToDraw(int fretPos) {

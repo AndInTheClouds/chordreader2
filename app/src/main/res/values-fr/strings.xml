@@ -94,7 +94,7 @@
     <string name="cancel">Annuler</string>
     <string name="select_all">Tout sélectionner</string>
     <string name="delete">Supprimer</string>
-    <string name="of">sur</string>
+    <string name="of">" sur "</string>
     <string name="help">Aide</string>
     <string name="file_selection_for_setlist">Sélectionner des chansons pour la setlist</string>
     <string name="no_local_songs">Aucune chanson trouvée sur votre appareil. Effectuez une recherche sur le Web.</string>

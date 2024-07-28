@@ -964,7 +964,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         alertDialog.show();
 
         //TODO: didn't found a solution to let alert dialog wrap content, so set fixed pixel density dependent value
-        alertDialog.getWindow().setLayout((int) (240 * Resources.getSystem().getDisplayMetrics().density), (int) (290 * Resources.getSystem().getDisplayMetrics().density));
+        alertDialog.getWindow().setLayout((int) (240 * Resources.getSystem().getDisplayMetrics().density), (int) (350 * Resources.getSystem().getDisplayMetrics().density));
     }
 
     private void createTransposeDialog() {
