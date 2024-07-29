@@ -873,7 +873,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         ImageButton nextChordButton = view.findViewById(R.id.next_chord_button);
         ImageButton previousChordButton = view.findViewById(R.id.previous_chord_button);
 
-        List<String> guitarChords = ChordDictionary.getFingerPositionsForChord(requireContext(), chord, null); //TODO: add instrument picker
+        List<String> guitarChords = ChordDictionary.getFingerPositionsForChord(requireContext(), chord, null);
 
         if (guitarChords.size() > 0) {
 

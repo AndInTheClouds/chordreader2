@@ -43,20 +43,12 @@ public class ChordVisualisationView extends View {
     private String chordType = "";
 
     private Paint paint;
-    private Rect rectNut;
-    private RectF rectFStringHighE;
-    private RectF rectFStringH;
-    private RectF rectFStringG;
-    private RectF rectFStringD;
-    private RectF rectFStringA;
-    private RectF rectFStringLowE;
-    private Rect rectBarre;
 
-    private final int desiredViewWidth = dpToPx(125);
+    private int desiredViewWidth = dpToPx(125);
     private final int desiredViewHeight = dpToPx(200);
 
     private final int lineStartX = dpToPx(12);
-    private final int lineStopX = dpToPx(112);
+    private int lineStopX = dpToPx(112);
     private final int lineSpacingX = dpToPx(20);
 
     private final int lineStartY = dpToPx(25);
@@ -115,17 +107,9 @@ public class ChordVisualisationView extends View {
 
         this.chord = chord;
         parseChord();
+        reviseDrawParameters();
         checkChordForType();
         calculatePixelPosOfFingerPos();
-
-        rectNut = new Rect();
-        rectBarre = new Rect();
-        rectFStringHighE = new RectF();
-        rectFStringH = new RectF();
-        rectFStringG = new RectF();
-        rectFStringD = new RectF();
-        rectFStringA = new RectF();
-        rectFStringLowE = new RectF();
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.BLACK);
@@ -164,6 +148,18 @@ public class ChordVisualisationView extends View {
             return Integer.parseInt(fretPosNumber);
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    private void reviseDrawParameters() {
+
+        if(fretPositions.length < 6) {
+
+            int stringCountDiff = 6 - fretPositions.length;
+
+            desiredViewWidth = dpToPx(125 - stringCountDiff * 20);
+
+            lineStopX = dpToPx(112 - stringCountDiff * 20);
         }
     }
 
@@ -339,15 +335,19 @@ public class ChordVisualisationView extends View {
         canvas.drawLine(lineStartX, lineStartY + 5 * lineSpacingY, lineStopX, lineStartY + 5 * lineSpacingY, paint);
 
         //vertical lines = strings
-        canvas.drawLine(lineStartX, lineStartY, lineStartX, lineStopY, paint);
-        canvas.drawLine(lineStartX + lineSpacingX, lineStartY, lineStartX + lineSpacingX, lineStopY, paint);
-        canvas.drawLine(lineStartX + 2 * lineSpacingX, lineStartY, lineStartX + 2 * lineSpacingX, lineStopY, paint);
-        canvas.drawLine(lineStartX + 3 * lineSpacingX, lineStartY, lineStartX + 3 * lineSpacingX, lineStopY, paint);
-        canvas.drawLine(lineStartX + 4 * lineSpacingX, lineStartY, lineStartX + 4 * lineSpacingX, lineStopY, paint);
-        canvas.drawLine(lineStartX + 5 * lineSpacingX, lineStartY, lineStartX + 5 * lineSpacingX, lineStopY, paint);
+        for (int i = 0; i < fretPositions.length; i++) {
+            canvas.drawLine(lineStartX + i * lineSpacingX, lineStartY, lineStartX + i * lineSpacingX, lineStopY, paint);
+        }
     }
 
     private void drawFingerPositions(Canvas canvas) {
+
+        RectF rectFStringHighE = new RectF();
+        RectF rectFStringH = new RectF();
+        RectF rectFStringG = new RectF();
+        RectF rectFStringD = new RectF();
+        RectF rectFStringA = new RectF();
+        RectF rectFStringLowE = new RectF();
 
         if (isFingerPosToDraw(fretPosHighE)) {
             rectFStringHighE.left = -fingerPosOvalXRadius + XPosHighE;
@@ -409,11 +409,16 @@ public class ChordVisualisationView extends View {
         canvas.drawText(fretPositions[1], XPosA + textShiftX, lineStartY + textShiftY, paint);
         canvas.drawText(fretPositions[2], XPosD + textShiftX, lineStartY + textShiftY, paint);
         canvas.drawText(fretPositions[3], XPosG + textShiftX, lineStartY + textShiftY, paint);
-        canvas.drawText(fretPositions[4], XPosH + textShiftX, lineStartY + textShiftY, paint);
-        canvas.drawText(fretPositions[5], XPosHighE + textShiftX, lineStartY + textShiftY, paint);
+
+        if(fretPositions.length == 6) {
+            canvas.drawText(fretPositions[4], XPosH + textShiftX, lineStartY + textShiftY, paint);
+            canvas.drawText(fretPositions[5], XPosHighE + textShiftX, lineStartY + textShiftY, paint);
+        }
     }
 
     private void drawBarreBar(Canvas canvas) {
+
+        Rect rectBarre = new Rect();
 
         switch (chordType) {
             case "ChordStandardBarre":
@@ -445,6 +450,8 @@ public class ChordVisualisationView extends View {
     private void drawNut(Canvas canvas) {
 
         if (minFretPos <= 2 || chordType.equals("NormalChord")) {
+
+            Rect rectNut = new Rect();
 
             rectNut.left = lineStartX;
             rectNut.top = lineStartY - dpToPx(4);

@@ -68,10 +68,6 @@ public class ChordDictionary {
             }
             sb.deleteCharAt(sb.length() - 1);
 
-            //FIXME: just temporary
-            if (chordData[0].length == 4)
-                sb.append("-x-x");
-
             //TODO: use fingerings chordData[1]
 
             result.add(sb.toString());
