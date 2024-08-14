@@ -36,7 +36,7 @@ public class ChordDictionary {
             instrument = PreferenceHelper.getInstrument(context);
         }
 
-        List<String[][]> chordList = new ArrayList<>();
+        List<String[]> chordList = new ArrayList<>();
 
         switch (instrument) {
             case ("Guitar"):
@@ -53,12 +53,9 @@ public class ChordDictionary {
 
         List<String> result = new ArrayList<>();
 
-        for (String[][] chordData : chordList) {
+        for (String[] chordPositions : chordList) {
 
             StringBuilder sb = new StringBuilder();
-
-            // chord positions
-            String[] chordPositions = chordData[0];
 
             if (laterality.equals("left"))
                 Collections.reverse(Arrays.asList(chordPositions));
@@ -67,8 +64,6 @@ public class ChordDictionary {
                 sb.append(s).append("-");
             }
             sb.deleteCharAt(sb.length() - 1);
-
-            //TODO: use fingerings chordData[1]
 
             result.add(sb.toString());
         }
@@ -125,9 +120,9 @@ public class ChordDictionary {
 
     }
 
-    public static List<String[][]> getGuitarChordFromJSON(Context context, String chord, String chord2) {
+    public static List<String[]> getGuitarChordFromJSON(Context context, String chord, String chord2) {
 
-        List<String[][]> result = new ArrayList<>();
+        List<String[]> result = new ArrayList<>();
         BufferedReader bufferedReader = null;
         JsonReader reader = null;
 
@@ -150,7 +145,7 @@ public class ChordDictionary {
                             reader.beginObject();
 
                             String[] positions = null;
-                            String[] fingerings = null;
+
                             try {
                                 while (reader.hasNext()) {
                                     String name = reader.nextName();
@@ -163,19 +158,6 @@ public class ChordDictionary {
                                             i++;
                                         }
                                         reader.endArray();
-                                    } else if (name.equals("fingerings")) {
-                                        reader.beginArray();
-                                        fingerings = new String[6];
-                                        int i = 0;
-                                        while (reader.hasNext()) {
-                                            reader.beginArray();
-                                            while (reader.hasNext()) {
-                                                fingerings[i] = reader.nextString();
-                                                i++;
-                                            }
-                                            reader.endArray();
-                                        }
-                                        reader.endArray();
                                     } else {
                                         reader.skipValue();
                                     }
@@ -184,8 +166,8 @@ public class ChordDictionary {
                                 e.printStackTrace();
                             }
 
-                            if (positions != null && fingerings != null) {
-                                result.add(new String[][]{positions, fingerings});
+                            if (positions != null) {
+                                result.add(positions);
                             }
 
                             reader.endObject();
@@ -224,13 +206,13 @@ public class ChordDictionary {
         return new ArrayList<>();
     }
 
-    private static List<String[][]> getUkuleleChordFromJSON(Context context, Chord chord) {
+    private static List<String[]> getUkuleleChordFromJSON(Context context, Chord chord) {
 
         String chordStr1 = chord.toPrintableString(NoteNaming.English);
         String chordStr2 = chord.toPrintableString(NoteNaming.NorthernEuropean);
         String chordRoot = String.valueOf(chord.getRoot());
 
-        List<String[][]> result = new ArrayList<>();
+        List<String[]> result = new ArrayList<>();
         BufferedReader bufferedReader = null;
         JsonReader reader = null;
 
@@ -259,67 +241,75 @@ public class ChordDictionary {
 
                                 while (reader.hasNext()) {
                                     String name = reader.nextName();
-                                    if (name.equals("key")) {
-                                        chordKey = reader.nextString();
-                                    } else if (name.equals("suffix")) {
-                                        chordSuffix = reader.nextString();
-                                    } else if (name.equals("positions")) {
-                                        if (chordStr1.equals(chordKey + chordSuffix) || chordStr2.equals(chordKey + chordSuffix)) {
-                                            reader.beginArray();
+                                    switch (name) {
+                                        case "key":
+                                            chordKey = reader.nextString();
+                                            break;
+                                        case "suffix":
+                                            chordSuffix = reader.nextString();
+                                            break;
+                                        case "positions":
+                                            if (chordStr1.equals(chordKey + chordSuffix) || chordStr2.equals(chordKey + chordSuffix)) {
+                                                reader.beginArray();
 
-                                            while (reader.hasNext()) {
-                                                reader.beginObject();
+                                                while (reader.hasNext()) {
+                                                    reader.beginObject();
 
-                                                String[] positions = null;
-                                                String[] fingerings = null;
-                                                try {
-                                                    while (reader.hasNext()) {
-                                                        String innerName = reader.nextName();
-                                                        if (innerName.equals("frets")) {
-                                                            if (reader.peek() == JsonToken.BEGIN_ARRAY) {
-                                                                reader.beginArray();
-                                                                positions = new String[4];
-                                                                int i = 0;
-                                                                while (reader.hasNext()) {
-                                                                    positions[i] = reader.nextString();
-                                                                    i++;
+                                                    int[] positions = null;
+                                                    int baseFret = 1;
+
+                                                    try {
+                                                        while (reader.hasNext()) {
+                                                            String innerName = reader.nextName();
+                                                            if (innerName.equals("frets")) {
+                                                                if (reader.peek() == JsonToken.BEGIN_ARRAY) {
+                                                                    reader.beginArray();
+                                                                    positions = new int[4];
+                                                                    int i = 0;
+                                                                    while (reader.hasNext()) {
+                                                                        positions[i] = Integer.parseInt(reader.nextString());
+                                                                        i++;
+                                                                    }
+                                                                    reader.endArray();
                                                                 }
-                                                                reader.endArray();
+                                                            } else if (innerName.equals("baseFret")) {
+//                                                            if (reader.peek() == JsonToken.BEGIN_ARRAY) {
+//                                                                reader.beginArray();
+                                                                baseFret = Integer.parseInt(reader.nextString());
+//                                                            }
+//                                                            reader.endArray();
+                                                            } else {
+                                                                reader.skipValue();
                                                             }
-                                                        } else if (innerName.equals("fingers")) {
-                                                            if (reader.peek() == JsonToken.BEGIN_ARRAY) {
-                                                                reader.beginArray();
-                                                                fingerings = new String[4];
-                                                                int i = 0;
-                                                                while (reader.hasNext()) {
-                                                                    fingerings[i] = reader.nextString();
-                                                                    i++;
-                                                                }
-                                                            }
-                                                            reader.endArray();
-                                                        } else {
-                                                            reader.skipValue();
                                                         }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
                                                     }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
+
+                                                    if (positions != null) {
+
+                                                        String[] fretPos = new String[4];
+
+                                                        for (int i = 0; i < positions.length; i++) {
+                                                            fretPos[i] = String.valueOf(positions[i] + baseFret - 1);
+                                                        }
+
+                                                        result.add(fretPos);
+                                                    }
+
+                                                    reader.endObject();
                                                 }
 
-                                                if (positions != null && fingerings != null) {
-                                                    result.add(new String[][]{positions, fingerings});
-                                                }
+                                                reader.endArray();
 
-                                                reader.endObject();
+                                                return result;
+                                            } else {
+                                                reader.skipValue();
                                             }
-
-                                            reader.endArray();
-
-                                            return  result;
-                                        } else {
+                                            break;
+                                        default:
                                             reader.skipValue();
-                                        }
-                                    } else {
-                                        reader.skipValue();
+                                            break;
                                     }
                                 }
 
