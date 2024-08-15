@@ -160,6 +160,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         handleBackButton();
 
+        activateWakeLockCounter();
+
         return root;
     }
 
@@ -168,6 +170,13 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         applyColorScheme();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        quickReleaseWakeLock();
     }
 
     @Override
@@ -288,6 +297,8 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     if (viewingScrollView.isAutoScrollOn()) {
                         viewingScrollView.stopAutoScroll();
                     }
+
+                    activateWakeLockCounter();
                 }
 
                 if (action == MotionEvent.ACTION_UP) {
@@ -558,7 +569,19 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                 }
             }
         }.start();
+    }
 
+    private void quickReleaseWakeLock() {
+        try {
+            requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } catch (IllegalStateException e) {
+            Log.d("SongViewFragment", "Fragment not attached to activity");
+        }
+    }
+
+    private void activateWakeLockCounter() {
+        acquireWakeLock();
+        releaseWakeLock();
     }
 
     private void applyLinkifiedChordsTextToTextView(Spannable newText) {
