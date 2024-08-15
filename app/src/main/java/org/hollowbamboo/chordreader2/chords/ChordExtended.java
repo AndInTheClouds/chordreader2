@@ -20,9 +20,9 @@ public enum ChordExtended {
 	Diminished7 (Diminished, Arrays.asList("dim7", "diminished7")),
 	
 	// true extended
-	Major9 (Major, Arrays.asList("maj9", "M9", "9", "dom9")),
-	Major11 (Major, Arrays.asList("maj11", "M11", "11")),
-	Major13 (Major, Arrays.asList("maj13", "M13", "13")),
+	Major9 (Major, Arrays.asList("9","maj9", "M9", "dom9","7/9","7(add9)", "7(9)","7/add9")),
+	Major11 (Major, Arrays.asList("11", "maj11", "M11")),
+	Major13 (Major, Arrays.asList("13", "maj13", "M13")),
 
 	MajorSharp11 (Major, Arrays.asList("maj#11", "M#11")),
 	MajorSharp13 (Major, Arrays.asList("maj#13", "M#13")),
@@ -38,8 +38,7 @@ public enum ChordExtended {
 
 	HalfDiminished7 (Minor, Arrays.asList("m7b5", "m7#5", "m7(b5)", "min7(b5)", "-7b5")),
 	MinorMajor7Sharp5 (Minor, Arrays.asList("mmaj7#5","mM7#5")),
-	Major7Add9 (Major, Arrays.asList("7/9","7(add9)", "7(9)","7/add9")),
-	Minor7Add9 (Minor, Arrays.asList("m7/9", "min7(add9)", "m9", "minor9", "min9", "m7(add9)", "-7/9", "-7(add9)", "min7/9", "min7(add9)", "m7+9")),
+	Minor7Add9 (Minor, Arrays.asList("m9", "m7/9", "min7(add9)", "minor9", "min9", "m7(add9)", "-7/9", "-7(add9)", "min7/9", "min7(add9)", "m7+9")),
 	Major7Add11 (Major, Arrays.asList("7/11","7(add11)", "7(11)","7/add11")),
 	Minor7Add11 (Minor, Arrays.asList("m7/11","m7(add11)", "m7(11)","m7/add11")),
 	Major7Diminished5 (Major, Arrays.asList("7b5","7(5-)","maj7b5","+7b5","M7b5")),

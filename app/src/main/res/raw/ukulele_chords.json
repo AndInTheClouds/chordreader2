@@ -14,11 +14,12 @@
        "7sus4",
        "alt",
        "aug",
+       "5",
        "6",
-       "69",
+       "6/9",
        "7",
        "7b5",
-       "aug7",
+       "7#5",
        "9",
        "9b5",
        "aug9",
@@ -365,6 +366,16 @@
            },
            {
                "key": "A",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 2, 4, 0, 0 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "A",
                "suffix": "6",
                "positions": [
                    {
@@ -400,7 +411,7 @@
            },
            {
                "key": "A",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 4, 4, 2, 4 ],
@@ -505,7 +516,7 @@
            },
            {
                "key": "A",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 0, 1, 1, 0 ],
@@ -1929,6 +1940,16 @@
            },
            {
                "key": "Ab",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 0, 3, 3 ],
+                       "baseFret": 9
+                   }
+               ]
+           },
+           {
+               "key": "Ab",
                "suffix": "6",
                "positions": [
                    {
@@ -1964,7 +1985,7 @@
            },
            {
                "key": "Ab",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 3, 3, 1, 3 ],
@@ -2070,7 +2091,7 @@
            },
            {
                "key": "Ab",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 1, 4, 2, 3 ],
@@ -3507,6 +3528,16 @@
            },
            {
                "key": "B",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 2, 4, 0, 0 ],
+                       "baseFret": 3
+                   }
+               ]
+           },
+           {
+               "key": "B",
                "suffix": "6",
                "positions": [
                    {
@@ -3542,7 +3573,7 @@
            },
            {
                "key": "B",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 1, 3, 2, 4 ],
@@ -3648,7 +3679,7 @@
            },
            {
                "key": "B",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 2, 3, 3, 2 ],
@@ -5102,6 +5133,16 @@
            },
            {
                "key": "Bb",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 2, 4, 0, 0 ],
+                       "baseFret": 2
+                   }
+               ]
+           },
+           {
+               "key": "Bb",
                "suffix": "6",
                "positions": [
                    {
@@ -5137,7 +5178,7 @@
            },
            {
                "key": "Bb",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 0, 2, 1, 3 ],
@@ -5243,7 +5284,7 @@
            },
            {
                "key": "Bb",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 1, 2, 2, 1 ],
@@ -6675,6 +6716,16 @@
            },
            {
                "key": "C",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 0, 3, 3 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "C",
                "suffix": "6",
                "positions": [
                    {
@@ -6709,7 +6760,7 @@
            },
            {
                "key": "C",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 0, 2, 0, 0 ],
@@ -6813,7 +6864,7 @@
            },
            {
                "key": "C",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 1, 0, 0, 1 ],
@@ -8216,6 +8267,16 @@
            },
            {
                "key": "D",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 2, 2, 5, 0 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "D",
                "suffix": "6",
                "positions": [
                    {
@@ -8251,7 +8312,7 @@
            },
            {
                "key": "D",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 2, 4, 2, 2 ],
@@ -8357,7 +8418,7 @@
            },
            {
                "key": "D",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 3, 2, 2, 3 ],
@@ -9792,6 +9853,16 @@
            },
            {
                "key": "Db",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 0, 3, 3 ],
+                       "baseFret": 2
+                   }
+               ]
+           },
+           {
+               "key": "Db",
                "suffix": "6",
                "positions": [
                    {
@@ -9827,7 +9898,7 @@
            },
            {
                "key": "Db",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 1, 3, 1, 1 ],
@@ -9933,7 +10004,7 @@
            },
            {
                "key": "Db",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 2, 1, 1, 2 ],
@@ -11348,6 +11419,16 @@
            },
            {
                "key": "E",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 4, 4, 0, 2 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "E",
                "suffix": "6",
                "positions": [
                    {
@@ -11383,7 +11464,7 @@
            },
            {
                "key": "E",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 1, 1, 2, 2 ],
@@ -11489,7 +11570,7 @@
            },
            {
                "key": "E",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 1, 2, 0, 3 ],
@@ -12908,6 +12989,16 @@
            },
            {
                "key": "Eb",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 0, 3, 3 ],
+                       "baseFret": 4
+                   }
+               ]
+           },
+           {
+               "key": "Eb",
                "suffix": "6",
                "positions": [
                    {
@@ -12943,7 +13034,7 @@
            },
            {
                "key": "Eb",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 0, 0, 1, 1 ],
@@ -13048,7 +13139,7 @@
            },
            {
                "key": "Eb",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 4, 3, 3, 4 ],
@@ -14469,6 +14560,16 @@
            },
            {
                "key": "F",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 5, 0, 1, 3 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "F",
                "suffix": "6",
                "positions": [
                    {
@@ -14504,7 +14605,7 @@
            },
            {
                "key": "F",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 2, 2, 3, 3 ],
@@ -14610,7 +14711,7 @@
            },
            {
                "key": "F",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 2, 3, 1, 4 ],
@@ -16037,6 +16138,16 @@
            },
            {
                "key": "G",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 2, 3, 5 ],
+                       "baseFret": 1
+                   }
+               ]
+           },
+           {
+               "key": "G",
                "suffix": "6",
                "positions": [
                    {
@@ -16072,7 +16183,7 @@
            },
            {
                "key": "G",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 2, 2, 0, 2 ],
@@ -16178,7 +16289,7 @@
            },
            {
                "key": "G",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 0, 3, 1, 2 ],
@@ -17626,6 +17737,16 @@
            },
            {
                "key": "Gb",
+               "suffix": "5",
+               "positions": [
+                   {
+                       "frets": [ 0, 0, 3, 3 ],
+                       "baseFret": 7
+                   }
+               ]
+           },
+           {
+               "key": "Gb",
                "suffix": "6",
                "positions": [
                    {
@@ -17661,7 +17782,7 @@
            },
            {
                "key": "Gb",
-               "suffix": "69",
+               "suffix": "6/9",
                "positions": [
                    {
                        "frets": [ 3, 3, 4, 4 ],
@@ -17767,7 +17888,7 @@
            },
            {
                "key": "Gb",
-               "suffix": "aug7",
+               "suffix": "7#5",
                "positions": [
                    {
                        "frets": [ 2, 3, 1, 4 ],

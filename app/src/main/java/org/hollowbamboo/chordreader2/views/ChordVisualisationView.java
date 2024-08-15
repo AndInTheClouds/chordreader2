@@ -37,7 +37,6 @@ public class ChordVisualisationView extends View {
     private String chord;
     private String[] fretPositions;
     private int minFretPos = 100;
-    private int minSecondFretPos = 100;
     private int maxFretPos = 0;
 
     private String chordType = "";
@@ -126,10 +125,9 @@ public class ChordVisualisationView extends View {
             fretPositionsInt[i] = parseFretPosNumber(fretPositions[i]);
             if (fretPositionsInt[i] < minFretPos && fretPositionsInt[i] >= 0)
                 minFretPos = fretPositionsInt[i];
+        }
 
-            if (fretPositionsInt[i] > minFretPos && fretPositionsInt[i] < minSecondFretPos)
-                minSecondFretPos = fretPositionsInt[i];
-
+        for (int i = 0; i < fretPositions.length; i++) {
             if (fretPositionsInt[i] > maxFretPos)
                 maxFretPos = fretPositionsInt[i];
         }
@@ -182,7 +180,7 @@ public class ChordVisualisationView extends View {
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = 2;
             }
-            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarre" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarre" + " MinFretPos: " + minFretPos);
         } else if (fretPosA == fretPosHighE &&
                 fretPosLowE <= 0 &&
                 fretPosD >= fretPosA &&
@@ -198,7 +196,7 @@ public class ChordVisualisationView extends View {
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = 2;
             }
-            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarreWithoutLowE" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordBarreWithoutLowE" + " MinFretPos: " + minFretPos);
         } else if (fretPosG == fretPosH &&
                 fretPosG == fretPosHighE &&
                 fretPosG == fretPosA &&
@@ -214,18 +212,8 @@ public class ChordVisualisationView extends View {
                 fretPosH = fretPosH - minFretPos + 2;
                 fretPosHighE = fretPosHighE - minFretPos + 2;
             }
-            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordPinkyBarre" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
-        } else if (minFretPos <= 0 && minSecondFretPos >= 4) {
-            chordType = "ChordWidespread";
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordPinkyBarre" + " MinFretPos: " + minFretPos);
 
-            fretPosLowE = fretPosLowE >= 4 ? fretPosLowE - minSecondFretPos + 2 : fretPosLowE;
-            fretPosA = fretPosA >= 4 ? fretPosA - minSecondFretPos + 2 : fretPosA;
-            fretPosD = fretPosD >= 4 ? fretPosD - minSecondFretPos + 2 : fretPosD;
-            fretPosG = fretPosG >= 4 ? fretPosG - minSecondFretPos + 2 : fretPosG;
-            fretPosH = fretPosH >= 4 ? fretPosH - minSecondFretPos + 2 : fretPosH;
-            fretPosHighE = fretPosHighE >= 4 ? fretPosHighE - minSecondFretPos + 2 : fretPosHighE;
-
-            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + " Barre: ChordWidespread" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
         } else if (maxFretPos > 6) {
 
             chordType = "fretSupernatantChord";
@@ -239,7 +227,7 @@ public class ChordVisualisationView extends View {
             fretPosH = fretPosH - fretSupernatant;
             fretPosHighE = fretPosHighE - fretSupernatant;
 
-            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + "Chord: Supernatant:" + " MinFretPos: " + minFretPos + " MinSecond: " + minSecondFretPos);
+            Log.d("ChordVisuView", "Chord: " + chord + " FretPos EADGHE: " + fretPosLowE + "-" + fretPosA + "-" + fretPosD + "-" + fretPosG + "-" + fretPosH + "-" + fretPosHighE + "Chord: Supernatant:" + " MinFretPos: " + minFretPos);
 
         } else
             chordType = "NormalChord";
