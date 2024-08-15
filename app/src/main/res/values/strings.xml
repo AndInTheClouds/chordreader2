@@ -64,14 +64,17 @@
     <string name="pref_note_naming" translatable="false">note_naming</string>
     <string name="pref_note_naming_title">Note Naming</string>
     <string name="pref_note_naming_value_english" translatable="false">English</string>
+    <string name="pref_note_naming_value_english_sharps" translatable="false">EnglishWithSharps</string>
     <string name="pref_note_naming_value_northern" translatable="false">NorthernEuropean</string>
     <string name="pref_note_naming_value_southern" translatable="false">SouthernEuropean</string>
     <string name="pref_note_naming_english">English</string>
+    <string name="pref_note_naming_english_sharps">English with sharps</string>
     <string name="pref_note_naming_northern">Northern European</string>
     <string name="pref_note_naming_southern">Southern European</string>
-    <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa, etc.</string>
+    <string name="pref_note_naming_explanation_english" translatable="false">A, Bb, B, C, Db, D, etc.</string>
+    <string name="pref_note_naming_explanation_english_sharps" translatable="false">A, Bb, B, C, C#, D, etc.</string>
+    <string name="pref_note_naming_explanation_northern" translatable="false">A, H, C, D, etc.</string>
+    <string name="pref_note_naming_explanation_southern" translatable="false">Do, Re, Mi, Fa, etc.</string>
     <string name="pref_note_naming_default" translatable="false">@string/pref_note_naming_value_english</string>
     <string name="pref_search_engine" translatable="false">searchEngineURL</string>
     <string name="pref_search_engine_default" translatable="false">https://searx.work/search?q=</string>

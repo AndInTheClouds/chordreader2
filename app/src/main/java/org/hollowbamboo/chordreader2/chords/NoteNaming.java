@@ -27,6 +27,22 @@ public enum NoteNaming {
 			.put(ChordRoot.G , "G")
 			.put(ChordRoot.Ab , "Ab", "G#", "Aflat", "Gsharp", "G♯", "A♭")
 			.build()),
+
+	EnglishWithSharps (R.string.pref_note_naming_english_sharps,
+			new EnumMultiMapBuilder<ChordRoot,String>(ChordRoot.class)
+					.put(ChordRoot.A , "A")
+					.put(ChordRoot.Bb , "Bb", "A#", "Asharp", "Bflat", "A♯", "B♭")
+					.put(ChordRoot.B , "B", "Cb", "Cflat", "C♭")
+					.put(ChordRoot.C , "C", "B#", "Bsharp", "B♯")
+					.put(ChordRoot.Db , "C#", "Db", "Dflat", "Csharp", "C♯", "D♭")
+					.put(ChordRoot.D , "D")
+					.put(ChordRoot.Eb , "D#", "Eb", "Eflat", "Dsharp", "D♯", "E♭")
+					.put(ChordRoot.E , "E", "Fb", "Fflat", "F♭")
+					.put(ChordRoot.F , "F", "E#", "Esharp", "E♯")
+					.put(ChordRoot.Gb , "F#", "Gb", "Gflat", "Fsharp", "F♯", "G♭")
+					.put(ChordRoot.G , "G")
+					.put(ChordRoot.Ab , "G#", "Ab", "Aflat", "Gsharp", "G♯", "A♭")
+					.build()),
 	
 	NorthernEuropean (R.string.pref_note_naming_northern,
 			new EnumMultiMapBuilder<ChordRoot,String>(ChordRoot.class)

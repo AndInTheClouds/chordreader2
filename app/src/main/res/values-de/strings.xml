@@ -56,9 +56,6 @@
     <string name="pref_note_naming_english">Englisch</string>
     <string name="pref_note_naming_northern">Nordeuropäisch</string>
     <string name="pref_note_naming_southern">Südeuropäisch</string>
-    <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa, etc.</string>
 
     <string name="settings">Einstellungen</string>
 
@@ -120,5 +117,6 @@
     <string name="right_handed">Rechtshändig</string>
     <string name="left_handed">Linkshändig</string>
     <string name="pref_laterality_title">Lateralität für die Akkordvisualisierung</string>
+    <string name="pref_note_naming_english_sharps">Englisch mit Kreuz</string>
 
 </resources>

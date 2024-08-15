@@ -56,9 +56,6 @@
     <string name="pref_note_naming_english">Inglesa</string>
     <string name="pref_note_naming_northern">Alemana</string>
     <string name="pref_note_naming_southern">Española</string>
-    <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_southern">Do, Re, Mi, Fa, etc.</string>
 
     <string name="settings">Ajustes</string>
 
@@ -120,4 +117,5 @@
     <string name="right_handed">diestro</string>
     <string name="left_handed">zurdo</string>
     <string name="pref_laterality_title">Lateridad para la visualización de acordes</string>
+    <string name="pref_note_naming_english_sharps">Inglés con sostenidos</string>
 </resources>

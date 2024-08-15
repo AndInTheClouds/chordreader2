@@ -56,9 +56,6 @@
     <string name="pref_note_naming_english">Anglais</string>
     <string name="pref_note_naming_northern">Allemand</string>
     <string name="pref_note_naming_southern">Latin</string>
-    <string name="pref_note_naming_explanation_english">A, B, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_northern">A, H, C, D, etc.</string>
-    <string name="pref_note_naming_explanation_southern">Do, Ré, Mi, Fa, etc.</string>
 
     <string name="settings">Paramètres</string>
 
@@ -121,5 +118,6 @@
     <string name="right_handed">gauchère</string>
     <string name="left_handed">droitière</string>
     <string name="pref_laterality_title">Latéralité pour la visualisation des accords</string>
+    <string name="pref_note_naming_english_sharps">Anglais avec dièses</string>
 
 </resources>

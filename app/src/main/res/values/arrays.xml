@@ -9,18 +9,21 @@
 	
 	<string-array name="note_namings_values">
 	    <item>@string/pref_note_naming_value_english</item>
+		<item>@string/pref_note_naming_value_english_sharps</item>
 	    <item>@string/pref_note_naming_value_northern</item>
 	    <item>@string/pref_note_naming_value_southern</item>	    	    
 	</string-array>
 	
 	<string-array name="note_namings">
 	    <item>@string/pref_note_naming_english</item>
+		<item>@string/pref_note_naming_english_sharps</item>
 	    <item>@string/pref_note_naming_northern</item>
 	    <item>@string/pref_note_naming_southern</item>	    	    
 	</string-array>
 	
 	<string-array name="note_namings_explanations">
 	    <item>@string/pref_note_naming_explanation_english</item>
+		<item>@string/pref_note_naming_explanation_english_sharps</item>
 	    <item>@string/pref_note_naming_explanation_northern</item>
 	    <item>@string/pref_note_naming_explanation_southern</item>	    	    
 	</string-array>
