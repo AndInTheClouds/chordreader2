@@ -62,15 +62,15 @@
 
     <string name="settings">Ajustes</string>
 
-    <string name="pref_first_run_title">Reiniciar introducción</string>
+    <string name="pref_first_run_title">Restablecer la introducción</string>
     <string name="pref_first_run_summary">Mostrar de nuevo el mensaje de introducción.</string>
     <string name="first_run_title">Bienvenido/a a Chord Reader 2!</string>
     <string name="first_run_message">\n<b>¿Novedades de la versión 2.2.0?</b> \n\n
-        <li>Traducción Española</li>\n
-        <li>Analización de acordes para los caracteres Unicode # y b</li>\n
-        <li>Nuevo característica: datos de transposición ahora almacenados en el archivo de canciones, no en la base de datos de aplicaciones</li>\n
-        <li>Nota Selección de nombres agregado al cuadro de diálogo de acordes de confirmación (búsqueda web) y diálogo de transposición (vista de canción)</li>\n
-        <li>Guardar automático eliminado: siempre solicite guardar los cambios de la canción</li>\n
+        <li>Traducción al Español</li>\n
+        <li>Análisis de acordes para los caracteres Unicode # y b</li>\n
+        <li>Nueva característica: los datos de la transposición ahora se almacenan en el archivo de la canción, no en la base de datos de aplicaciones</li>\n
+        <li>Selección de nombre de nota añadida al diálogo de confirmación de acordes (búsqueda web) y al diálogo de transposición (vista de canción)</li>\n
+        <li>Se ha eliminado el guardado automático: siempre se solicita una confirmación para guardar los cambios</li>\n
         \nChord Reader 2 es <b>software open source</b>. \n</string>
     <string name="unsaved_changes">Cambios sin guardar</string>
     <string name="unsaved_changes_message">¿Quieres guardar tus cambios?</string>
@@ -89,9 +89,9 @@
     <string name="drawer_close">Cerrar el cajón de navegación</string>
     <string name="drawer_open">Abrir el cajón de navegación</string>
     <string name="web_search">Búsqueda Web</string>
-    <string name="use_db_transpose_data">Las transposiciones, sin embargo, se guardan directamente en el archivo de canción desde la versión 2.2.0. Deseas aplicar la transposición de tu base de datos local de la aplicación de todos modos?</string>
+    <string name="use_db_transpose_data">Las transposiciones, sin embargo, se guardan directamente en el archivo de canción desde la versión 2.2.0. ¿Deseas aplicar la transposición de tu base de datos local de la aplicación de todos modos?</string>
     <string name="db_transpose_data_found">Se encontraron datos de transposición en la base de datos de la aplicación local:</string>
-    <string name="use_transposition">Aplicar transposición?</string>
+    <string name="use_transposition">¿Aplicar transposición?</string>
     <string name="songs">Canciones</string>
     <string name="setlists">Setlists</string>
     <string name="cancel">Cancelar</string>
@@ -103,14 +103,14 @@
     <string name="no_local_songs">No se han encontrado canciones en tu dispositivo. Realiza una búsqueda web.</string>
     <string name="no_setlists">No hay Setlist almacenados en tu dispositivo. Crea uno nuevo.</string>
     <string name="add_to_setlist">Añadir a Setlist</string>
-    <string name="storage_location">Localización del almacenamiento</string>
-    <string name="help_page"><![CDATA[<h2>1. Concepto de base</h2><p>Chordreader 2 está diseñado para servir como libro de canciones digital. Puedes usar esta aplicación para buscar acordes y letras de canciones en Internet o crearlas tú mismo. Estos se almacenarán de forma local en tu dispositivo como archivo de texto en el carpeta chord_reader_2 en el carpeta base. De esta manera se pueden personalizar las letras en función de las necesidades y compartir o imprimir las versiones individuales de las canciones. Los Setlists también se guardan como archivos de texto y pueden usarse de la misma manera.</p><p>Para la navegación, el Nav Slider está siempre disponible deslizando desde el borde izquierdo de la pantalla hacia la derecha.</p><p>Con otras aplicaciones, como Syncthing o NextCloud, puedes sincronizar las versiones personalizadas de tus canciones fácilmente entre varios dispositivos o compartirlas con otros.</p>
+    <string name="storage_location">Ubicación del almacenamiento</string>
+    <string name="help_page"><![CDATA[<h2>1. Concepto de base</h2><p>Chordreader 2 está diseñado para servir como libro de canciones digital. Puedes usar esta aplicación para buscar acordes y letras de canciones en Internet o crearlas tú mismo. Estos se almacenarán de forma local en tu dispositivo como archivo de texto en el carpeta chord_reader_2 en la carpeta base. De esta manera se pueden personalizar las letras en función de las necesidades y compartir o imprimir las versiones individuales de las canciones. Los Setlists también se guardan como archivos de texto y pueden usarse de la misma manera.</p><p>Para la navegación, el Nav Slider está siempre disponible deslizando desde el borde izquierdo de la pantalla hacia la derecha.</p><p>Con otras aplicaciones, como Syncthing o NextCloud, puedes sincronizar las versiones personalizadas de tus canciones fácilmente entre varios dispositivos o compartirlas con otros.</p>
     <h2>2. Búsqueda Web</h2><p>Con la Búsqueda Web puedes buscar acordes y letras de canciones en Internet, usando tu motor de búsqueda favorito (ver Ajustes). Cuando hayas encontrado la página correcta para los acordes, Chord Reader extrae los acordes y la letra de la canción. Pulsando en el botón azul, situado encima del recuadro azul del navegador de Internet, se te mostrará el resultado. Al confirmar, se mostrará la canción en la vista de Canción y puede ser guardada.</p>
     <h2>3. Vista de Canción</h2><p>En la Vista de Canción, puedes ajustar el tamaño del texto haciendo zoom con dos dedos (gesto de pinza). El tamaño de texto se guardará para esta canción en la base de datos interna de la aplicación.</p> <p>La Vista de Canción incorpora la función auto-scroll. Basada en el valor BPM o PPM (Pulsaciones por Minuto) y el factor de autocorrección del desplazamiento automático, que se guardan en el encabezado del archivo, la velocidad de desplazamiento es calculada. Se realiza asumiendo lo siguiente: <i>Por cada dos líneas (línea de texto + acordes sobre ella) se asumen 4 pulsaciones.</i><br> El valor BPM también determina la velocidad de parpadeo del metrónomo (parpadeo azul del botón play). El factor de autocorreción del desplazamiento automático ajusta la velocidad del desplazamiento y puede ser ajustado de forma dinámica con los botones más y menos. Esto puede ser necesario, por ejemplo, si el archivo de una canción se ha creado en un smartphone y luego se muestra en una tablet. El auto-scroll se inicia y se detiene con el botón Play. También puede hacerse con un doble toque en la pantalla.</p><p>El estilo del color de la Vista de Canción puede cambiarse entre Claro u Oscuro en los Ajustes.</p><p>La función de transposición ofrece, por un lado, la posibilidad de ajustar el tono de los acordes al tono de voz a través del slider de transposición. Por otro lado, se puede usar el slider de Capo para cambiar los acordes como si estuvieses usando un capo en el traste seleccionado. Esto es útil, por ejemplo, cuando están tocando dos guitarras, una con un capo y la segunda con los acordes ajustados pero sin capo.</p>
     <h2>4. Setlists</h2><p>Los Setlists se usan para mostrar canciones que se han guardado como un archivo en el dispositivo en un orden predefinido y para cambiar entre ellas directamente.</p><p> Después de crear un Setlist nuevo, podrás añadir canciones en una pantalla de selección. El orden puede ser ajustado arrastrando y soltando (barra azul doble). Se pueden borrar canciones de forma individual del respectivo setlist con el botón de borrar (icono azul de cubo de basura). En la Vista de Canción también puede añadirse la canción actual a un setlist a través del menú.</p><p>Cuando se abre una canción desde la vista Setlist, hay dos botones adicionales disponibles (flecha izquieda/derecha). Con estos se puede cambiar, en función del orden del setlist, entre canciones hacia delante o hacia atrás.</p>]]></string>
     <string name="storage_access">Acceso al almacenamiento</string>
     <string name="grant_storage_access">Por favor, concede permiso de acceso al almacenamiento para la carpeta chord_reader_2.</string>
-    <string name="select_storage_location">Por favor, selecciona una localización para el almacenamiento o crea una nueva carpeta para el almacenamiento local de tus canciones.</string>
+    <string name="select_storage_location">Por favor, selecciona una ubicación para el almacenamiento o crea una nueva carpeta para el almacenamiento local de tus canciones.</string>
     <string name="share">Compartir</string>
     <string name="add_song">Añadir canción</string>
     <string name="pref_category_musical_configuration">Configuración musical</string>
