@@ -17,6 +17,7 @@ import android.provider.DocumentsContract;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
@@ -185,7 +186,7 @@ public class SaveFileHelper {
                         DocumentsContract.Document.COLUMN_DISPLAY_NAME
                 }, null, null, null)) {
 
-                    while (cursor.moveToNext()) {
+                    while (cursor != null && cursor.moveToNext()) {
                         final String fileName = cursor.getString(1);
 
                         result.add(fileName);
@@ -248,20 +249,18 @@ public class SaveFileHelper {
 
             Uri fileUri = fileUris.get(0);
 
+            if (fileUri == null)
+                return "";
+
             FileInputStream fileInputStream;
 
             try {
-                if (fileUri == null)
-                    return "";
-
-                inputPFD = context.getContentResolver().openFileDescriptor(fileUri, "r");
+                inputPFD = openPFDInThread(context, fileUri, "r");
 
                 fileInputStream = new FileInputStream(inputPFD.getFileDescriptor());
-
-
                 bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 log.e(ex, "couldn't read file, file opening error");
             }
         }
@@ -294,6 +293,53 @@ public class SaveFileHelper {
         return result.toString();
     }
 
+    public static ParcelFileDescriptor openPFDInThread(Context context, Uri fileUri, String mode) {
+
+        final ParcelFileDescriptor[] descriptor = new ParcelFileDescriptor[1];
+
+        // do in background to avoid jankiness
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        HandlerThread handlerThread = new HandlerThread("OpenPFDHandlerThread");
+        handlerThread.start();
+
+        Handler asyncHandler = new Handler(handlerThread.getLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+
+                descriptor[0] = (ParcelFileDescriptor) msg.obj;
+
+                latch.countDown();
+
+                handlerThread.quit();
+            }
+        };
+
+        Runnable runnable = () -> {
+            Message message = new Message();
+
+            try {
+                message.obj = context.getContentResolver().openFileDescriptor(fileUri, mode);
+            } catch (FileNotFoundException e) {
+                log.e(e, "couldn't open PFD, file opening error");
+                return;
+            }
+            asyncHandler.sendMessage(message);
+        };
+
+        asyncHandler.post(runnable);
+
+        // wait for async opening result
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return descriptor[0];
+    }
+
     public static List<String> openSetlist(Context context, String setlist) {
 
         final String[][] tempList2 = {new String[0]};
@@ -306,7 +352,7 @@ public class SaveFileHelper {
 
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {
             @Override
-            public void handleMessage(Message msg) {
+            public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
 
                 tempList2[0] = (String[]) msg.obj;
@@ -374,7 +420,7 @@ public class SaveFileHelper {
 
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {
             @Override
-            public void handleMessage(Message msg) {
+            public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 successfullySavedLog[0] = (boolean) msg.obj;
 
@@ -460,9 +506,12 @@ public class SaveFileHelper {
                 return false;
             }
 
+            if (fileUri == null) {
+                return false;
+            }
+
             try {
-                ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver()
-                        .openFileDescriptor(fileUri, "wt");
+                ParcelFileDescriptor parcelFileDescriptor = openPFDInThread(context, fileUri, "wt");
 
                 FileOutputStream fileOutputStream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
 
@@ -551,7 +600,7 @@ public class SaveFileHelper {
 
                 Uri[] existingFilesUris = new Uri[requestedFileNames.size()];
 
-                while (cursor.moveToNext()) {
+                while (cursor != null && cursor.moveToNext()) {
                     final String fileName = cursor.getString(1);
 
                     if (requestedFileNames.contains(fileName)) {
