@@ -1,0 +1,12 @@
+- fixed Nextcloud/Network file open error
+- Note naming English with sharps added
+- switch to searx.work for default search engine
+- keep the screen active for 5 min even in pure viewing mode
+- missing chords added for visualisation
+- reduce size of guitar_chords.json
+- Ukulele (4-string, standard tuning) for chord visualisation added
+- Laterality for chord visualisation added
+- ukulele chords added
+- fixed unnecessary prompt for zero transposition data in song view
+- fixed missing saving of setlist after item removal
+- fixed some random app crash

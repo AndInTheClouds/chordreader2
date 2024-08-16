@@ -89,13 +89,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.2.0?</b> \n\n
-        <li>Spanish translation</li>\n
-        <li>Chord parsing for unicode # and b</li>\n
-        <li>New Feature: transposition data now stored to song file, not app database</li>\n
-        <li>Note naming selection added to confirmation chords dialog (web search) and transposition dialog (song view)</li>\n
-        <li>removed auto save: always prompt for saving changes of song</li>\n
-        \nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.3.0?</b> \n\n\n        <li>Chord visualisation for Ukulele</li>\n\n        <li>Handedness options for chord visualisation</li>\n\n        <li>Missing chords for visualisation added</li>\n\n        <li>Note naming English with sharps added</li>\n\n        <li>Miscellaneous bug fixes and improvements</li>\n\n        \nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>

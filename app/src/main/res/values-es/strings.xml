@@ -62,13 +62,7 @@
     <string name="pref_first_run_title">Restablecer la introducción</string>
     <string name="pref_first_run_summary">Mostrar de nuevo el mensaje de introducción.</string>
     <string name="first_run_title">Bienvenido/a a Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>¿Novedades de la versión 2.2.0?</b> \n\n
-        <li>Traducción al Español</li>\n
-        <li>Análisis de acordes para los caracteres Unicode # y b</li>\n
-        <li>Nueva característica: los datos de la transposición ahora se almacenan en el archivo de la canción, no en la base de datos de aplicaciones</li>\n
-        <li>Selección de nombre de nota añadida al diálogo de confirmación de acordes (búsqueda web) y al diálogo de transposición (vista de canción)</li>\n
-        <li>Se ha eliminado el guardado automático: siempre se solicita una confirmación para guardar los cambios</li>\n
-        \nChord Reader 2 es <b>software open source</b>. \n</string>
+    <string name="first_run_message">\n<b>¿Novedades de la versión 2.3.0?</b> \n\n\n        <li>Visualización de acordes para ukelele</li>\n\n        <li>Opciones de lateralidad para visualización de acordes</li>\n\n        <li>Acordes faltantes agregados para visualización</li>\n\n        <li>Nombres de notas en inglés con sostenidos agregados</li>\n\n        <li>Correcciones de errores varios y mejoras</li>\n\n        \nChord Reader 2 es <b>software open source</b>. \n</string>
     <string name="unsaved_changes">Cambios sin guardar</string>
     <string name="unsaved_changes_message">¿Quieres guardar tus cambios?</string>
     <string name="closing_chordreader">Cerrando ChordReader</string>
