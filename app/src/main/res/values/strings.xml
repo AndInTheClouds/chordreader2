@@ -77,7 +77,7 @@
     <string name="pref_note_naming_explanation_southern" translatable="false">Do, Re, Mi, Fa, etc.</string>
     <string name="pref_note_naming_default" translatable="false">@string/pref_note_naming_value_english</string>
     <string name="pref_search_engine" translatable="false">searchEngineURL</string>
-    <string name="pref_search_engine_default" translatable="false">https://searx.work/search?q=</string>
+    <string name="pref_search_engine_default" translatable="false">https://www.startpage.com/sp/search?q=</string>
     <string name="pref_storage_location" translatable="false">storageLocation</string>
     <string name="pref_storage_location_default" translatable="false">content://com.android.externalstorage.documents/tree/primary%3Achord_reader_2</string>
     <string name="pref_instrument" translatable="false">instrument</string>
