@@ -25,10 +25,8 @@ android {
             signingConfig signingConfigs.debug
 
             // Enables code shrinking, obfuscation, and optimization
-            minifyEnabled true
+            minifyEnabled false
 
-            // Enables resource shrinking
-            shrinkResources true
         }
     }
     lint {

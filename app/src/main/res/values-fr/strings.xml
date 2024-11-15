@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.3.0 ?</b>\n\n\n        <li>Visualisation des accords pour ukulélé</li>\n\n        <li>Options de latéralité pour la visualisation des accords</li>\n\n        <li>Accords manquants pour la visualisation ajoutés</li>\n\n        <li>Nommage des notes en anglais avec dièses ajoutés</li>\n\n        <li>Corrections de bogues diverses et améliorations</li>\n\n        \nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.3.2 ?</b>\n\n\n        <li>Visualisation des accords pour ukulélé</li>\n\n        <li>Options de latéralité pour la visualisation des accords</li>\n\n        <li>Accords manquants pour la visualisation ajoutés</li>\n\n        <li>Nommage des notes en anglais avec dièses ajoutés</li>\n\n        <li>Corrections de bogues diverses et améliorations</li>\n\n        \nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>

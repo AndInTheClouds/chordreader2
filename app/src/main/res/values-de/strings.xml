@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Einführung zurücksetzen</string>
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
     <string name="first_run_title">Willkommen zu Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Was ist neu in Version 2.3.0?</b>\n\n\n        <li>Akkordvisualisierung für Ukulele</li>\n\n        <li>Händigkeitsoptionen für Akkordvisualisierung</li>\n\n        <li>Fehlende Akkorde für Visualisierung hinzugefügt</li>\n\n        <li>Notennamen Englisch mit Kreuzen hinzugefügt</li>\n\n        <li>Verschiedene Fehlerkorrekturen und Verbesserungen</li>\n\n        \nChordReader 2 ist eine <b>Open Source Software</b>.</string>
+    <string name="first_run_message">\n<b>Was ist neu in Version 2.3.2?</b>\n\n\n        <li>Akkordvisualisierung für Ukulele</li>\n\n        <li>Händigkeitsoptionen für Akkordvisualisierung</li>\n\n        <li>Fehlende Akkorde für Visualisierung hinzugefügt</li>\n\n        <li>Notennamen Englisch mit Kreuzen hinzugefügt</li>\n\n        <li>Verschiedene Fehlerkorrekturen und Verbesserungen</li>\n\n        \nChordReader 2 ist eine <b>Open Source Software</b>.</string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
     <string name="closing_chordreader">ChordReader schließen</string>

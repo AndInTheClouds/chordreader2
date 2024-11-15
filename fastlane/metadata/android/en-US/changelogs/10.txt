@@ -1,3 +1,4 @@
+- fixed app crash at startup
 - fixed Nextcloud/Network file open error
 - Note naming English with sharps added
 - switch to searx.work for default search engine
@@ -9,4 +10,3 @@
 - ukulele chords added
 - fixed unnecessary prompt for zero transposition data in song view
 - fixed missing saving of setlist after item removal
-- fixed some random app crash
