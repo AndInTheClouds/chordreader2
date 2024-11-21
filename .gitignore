@@ -34,3 +34,5 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
+/java_pid5002.hprof
+/app/release/

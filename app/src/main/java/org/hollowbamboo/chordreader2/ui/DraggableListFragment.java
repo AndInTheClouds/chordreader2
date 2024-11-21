@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,6 +40,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.adapter.RecyclerViewAdapter;
 import org.hollowbamboo.chordreader2.databinding.FragmentDraggableListBinding;
@@ -53,10 +56,11 @@ import java.util.Objects;
 
 public class DraggableListFragment extends Fragment implements OnItemClickListener, StartDragListener {
     private RecyclerView recyclerView;
-
+    private FloatingActionButton floatingOKButton;
+    private RecyclerViewAdapter mAdapter;
     private ItemTouchHelper touchHelper;
-
     private DataViewModel dataViewModel;
+    private Menu menu;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,14 +76,27 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
         String title = dataViewModel.getSetListMLD().getValue();
 
-        if (title != null)
+        if (title != null) {
             setTitle(title.replace(".pl", ""));
+        }
 
         dataViewModel.getSetListSongsMLD().observe(getViewLifecycleOwner(), setListSongs -> setupRecyclerView());
 
         setupRecyclerView();
 
         setUpMenu();
+
+        floatingOKButton = binding.floatingOKButton;
+        floatingOKButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    toggleEditMode();
+                    saveSetListToFile();
+                }
+                return true;
+            }
+        });
 
         Log.d("SetList List", "DraggableListView started");
         return root;
@@ -113,7 +130,7 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
 
     private void setupRecyclerView() {
 
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(dataViewModel.setListSongs, this, this);
+        mAdapter = new RecyclerViewAdapter(dataViewModel.setListSongs, this, this);
 
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback(mAdapter);
@@ -149,10 +166,12 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                DraggableListFragment.this.menu = menu;
                 menuInflater.inflate(R.menu.list_view_menu, menu);
                 menu.findItem(R.id.menu_new_file).setTitle(R.string.add_song);
                 menu.findItem(R.id.menu_new_file).setVisible(true);
                 menu.findItem(R.id.menu_share_files).setVisible(true);
+                menu.findItem(R.id.menu_manage_files).setVisible(true);
             }
 
             @Override
@@ -169,12 +188,18 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
                     return true;
                 }
 
+                if (itemId == R.id.menu_manage_files) {
+                    toggleEditMode();
+                    return true;
+                }
+
                 return false;
             }
         };
 
         menuHost.addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
+
 
     private void startSongView(String filename) {
         DraggableListFragmentDirections.ActionNavDragListViewToNavSongView action =
@@ -225,5 +250,20 @@ public class DraggableListFragment extends Fragment implements OnItemClickListen
         Intent intent = SaveFileHelper.shareFiles(requireContext(),fileNames.toArray(new String[0]));
 
         startActivity(intent);
+    }
+
+    private void toggleEditMode() {
+        //menu.findItem(R.id.menu_new_file).setVisible(true);
+        menu.findItem(R.id.menu_share_files).setVisible(!menu.findItem(R.id.menu_share_files).isVisible());
+        menu.findItem(R.id.menu_manage_files).setVisible(!menu.findItem(R.id.menu_manage_files).isVisible());
+        floatingOKButton.setVisibility(floatingOKButton.getVisibility() > 0 ? View.VISIBLE : View.GONE);
+
+        mAdapter.toggleEditMode();
+    }
+
+    private void finishEditingSetlist() {
+        //menu.findItem(R.id.menu_new_file).setVisible(true);
+        menu.findItem(R.id.menu_share_files).setVisible(true);
+        menu.findItem(R.id.menu_manage_files).setVisible(true);
     }
 }

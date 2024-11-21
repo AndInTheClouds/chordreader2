@@ -24,6 +24,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final StartDragListener startDragListener;
     private final ArrayList<String> data;
 
+    private boolean isEditMode = false;
+
     public RecyclerViewAdapter(ArrayList<String> data, OnItemClickListener onItemClickListener, StartDragListener startDragListener) {
         this.data = data;
         this.listener = onItemClickListener;
@@ -65,7 +67,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 return true;
             }
         });
+
         holder.setOnItemClickListener(data.get(position), listener);
+
+        holder.getListItemDragHandleImageView().setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        holder.getListItemDeleteImageView().setVisibility(isEditMode ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -93,6 +99,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onRowClear(ViewHolder myViewHolder) {
+        notifyDataSetChanged();
+    }
+
+    public void toggleEditMode() {
+        this.isEditMode = !this.isEditMode;
         notifyDataSetChanged();
     }
 
