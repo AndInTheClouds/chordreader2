@@ -30,8 +30,14 @@ import android.widget.TextView;
 import org.hollowbamboo.chordreader2.R;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
+import org.hollowbamboo.chordreader2.helper.SaveFileHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
@@ -39,6 +45,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private final List<String> originalData;
     private List<String> filteredData;
+    private Map<String, Date> lastModifiedMap;
     private final LayoutInflater mInflater;
     private final ItemFilter mFilter = new ItemFilter();
     private final ArrayList<String> selectedItems = new ArrayList<>();
@@ -54,9 +61,9 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
 
     public int getIndexOfFile(String filename) {
         int index = 0;
-        for(String s : filteredData) {
-            if(s.equals(filename))
-                return  index;
+        for (String s : filteredData) {
+            if (s.equals(filename))
+                return index;
             index++;
         }
         return -1;
@@ -65,7 +72,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
     public void switchSelectionForIndex(int index) {
 
         String item = filteredData.get(index);
-        if(selectedItems.contains(item))
+        if (selectedItems.contains(item))
             selectedItems.remove(item);
         else
             selectedItems.add(item);
@@ -75,7 +82,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
 
     public void selectAll() {
         for (String item : filteredData) {
-            if(!(selectedItems.contains(item)))
+            if (!(selectedItems.contains(item)))
                 selectedItems.add(item);
         }
         notifyDataSetChanged();
@@ -102,6 +109,47 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+    public void sortByLastModified() {
+        this.lastModifiedMap = populateLastModifiedMap(filteredData);
+
+        Collections.sort(filteredData, new Comparator<String>() {
+            @Override
+            public int compare(String file1, String file2) {
+                Date date1 = lastModifiedMap.get(file1);
+                Date date2 = lastModifiedMap.get(file2);
+                return date2 != null ? date2.compareTo(date1) : 0; // Newest first
+            }
+        });
+
+        notifyDataSetChanged(); // Refresh the adapter
+    }
+
+    public void sortByName() {
+
+        Collections.sort(filteredData, new Comparator<String>() {
+            @Override
+            public int compare(String file1, String file2) {
+                return file1.compareTo(file2);
+            }
+        });
+
+        notifyDataSetChanged(); // Refresh the adapter
+    }
+
+    private Map<String, Date> populateLastModifiedMap(List<String> data) {
+
+        Map<String, Date> lastModifiedMap = new HashMap<String, Date>() {
+        };
+
+        for (String filename : data) {
+            Date lastModified = SaveFileHelper.getLastModifiedDate(context, filename);
+            lastModifiedMap.put(filename,lastModified);
+        }
+
+
+        return lastModifiedMap;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -112,7 +160,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
         // When convertView is not null, we can reuse it directly, there is no need
         // to reinflate it. We only inflate a new View when the convertView supplied
         // by ListView is null.
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_simple, null);
 
             // Creates a ViewHolder and store references to the two children views
@@ -130,9 +178,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
         }
 
-
-//        if(!selectedIndexes.isEmpty() && selectedIndexes.contains(position)) {
-        if(!selectedItems.isEmpty() && selectedItems.contains(filteredData.get(position))) {
+        if (!selectedItems.isEmpty() && selectedItems.contains(filteredData.get(position))) {
             holder.textView.setBackgroundColor(colorScheme.getLinkColor(context));
         } else {
             holder.textView.setBackgroundColor(Color.TRANSPARENT);
@@ -168,7 +214,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
             //Filter original list
             String filterableString;
 
-            if(filterString.isEmpty()) {
+            if (filterString.isEmpty()) {
                 results.values = originalDataList;
                 results.count = originalDataList.size();
                 return results;
@@ -176,7 +222,7 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
 
             for (int i = 0; i < count; i++) {
                 filterableString = originalDataList.get(i);
-                if(filterableString.toLowerCase().contains(filterString)) {
+                if (filterableString.toLowerCase().contains(filterString)) {
                     filteredDataList.add(filterableString);
                 }
             }

@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -99,7 +101,8 @@ public class ListFragment extends Fragment implements TextWatcher {
     private DataViewModel dataViewModel;
     private FragmentListBinding binding;
 
-    private boolean IsSelectionModeActive;
+    private boolean isSelectionModeActive;
+    private boolean isSortedbyName = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -152,9 +155,8 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         //restore filter
         String filterText = filterEditText.getText().toString();
-        if(!(filterEditText.getText().toString().equals("")))
+        if (!(filterEditText.getText().toString().equals("")))
             this.fileListAdapter.getFilter().filter(filterText);
-
     }
 
     @Override
@@ -169,7 +171,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     public void onStop() {
         super.onStop();
 
-        if(Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION))
+        if (Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION))
             dataViewModel.setSetListSongs(fileListAdapter.getSelectedFiles());
     }
 
@@ -182,39 +184,45 @@ public class ListFragment extends Fragment implements TextWatcher {
 
                 ListFragment.menu = menu;
 
-                if(!Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION)) {
+                if (!Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION)) {
                     menu.findItem(R.id.menu_new_file).setVisible(true);
                     menu.findItem(R.id.menu_manage_files).setVisible(true);
+                    menu.findItem(R.id.menu_sort_by).setVisible(true);
                 }
 
-                if(fileListAdapter == null || fileListAdapter.isEmpty())
+                if (fileListAdapter == null || fileListAdapter.isEmpty()) {
                     menu.findItem(R.id.menu_manage_files).setVisible(false);
+                }
+                toggleSorting(false);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int itemId = menuItem.getItemId();
 
-                if(itemId == R.id.menu_manage_files) {
+                if (itemId == R.id.menu_manage_files) {
                     startSelectionMode();
                     return true;
-                } else if(itemId == R.id.menu_new_file) {
-                    if(!(dataViewModel.mode.equals(MODE_SETLIST)))
+                } else if (itemId == R.id.menu_new_file) {
+                    if (!(dataViewModel.mode.equals(MODE_SETLIST)))
                         startSongView(null);
                     else
                         newSetListDialog();
                     return true;
-                } else if(itemId == R.id.menu_cancel_selection) {
+                } else if (itemId == R.id.menu_cancel_selection) {
                     cancelSelectionMode();
                     return true;
-                } else if(itemId == R.id.menu_select_all) {
+                } else if (itemId == R.id.menu_select_all) {
                     fileListAdapter.selectAll();
                     return true;
-                } else if(itemId == R.id.menu_delete) {
+                } else if (itemId == R.id.menu_delete) {
                     verifyDelete();
                     return true;
-                } else if(itemId == R.id.menu_share_files) {
+                } else if (itemId == R.id.menu_share_files) {
                     shareSelectedFiles();
+                    return true;
+                } else if (itemId == R.id.menu_sort_by) {
+                    toggleSorting(true);
                     return true;
                 }
 
@@ -239,7 +247,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void newSetListDialog() {
 
-        if(!checkSdCard()) {
+        if (!checkSdCard()) {
             return;
         }
 
@@ -249,7 +257,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             InputMethodManager imm = (InputMethodManager)
-                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
             if (v.requestFocus())
                 editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
@@ -263,16 +271,16 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
 
-            if(SaveFileHelper.isInvalidFilename(editText.getText())) {
+            if (SaveFileHelper.isInvalidFilename(editText.getText())) {
                 Toast.makeText(getActivity(), getResources().getString(R.string.enter_good_filename), Toast.LENGTH_SHORT).show();
             } else {
                 String setlistFileName = editText.getText().toString();
-                if(!setlistFileName.endsWith(".pl"))
+                if (!setlistFileName.endsWith(".pl"))
                     setlistFileName = setlistFileName.concat(".pl");
 
                 editText.clearFocus();
 
-                if(SaveFileHelper.fileExists(requireContext(),setlistFileName)) {
+                if (SaveFileHelper.fileExists(requireContext(), setlistFileName)) {
 
                     String finalSetlistFileName = setlistFileName;
                     new AlertDialog.Builder(requireContext())
@@ -281,13 +289,13 @@ public class ListFragment extends Fragment implements TextWatcher {
                             .setMessage(R.string.overwrite_file)
                             .setNegativeButton(android.R.string.cancel, null)
                             .setPositiveButton(android.R.string.ok, (dialog1, which1) -> {
-                                SaveFileHelper.saveFile(requireContext(),"", finalSetlistFileName);
+                                SaveFileHelper.saveFile(requireContext(), "", finalSetlistFileName);
                                 startSetListList(finalSetlistFileName);
                             })
                             .show();
 
                 } else {
-                    SaveFileHelper.saveFile(requireContext(),"", setlistFileName);
+                    SaveFileHelper.saveFile(requireContext(), "", setlistFileName);
                     startSetListList(setlistFileName);
                 }
 
@@ -317,6 +325,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         this.fileListAdapter.getFilter().filter(charSequence);
+//            toggleSorting(false);
     }
 
     @Override
@@ -328,7 +337,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(IsSelectionModeActive && !dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION)) {
+                if (isSelectionModeActive && !dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION)) {
                     cancelSelectionMode();
                 } else if (getParentFragment() != null) {
                     Navigation.findNavController(getParentFragment().requireView()).popBackStack();
@@ -346,10 +355,10 @@ public class ListFragment extends Fragment implements TextWatcher {
             dataViewModel.mode = ListFragmentArgs.fromBundle(getArguments()).getMode();
         }
 
-        if(dataViewModel.mode.equals(MODE_SONGS))
+        if (dataViewModel.mode.equals(MODE_SONGS))
             dataViewModel.resetData();
 
-        if(!checkSdCard()) {
+        if (!checkSdCard()) {
             return;
         }
 
@@ -410,7 +419,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                     textView.setVisibility((fileListAdapter.getCount() == 0) ? View.VISIBLE : View.GONE);
                 }
 
-                if (!IsSelectionModeActive)
+                if (!isSelectionModeActive)
                     menu.findItem(R.id.menu_manage_files).setVisible(fileListAdapter.getCount() != 0);
             }
         });
@@ -430,7 +439,7 @@ public class ListFragment extends Fragment implements TextWatcher {
             String filename = (String) adapterView.getAdapter().getItem(i);
             view.setBackgroundColor(Color.GRAY);
 
-            if(IsSelectionModeActive) {
+            if (isSelectionModeActive) {
                 fileListAdapter.switchSelectionForIndex(i);
                 if (Objects.equals(dataViewModel.mode, MODE_SETLIST_SONG_SELECTION))
                     dataViewModel.isSetListChanged = true;
@@ -455,6 +464,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         deleteFilterTextButton.setOnTouchListener((view, motionEvent) -> {
             filterEditText.setText("");
+            toggleSorting(false);
             return true;
         });
     }
@@ -475,11 +485,11 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
     private void setFileSelection() {
-        IsSelectionModeActive = true;
+        isSelectionModeActive = true;
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         for (String filename : dataViewModel.setListSongs) {
-            String s = filename.replace(".txt","");
+            String s = filename.replace(".txt", "");
             int index = fileListAdapter.getIndexOfFile(s);
 
             if (index == -1)
@@ -490,7 +500,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
     private void startSelectionMode() {
-        IsSelectionModeActive = true;
+        isSelectionModeActive = true;
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         menu.findItem(R.id.menu_manage_files).setVisible(false);
@@ -498,7 +508,9 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_delete).setVisible(true);
         menu.findItem(R.id.menu_cancel_selection).setVisible(true);
         menu.findItem(R.id.menu_select_all).setVisible(true);
-        if(Objects.equals(dataViewModel.mode, MODE_SONGS))
+        menu.findItem(R.id.menu_sort_by).setVisible(false);
+
+        if (Objects.equals(dataViewModel.mode, MODE_SONGS))
             menu.findItem(R.id.menu_share_files).setVisible(true);
 
         if (dataViewModel.mode.equals(MODE_SONGS))
@@ -510,7 +522,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
 
     private void cancelSelectionMode() {
-        IsSelectionModeActive = false;
+        isSelectionModeActive = false;
         fileList.setChoiceMode(ListView.CHOICE_MODE_NONE);
 
         menu.findItem(R.id.menu_manage_files).setVisible(true);
@@ -519,6 +531,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         menu.findItem(R.id.menu_cancel_selection).setVisible(false);
         menu.findItem(R.id.menu_select_all).setVisible(false);
         menu.findItem(R.id.menu_share_files).setVisible(false);
+        menu.findItem(R.id.menu_sort_by).setVisible(true);
 
         fileListAdapter.unselectAll();
 
@@ -575,12 +588,11 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
 
-
     private boolean checkSdCard() {
 
         boolean result = SaveFileHelper.checkIfSdCardExists();
 
-        if(!result) {
+        if (!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
         }
         return result;
@@ -589,7 +601,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     protected void verifyDelete() {
 
-        if(!checkSdCard()) {
+        if (!checkSdCard()) {
             return;
         }
 
@@ -599,7 +611,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         Log.d("ListFragment", filenameArray.toString());
         final int finalDeleteCount = filenameArray.size();
 
-        if(finalDeleteCount > 0) {
+        if (finalDeleteCount > 0) {
 
             builder.setTitle(R.string.delete_saved_file)
                     .setCancelable(true)
@@ -609,16 +621,16 @@ public class ListFragment extends Fragment implements TextWatcher {
 
                         for (String s : filenameArray) {
                             String fileName = "";
-                            if(Objects.equals(dataViewModel.mode, MODE_SONGS))
+                            if (Objects.equals(dataViewModel.mode, MODE_SONGS))
                                 fileName = s.concat(".txt");
-                            else if(Objects.equals(dataViewModel.mode, MODE_SETLIST))
+                            else if (Objects.equals(dataViewModel.mode, MODE_SETLIST))
                                 fileName = s.concat(".pl");
-                            SaveFileHelper.deleteFile(requireContext(),fileName);
+                            SaveFileHelper.deleteFile(requireContext(), fileName);
                         }
                         setUpInstance();
 
                         String toastText = String.format(getText(R.string.files_deleted).toString(), finalDeleteCount);
-                        Toast.makeText(getActivity(),toastText, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
 
                         cancelSelectionMode();
                         dialog.dismiss();
@@ -646,10 +658,10 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void startSongView(String filename) {
         String songTitle = null;
-        if(filename == null)
+        if (filename == null)
             songTitle = getString(R.string.new_file);
         ListFragmentDirections.ActionNavListFragmentToNavSongView action =
-                ListFragmentDirections.actionNavListFragmentToNavSongView(songTitle, filename,null,null);
+                ListFragmentDirections.actionNavListFragmentToNavSongView(songTitle, filename, null, null);
 
         if (getParentFragment() != null) {
             Navigation.findNavController(getParentFragment().requireView()).navigate(action);
@@ -658,7 +670,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void startWebView() {
         String searchText = filterEditText.getText().toString();
-         ListFragmentDirections.ActionNavListFragmentToNavWebSearch action =
+        ListFragmentDirections.ActionNavListFragmentToNavWebSearch action =
                 ListFragmentDirections.actionNavListFragmentToNavWebSearch(searchText, null);
 
         if (getParentFragment() != null) {
@@ -671,16 +683,40 @@ public class ListFragment extends Fragment implements TextWatcher {
     private void shareSelectedFiles() {
         ArrayList<String> fileNames = fileListAdapter.getSelectedFiles();
 
-        for (int i = 0; i < fileNames.size() ; i++) {
+        for (int i = 0; i < fileNames.size(); i++) {
             String songName = fileNames.get(i);
             if (!songName.endsWith(".txt"))
-                fileNames.set(i,songName + ".txt");
+                fileNames.set(i, songName + ".txt");
         }
 
-        Intent intent = SaveFileHelper.shareFiles(requireContext(),fileNames.toArray(new String[0]));
+        Intent intent = SaveFileHelper.shareFiles(requireContext(), fileNames.toArray(new String[0]));
 
         startActivity(intent);
 
         cancelSelectionMode();
+    }
+
+    private void toggleSorting(boolean isStateToChange) {
+        Drawable drawable;
+
+        //toggle state
+        if (isStateToChange)
+            isSortedbyName = !isSortedbyName;
+
+        if (isSortedbyName) {
+            drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_by_size, null);
+            if (menu != null) {
+                menu.findItem(R.id.menu_sort_by).setIcon(drawable);
+                menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_by_date));
+            }
+            fileListAdapter.sortByName();
+        } else {
+            drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_alphabetically, null);
+            if (menu != null) {
+                menu.findItem(R.id.menu_sort_by).setIcon(drawable);
+                menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_az));
+            }
+            fileListAdapter.sortByLastModified();
+        }
     }
 }
