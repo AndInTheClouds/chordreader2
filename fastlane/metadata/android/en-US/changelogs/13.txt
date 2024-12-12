@@ -1,0 +1,3 @@
+- Sorting by date or name in ListView added
+- Edit mode for setlist view added
+- fixed missing song names in setlist view

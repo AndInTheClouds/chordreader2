@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Restablecer la introducción</string>
     <string name="pref_first_run_summary">Mostrar de nuevo el mensaje de introducción.</string>
     <string name="first_run_title">Bienvenido/a a Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>¿Novedades de la versión 2.3.2?</b> \n\n\n        <li>Visualización de acordes para ukelele</li>\n\n        <li>Opciones de lateralidad para visualización de acordes</li>\n\n        <li>Acordes faltantes agregados para visualización</li>\n\n        <li>Nombres de notas en inglés con sostenidos agregados</li>\n\n        <li>Correcciones de errores varios y mejoras</li>\n\n        \nChord Reader 2 es <b>software open source</b>. \n</string>
+    <string name="first_run_message">\n<b>¿Novedades de la versión 2.4.0?</b> \n    <li> Ordenar por nombre o fecha en la vista de la lista </li>\n    <li> Modo de edición para SetList </li>\nChord Reader 2 es <b>software open source</b>. \n</string>
     <string name="unsaved_changes">Cambios sin guardar</string>
     <string name="unsaved_changes_message">¿Quieres guardar tus cambios?</string>
     <string name="closing_chordreader">Cerrando ChordReader</string>

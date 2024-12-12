@@ -89,7 +89,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.3.2?</b> \n\n\n        <li>Chord visualisation for Ukulele</li>\n\n        <li>Handedness options for chord visualisation</li>\n\n        <li>Missing chords for visualisation added</li>\n\n        <li>Note naming English with sharps added</li>\n\n        <li>Miscellaneous bug fixes and improvements</li>\n\n        \nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.4.0?</b> \n        <li>Sorting by name or date in list view</li>\n        <li>Editing mode for setlist</li>\nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>

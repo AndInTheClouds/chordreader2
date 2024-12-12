@@ -12,16 +12,27 @@ RepoType: git
 Repo: https://github.com/AndInTheClouds/chordreader2
 
 Builds:
-  - - versionName: 2.3.2
-      versionCode: 12
-      commit: v2.3.2
-      subdir: app
-      sudo:
-        - apt-get update || apt-get update
-        - apt-get install -y openjdk-17-jdk-headless
-        - update-alternatives --auto java
-      gradle:
-        - yes
+  - versionName: 2.4.0
+    versionCode: 13
+    commit: v2.4.0
+    subdir: app
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 2.3.2
+    versionCode: 12
+    commit: v2.3.2
+    subdir: app
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
 
   - versionName: 2.3.1
     versionCode: 11
