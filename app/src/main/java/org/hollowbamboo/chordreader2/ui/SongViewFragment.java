@@ -1213,7 +1213,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
             saveTextSize(textSize);
 
-            return true;
+            return scaleFactor != 1.0f;
         }
 
     }
