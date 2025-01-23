@@ -84,6 +84,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     private static final String MODE_SETLIST = "Setlists";
     private static final String MODE_SONGS = "Songs";
     private static final String MODE_SETLIST_SONG_SELECTION = "SetlistSongsSelection";
+    private String fileExtension;
 
     private ConstraintLayout songListMainView;
     private EditText filterEditText;
@@ -370,16 +371,19 @@ public class ListFragment extends Fragment implements TextWatcher {
             case MODE_SONGS:
                 setTitle("Songs");
                 filenames = getFileNames(".txt");
+                fileExtension = ".txt";
                 textView.setText(R.string.no_local_songs);
                 break;
             case MODE_SETLIST:
                 setTitle("Setlists");
                 filenames = getFileNames(".pl");
+                fileExtension = ".pl";
                 textView.setText(R.string.no_setlists);
                 break;
             case MODE_SETLIST_SONG_SELECTION:
                 setTitle(getString(R.string.file_selection_for_setlist));
                 filenames = getFileNames(".txt");
+                fileExtension = ".txt";
 
                 okButton.setVisibility(View.VISIBLE);
                 okButton.setOnClickListener(view -> {
@@ -394,7 +398,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         if (filenames != null)
             Collections.sort(filenames, (Comparator<CharSequence>) (first, second) -> first.toString().toLowerCase().compareTo(second.toString().toLowerCase()));
 
-        fileListAdapter = new SelectableFilterAdapter(requireContext(), filenames) {
+        fileListAdapter = new SelectableFilterAdapter(requireContext(), filenames, fileExtension) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);

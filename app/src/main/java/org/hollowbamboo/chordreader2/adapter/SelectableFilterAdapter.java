@@ -46,17 +46,21 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
     private final List<String> originalData;
     private List<String> filteredData;
     private Map<String, Date> lastModifiedMap;
+
     private final LayoutInflater mInflater;
     private final ItemFilter mFilter = new ItemFilter();
     private final ArrayList<String> selectedItems = new ArrayList<>();
     private final ColorScheme colorScheme;
 
-    public SelectableFilterAdapter(Context context, List<String> data) {
+    public SelectableFilterAdapter(Context context, List<String> data, String fileExtension) {
         this.filteredData = data;
         this.originalData = data;
+
         this.context = context;
         mInflater = LayoutInflater.from(context);
         colorScheme = PreferenceHelper.getColorScheme(context);
+
+        this.lastModifiedMap = SaveFileHelper.getLastModifiedDate(context, fileExtension);
     }
 
     public int getIndexOfFile(String filename) {
@@ -110,7 +114,6 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
     }
 
     public void sortByLastModified() {
-        this.lastModifiedMap = populateLastModifiedMap(filteredData);
 
         Collections.sort(filteredData, new Comparator<String>() {
             @Override
@@ -134,20 +137,6 @@ public class SelectableFilterAdapter extends BaseAdapter implements Filterable {
         });
 
         notifyDataSetChanged(); // Refresh the adapter
-    }
-
-    private Map<String, Date> populateLastModifiedMap(List<String> data) {
-
-        Map<String, Date> lastModifiedMap = new HashMap<String, Date>() {
-        };
-
-        for (String filename : data) {
-            Date lastModified = SaveFileHelper.getLastModifiedDate(context, filename);
-            lastModifiedMap.put(filename,lastModified);
-        }
-
-
-        return lastModifiedMap;
     }
 
     @Override
