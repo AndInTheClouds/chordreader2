@@ -103,8 +103,7 @@ public class SongViewFragmentViewModel extends ViewModel {
             this.chordText = chordText;
 
         // BPMs and AutoScrollSpeed
-        if (bpm < 0)
-            bpm = (int) extractAutoScrollParam(chordText, "bpm");
+        bpm = (int) extractAutoScrollParam(chordText, "bpm");
         bpm = bpm < 0 ? 100 : bpm;
 
         scrollVelocityCorrectionFactor = extractAutoScrollParam(chordText, "scrollVelocityCorrectionFactor");

@@ -362,7 +362,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             viewingTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         });
 
-        songViewFragmentViewModel.getBpmMLD().observe(getViewLifecycleOwner(), bpm -> viewingScrollView.setBpm(bpm));
+        songViewFragmentViewModel.getBpmMLD().observe(getViewLifecycleOwner(), bpm -> {
+            viewingScrollView.setBpm(bpm);
+
+            if (viewingScrollView.isAutoScrollActive()) {
+                stopAutoscroll();
+                startAutoscroll();
+            }
+        });
 
         songViewFragmentViewModel.getScrollVelocityCorrFactorMLD().observe(getViewLifecycleOwner(), scrollVelocityCorrectionFactor -> {
             if (scrollVelocityCorrectionFactor > 0)
@@ -1007,7 +1014,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     // get Note naming of spinner and update song setting
                     Spinner spinner = view.findViewById(R.id.transpose_note_naming_spinner);
                     int noteNamingIndex = DialogHelper.getSpinnerIndex(spinner);
-                    List<String> list= Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
+                    List<String> list = Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
                     String str = list.get(noteNamingIndex);
                     NoteNaming noteNaming = NoteNaming.valueOf(str);
                     songViewFragmentViewModel.setNoteNaming(noteNaming);
@@ -1055,7 +1062,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         LinearLayout linearLayout = new LinearLayout(requireContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(40,20,40,20);
+        linearLayout.setPadding(40, 20, 40, 20);
         linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
         LinearLayout.LayoutParams llParam = new LinearLayout.LayoutParams(
@@ -1092,7 +1099,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
             LinearLayout linearLayout = new LinearLayout(requireContext());
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            linearLayout.setPadding(10,10,10,10);
+            linearLayout.setPadding(10, 10, 10, 10);
             linearLayout.setGravity(Gravity.CENTER);
 
             LinearLayout.LayoutParams llParam = new LinearLayout.LayoutParams(
