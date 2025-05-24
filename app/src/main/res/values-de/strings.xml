@@ -112,5 +112,6 @@
     <string name="left_handed">Linkshändig</string>
     <string name="pref_laterality_title">Lateralität für die Akkordvisualisierung</string>
     <string name="pref_note_naming_english_sharps">Englisch mit Kreuz</string>
+    <string name="wake_lock_duration_title">Minuten, die der Bildschirm aktiv bleibt im Song View</string>
 
 </resources>

@@ -113,5 +113,6 @@
     <string name="left_handed">droitière</string>
     <string name="pref_laterality_title">Latéralité pour la visualisation des accords</string>
     <string name="pref_note_naming_english_sharps">Anglais avec dièses</string>
+    <string name="wake_lock_duration_title">Minutes pour garder l\'écran allumé dans Song View</string>
 
 </resources>

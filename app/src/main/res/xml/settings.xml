@@ -27,6 +27,14 @@
             android:persistent="true"
             android:title="@string/pref_search_engine_title" />
 
+        <ListPreference
+            android:defaultValue="@string/pref_wake_lock_default"
+            android:key="@string/pref_wake_lock_duration"
+            android:persistent="true"
+            android:title="@string/wake_lock_duration_title"
+            android:entries="@array/wake_lock_duration_list"
+            android:entryValues="@array/wake_lock_duration_list"/>
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/pref_first_run"

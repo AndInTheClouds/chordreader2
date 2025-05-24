@@ -60,6 +60,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private Preference storageLocationPreference;
     private ListPreference instrumentPreference;
     private ListPreference lateralityPreference;
+    private ListPreference wakeLockPreference;
     private ActivityResultLauncher<Intent> directoryPickerResultLauncher;
 
     @Override
@@ -123,15 +124,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         instrumentPreference = findPreference(getString(R.string.pref_instrument));
         instrumentPreference.setOnPreferenceChangeListener(this);
-
         String instrumentSummary = PreferenceHelper.getInstrument(requireContext());
         instrumentPreference.setSummary(instrumentSummary);
 
         lateralityPreference = findPreference(getString(R.string.pref_laterality));
         lateralityPreference.setOnPreferenceChangeListener(this);
-
         String lateralitySummary = PreferenceHelper.getLateralityName(requireContext());
         lateralityPreference.setSummary(lateralitySummary);
+
+        wakeLockPreference = findPreference(getString(R.string.pref_wake_lock_duration));
+        wakeLockPreference.setOnPreferenceChangeListener(this);
+        String wakeLockSummary = PreferenceHelper.getWakeLockDuration(requireContext());
+        wakeLockPreference.setSummary(wakeLockSummary);
     }
 
     @Override
@@ -159,6 +163,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 str = requireContext().getString(R.string.left_handed);
 
             lateralityPreference.setSummary(str);
+            return true;
+        } else if (preference.getKey().equals(getString(R.string.pref_wake_lock_duration))) {
+            wakeLockPreference.setSummary(newValue.toString());
             return true;
         } else {
             return true;

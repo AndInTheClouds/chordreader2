@@ -22,6 +22,7 @@ public class PreferenceHelper {
     private static String storageLocation = null;
     private static String instrument = null;
     private static String laterality = null;
+    private static int wakeLockDuration = 0;
 
     public static void clearCache() {
         noteNaming = null;
@@ -168,5 +169,15 @@ public class PreferenceHelper {
         }
 
         return Objects.equals(laterality, "right") ? context.getString(R.string.right_handed) : context.getString(R.string.left_handed);
+    }
+
+    public static String getWakeLockDuration(Context context) {
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref = context.getString(R.string.pref_wake_lock_duration);
+        wakeLockDuration = Integer.parseInt(sharedPrefs.getString(pref,
+                String.valueOf(5)));
+
+        return String.valueOf(wakeLockDuration);
     }
 }

@@ -95,9 +95,12 @@ import org.hollowbamboo.chordreader2.model.SongViewFragmentViewModel;
 import org.hollowbamboo.chordreader2.views.AutoScrollView;
 import org.hollowbamboo.chordreader2.views.ChordVisualisationView;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
@@ -563,7 +566,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void releaseWakeLock() {
-        releaseWakeLockCountDownTimer = new CountDownTimer(300000, 1000) {
+        Log.d("SongViewFragment", String.valueOf(PreferenceHelper.getWakeLockDuration(requireContext())));
+
+        int expireMillis = Integer.parseInt(PreferenceHelper.getWakeLockDuration(requireContext())) * 60 * 1000;
+        releaseWakeLockCountDownTimer = new CountDownTimer(expireMillis, 1000) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -571,16 +577,23 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             public void onFinish() {
                 try {
                     requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    Log.d(LOG_TAG, "Released wakelock");
                 } catch (IllegalStateException e) {
                     Log.d("SongViewFragment", "Fragment not attached to activity");
                 }
             }
         }.start();
+
+        Date expireDate = new Date(System.currentTimeMillis() + expireMillis);
+
+        String logMesasge = "Release wake lock at: " + expireDate;
+        Log.d("SongViewFragment", logMesasge);
     }
 
     private void quickReleaseWakeLock() {
         try {
             requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            Log.d(LOG_TAG, "Released wakelock");
         } catch (IllegalStateException e) {
             Log.d("SongViewFragment", "Fragment not attached to activity");
         }

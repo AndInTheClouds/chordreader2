@@ -142,5 +142,8 @@
     <string name="pref_laterality" translatable="false">laterality</string>
     <string name="pref_laterality_title">Laterality for chord visualization</string>
     <string name="pref_laterality_default" translatable="false">right</string>
+    <string name="pref_wake_lock_duration" translatable="false">wake_lock_duration_list</string>
+    <string name="wake_lock_duration_title">Minutes to keep screen on in Song View</string>
+    <string name="pref_wake_lock_default" translatable="false">5</string>
 
 </resources>
