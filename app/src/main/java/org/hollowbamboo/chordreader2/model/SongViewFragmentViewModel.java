@@ -26,6 +26,7 @@ import org.hollowbamboo.chordreader2.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -312,15 +313,17 @@ public class SongViewFragmentViewModel extends ViewModel {
             firstLine = lines.get(0).toLowerCase();
         }
 
-        if (!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor"))) {
+        if (!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor")))
             lines.add(0, "*** " + bpm + " BPM - AutoScrollFactor: " + scrollVelocityCorrectionFactor + " ***");
 
-            StringBuilder resultText = new StringBuilder();
-            for (String line : lines) {
-                resultText.append(line).append("\n");
-            }
-            chordText = resultText.toString();
+        if (!Objects.equals(lines.get(1), ""))
+            lines.add(1,"");
+
+        StringBuilder resultText = new StringBuilder();
+        for (String line : lines) {
+            resultText.append(line).append("\n");
         }
+        chordText = resultText.toString();
     }
 
     public Pair<String, Integer> findCapoParamInText(String chordText) {
@@ -369,7 +372,7 @@ public class SongViewFragmentViewModel extends ViewModel {
         Pair<String, Integer> capoParam = findCapoParamInText(chordText);
         String oldCapoText = capoParam.getFirst();
 
-        if (oldCapoText.equals("")) {
+        if (oldCapoText.equals("") && !(newCapoPosition == 0)) {
             ArrayList<String> lines = new ArrayList<>();
 
             if (!(chordText == null)) {
