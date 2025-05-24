@@ -316,7 +316,7 @@ public class SongViewFragmentViewModel extends ViewModel {
         if (!(firstLine.contains("bpm") && firstLine.contains("autoscrollfactor")))
             lines.add(0, "*** " + bpm + " BPM - AutoScrollFactor: " + scrollVelocityCorrectionFactor + " ***");
 
-        if (!Objects.equals(lines.get(1), ""))
+        if (lines.size() > 1 && !Objects.equals(lines.get(1), "")) //check lines.size before as new file has 0
             lines.add(1,"");
 
         StringBuilder resultText = new StringBuilder();
