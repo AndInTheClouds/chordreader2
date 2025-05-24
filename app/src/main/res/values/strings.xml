@@ -89,7 +89,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.4.0?</b> \n        <li>Sorting by name or date in list view</li>\n        <li>Editing mode for setlist</li>\nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">\n<b>What\'s new in version 2.4.1?</b> \n        <li>Bugfix newlines added below *** header line when saving a song #60</li>\n<li>Preference for Minutes to keep screen on added</li>\n<li>Refactor bulk deletion of files</li>\n<li>Bugfix adapt autoscroll velocity after update per EditView</li>\n<li>Bugfix text scaling on older tablets in SongView</li>\n<li>Bugfix and optimization of sorting by date in ListView</li>\nChord Reader 2 is <b>open source software</b>. \n</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>

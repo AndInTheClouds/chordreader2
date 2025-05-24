@@ -1,0 +1,6 @@
+- bugfix newlines added below *** header line when saving a song #60
+- feat Preference for Minutes to keep screen on
+- refactor bulk deletion of files
+- bugfix adapt autoscroll velocity after update per EditView
+- bugfix text scaling on older tablets in SongView
+- bugfix and optimization of sorting by date in ListView

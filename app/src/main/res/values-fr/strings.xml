@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.4.0 ?</b>\n    <li> Tri par nom ou date dans la vue de la liste </li>\n    <li> Mode d\'édition pour setlist </li>\n        \nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.4.1 ?</b>\n<li>Correction de bug : nouvelles lignes ajoutées sous la ligne d’en-tête *** lors de la sauvegarde d’une chanson #60</li>\n<li>Ajout d’une préférence pour le nombre de minutes avant que l’écran reste allumé</li>\n<li>Refactorisation de la suppression en masse des fichiers</li>\n<li>Correction de bug : adaptation de la vitesse de défilement automatique après mise à jour dans EditView</li>\n<li>Correction de bug : mise à l’échelle du texte sur les tablettes plus anciennes dans SongView</li>\n<li>Correction de bug et optimisation du tri par date dans ListView</li>\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>

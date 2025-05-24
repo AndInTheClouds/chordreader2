@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Einführung zurücksetzen</string>
     <string name="pref_first_run_summary">Willkommensnachricht nochmal zeigen.</string>
     <string name="first_run_title">Willkommen zu Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Was ist neu in Version 2.4.0?</b>\n        <li>Sortierung nach Datum oder Name in Listenansicht</li>\n        <li>Bearbeitungsmodus in Setlist-Ansicht </li>\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
+    <string name="first_run_message">\n<b>Was ist neu in Version 2.4.1?</b>\n     <li>Bugfix Zeilenumbrüche unter *** Kopfzeile beim Speichern eines Liedes #60</li>\n<li>Voreinstellung für Minuten zum Beibehalten des Bildschirms hinzugefügt</li>\n<li>Refactor Massenlöschung von Dateien</li>\n<li>Bugfix Anpassung der Autoscroll-Geschwindigkeit nach Update per EditView</li>\n<li>Bugfix Textskalierung auf älteren Tablets in SongView</li>\n<li>Bugfix und Optimierung der Sortierung nach Datum in ListView</li>\nChordReader 2 ist eine <b>Open Source Software</b>.</string>
     <string name="unsaved_changes">Ungespeicherte Änderungen</string>
     <string name="unsaved_changes_message">Möchtest du deine Änderungen speichern?</string>
     <string name="closing_chordreader">ChordReader schließen</string>
