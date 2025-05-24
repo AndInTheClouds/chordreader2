@@ -120,32 +120,77 @@ public class SaveFileHelper {
         }
     }
 
-    public static void deleteFile(Context context, String filename) {
-        if (SDK_INT < Build.VERSION_CODES.O) {
+    public static boolean deleteFile(Context context, ArrayList<String> fileList) {
 
-            File catalogDir = getBaseDirectory();
-            File file = new File(catalogDir, filename);
+        final boolean[] result = {false};
 
-            if (file.exists())
-                file.delete();
+        // do in background to avoid jankiness
+        final CountDownLatch latch = new CountDownLatch(1);
 
-        } else {
-            ArrayList<String> fileNames = new ArrayList<>();
-            fileNames.add(filename);
+        HandlerThread handlerThread = new HandlerThread("DeleteFileHandlerThread");
+        handlerThread.start();
 
-            Uri fileUri = getFileUri(context, fileNames).get(0);
+        Handler asyncHandler = new Handler(handlerThread.getLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
 
-            DocumentFile file = null;
+                result[0] = (boolean) msg.obj;
 
-            if (fileUri != null)
-                file = DocumentFile.fromSingleUri(
-                        context,
-                        fileUri);
+                latch.countDown();
 
-            if (file != null && file.exists()) {
-                file.delete();
+                handlerThread.quit();
             }
+        };
+
+        Runnable runnable = () -> {
+            Message message = new Message();
+
+            for (String filename : fileList) {
+
+                if (SDK_INT < Build.VERSION_CODES.O) {
+
+                    File catalogDir = getBaseDirectory();
+                    File file = new File(catalogDir, filename);
+
+                    if (file.exists())
+                        file.delete();
+
+                } else {
+                    ArrayList<String> fileNames = new ArrayList<>();
+                    fileNames.add(filename);
+
+                    Uri fileUri = getFileUri(context, fileNames).get(0);
+
+                    DocumentFile file = null;
+
+                    if (fileUri != null)
+                        file = DocumentFile.fromSingleUri(
+                                context,
+                                fileUri);
+
+                    if (file != null && file.exists()) {
+                        file.delete();
+                    }
+                }
+
+            }
+
+            message.obj = true;
+
+            asyncHandler.sendMessage(message);
+        };
+
+        asyncHandler.post(runnable);
+
+        // wait for async opening result
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        return result[0];
     }
 
     public static String[] getSavedFileNames(Context context, String fileExtension) {

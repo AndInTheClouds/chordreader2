@@ -13,6 +13,8 @@ public class DataViewModel extends ViewModel {
 
     private MutableLiveData<String> setListMLD = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> setListSongsMLD;
+    private final MutableLiveData<Boolean> deleteFileMLD = new MutableLiveData<>();
+
 
     public void setSetListMLD(String setlist) {
         if (setListMLD == null)
@@ -28,6 +30,8 @@ public class DataViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<String>> getSetListSongsMLD() { return setListSongsMLD; }
+
+    public MutableLiveData<Boolean> getDeleteFileMLD() { return deleteFileMLD; }
 
     public void setSetListSongs(ArrayList<String> setListSongs) {
         this.setListSongs = setListSongs;

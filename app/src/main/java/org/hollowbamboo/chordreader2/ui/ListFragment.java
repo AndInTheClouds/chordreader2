@@ -154,10 +154,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         applyColorScheme();
 
-        //restore filter
-        String filterText = filterEditText.getText().toString();
-        if (!(filterEditText.getText().toString().equals("")))
-            this.fileListAdapter.getFilter().filter(filterText);
+        restoreFilter();
     }
 
     @Override
@@ -623,22 +620,34 @@ public class ListFragment extends Fragment implements TextWatcher {
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         // ok, delete
 
-                        for (String s : filenameArray) {
+                        for (int i = 0; i < filenameArray.size(); i++) {
+                            String s = filenameArray.get(i);
+
                             String fileName = "";
                             if (Objects.equals(dataViewModel.mode, MODE_SONGS))
                                 fileName = s.concat(".txt");
                             else if (Objects.equals(dataViewModel.mode, MODE_SETLIST))
                                 fileName = s.concat(".pl");
-                            SaveFileHelper.deleteFile(requireContext(), fileName);
+                            filenameArray.set(i, fileName);
                         }
-                        setUpInstance();
 
-                        String toastText = String.format(getText(R.string.files_deleted).toString(), finalDeleteCount);
-                        Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+                        boolean result = SaveFileHelper.deleteFile(requireContext(), filenameArray);
 
-                        cancelSelectionMode();
-                        dialog.dismiss();
+                        dataViewModel.getDeleteFileMLD().setValue(result);
 
+                        dataViewModel.getDeleteFileMLD().observe(getViewLifecycleOwner(), deletionFinished -> {
+                            if (deletionFinished) {
+                                setUpInstance();
+
+                                restoreFilter();
+
+                                String toastText = String.format(getText(R.string.files_deleted).toString(), finalDeleteCount);
+                                Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+
+                                cancelSelectionMode();
+                                dialog.dismiss();
+                            }
+                        });
                     });
             builder.setNegativeButton(android.R.string.cancel, null);
             builder.show();
@@ -722,5 +731,11 @@ public class ListFragment extends Fragment implements TextWatcher {
             }
             fileListAdapter.sortByLastModified();
         }
+    }
+
+    private void restoreFilter() {
+        String filterText = filterEditText.getText().toString();
+        if (!(filterEditText.getText().toString().equals("")))
+            this.fileListAdapter.getFilter().filter(filterText);
     }
 }

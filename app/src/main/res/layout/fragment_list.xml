@@ -2,13 +2,6 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="listViewModel"
-            type="org.hollowbamboo.chordreader2.model.ListFragmentViewModel" />
-    </data>
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/song_list_main_view"
         android:layout_width="match_parent"
