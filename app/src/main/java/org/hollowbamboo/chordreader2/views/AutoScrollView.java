@@ -20,6 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -292,6 +293,45 @@ public class AutoScrollView extends ScrollView {
             super.onTouchEvent(event);
         }
         return false;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Handle arrow keys to pause/resume autoscroll, just like touch events
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        
+        // Check if it's an arrow key
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP || 
+            keyCode == KeyEvent.KEYCODE_DPAD_DOWN ||
+            keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
+            keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            
+            if (action == KeyEvent.ACTION_DOWN) {
+                // Key pressed - pause autoscroll like touch down
+                this.isTouched = true;
+                if(this.isAutoScrollOn()) {
+                    this.stopAutoScroll();
+                }
+            } else if (action == KeyEvent.ACTION_UP) {
+                // Key released - resume autoscroll like touch up
+                this.isTouched = false;
+                if(this.isAutoScrollOn()) {
+                    this.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!AutoScrollView.this.isFlingActive() && 
+                               AutoScrollView.this.isAutoScrollOn() && 
+                               !AutoScrollView.this.isAutoScrollActive()) {
+                                AutoScrollView.this.startAutoScroll();
+                            }
+                        }
+                    }, 100);
+                }
+            }
+        }
+        
+        return super.dispatchKeyEvent(event);
     }
 
 
