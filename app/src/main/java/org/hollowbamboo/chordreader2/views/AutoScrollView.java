@@ -297,24 +297,31 @@ public class AutoScrollView extends ScrollView {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        // Handle arrow keys to pause/resume autoscroll, just like touch events
+        // Handle arrow keys with scrolling for bluetooth control devices (e.g. STOMP foot pedals)
         int action = event.getAction();
         int keyCode = event.getKeyCode();
         
-        // Check if it's an arrow key
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP || 
-            keyCode == KeyEvent.KEYCODE_DPAD_DOWN ||
-            keyCode == KeyEvent.KEYCODE_DPAD_LEFT || 
-            keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
             
             if (action == KeyEvent.ACTION_DOWN) {
-                // Key pressed - pause autoscroll like touch down
                 this.isTouched = true;
                 if(this.isAutoScrollOn()) {
                     this.stopAutoScroll();
                 }
+                
+                final int SCROLL_AMOUNT = 200;
+                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                    smoothScrollBy(0, -SCROLL_AMOUNT);
+                } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                    smoothScrollBy(0, SCROLL_AMOUNT);
+                }
+                // Left/Right arrows do nothing
+                
+                return true; // Consume the event - prevent default behavior
+                
             } else if (action == KeyEvent.ACTION_UP) {
-                // Key released - resume autoscroll like touch up
+                // Key released - resume autoscroll after animation completes
                 this.isTouched = false;
                 if(this.isAutoScrollOn()) {
                     this.postDelayed(new Runnable() {
@@ -326,8 +333,9 @@ public class AutoScrollView extends ScrollView {
                                 AutoScrollView.this.startAutoScroll();
                             }
                         }
-                    }, 100);
+                    }, 250);
                 }
+                return true;
             }
         }
         
