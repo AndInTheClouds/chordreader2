@@ -221,7 +221,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         webView.restoreState(getArguments().getBundle("webViewState"));
 
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(this, "HTMLOUT");
+        webView.addJavascriptInterface(new HtmlBridge(), "HTMLOUT");
 
         ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(requireContext(), new MyScaleListener());
 
@@ -370,16 +370,19 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         webView.loadUrl(url);
     }
 
-    @SuppressWarnings("unused")
-    @JavascriptInterface
-    public void showHTML(String html) {
+    private final class HtmlBridge {
 
-        Log.d(LOG_TAG,"html is %s..." + (html != null ? (html.substring(0, Math.min(html.length(), 30))) : null));
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void showHTML(String html) {
 
-        webSearchViewModel.setHtml(html);
+            Log.d(LOG_TAG, "html is %s..." + (html != null ? (html.substring(0, Math.min(html.length(), 30))) : null));
 
-        handler.post(this::urlAndHtmlLoaded);
+            webSearchViewModel.setHtml(html);
 
+            handler.post(WebSearchFragment.this::urlAndHtmlLoaded);
+
+        }
     }
 
     private void urlAndHtmlLoaded() {
