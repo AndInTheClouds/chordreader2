@@ -20,6 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -292,6 +293,53 @@ public class AutoScrollView extends ScrollView {
             super.onTouchEvent(event);
         }
         return false;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Handle arrow keys with scrolling for bluetooth control devices (e.g. STOMP foot pedals)
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP || 
+            keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+            
+            if (action == KeyEvent.ACTION_DOWN) {
+                this.isTouched = true;
+                if(this.isAutoScrollOn()) {
+                    this.stopAutoScroll();
+                }
+                
+                final int SCROLL_AMOUNT = 200;
+                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                    smoothScrollBy(0, -SCROLL_AMOUNT);
+                } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                    smoothScrollBy(0, SCROLL_AMOUNT);
+                }
+                // Left/Right arrows do nothing
+                
+                return true; // Consume the event - prevent default behavior
+                
+            } else if (action == KeyEvent.ACTION_UP) {
+                // Key released - resume autoscroll after animation completes
+                this.isTouched = false;
+                if(this.isAutoScrollOn()) {
+                    this.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!AutoScrollView.this.isFlingActive() && 
+                               AutoScrollView.this.isAutoScrollOn() && 
+                               !AutoScrollView.this.isAutoScrollActive()) {
+                                AutoScrollView.this.startAutoScroll();
+                            }
+                        }
+                    }, 250);
+                }
+                return true;
+            }
+        }
+        
+        return super.dispatchKeyEvent(event);
     }
 
 
