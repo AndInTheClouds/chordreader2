@@ -16,7 +16,7 @@ public class ChordParser {
 	private static final UtilLogger log = new UtilLogger(org.hollowbamboo.chordreader2.chords.regex.ChordParser.class);
 	// characters that may show up in a written chord
 	private static final Pattern TOKEN_PATTERN = Pattern.compile("[\\w#♯♭+/]+"); //support unicode #,b
-	private static final Pattern FOLLOW_UP_WORD_PATTERN = Pattern.compile("([A-Z])\\w+|[a-z]+");
+	private static final Pattern LOWERCASE_WORD_PATTERN = Pattern.compile("[a-z]+");
 
 
 	/**
@@ -212,6 +212,14 @@ public class ChordParser {
 
 				}
 
+				// case where a single letter is followed by an apostrophe (French words: "C'est", "D'habitude", etc.)
+				if (candidateChordString.length() == 1
+						&& candidateChordInText.getEndIndex() - offset < line.length()
+						&& line.charAt(candidateChordInText.getEndIndex() - offset) == '\'') {
+					// unlikely to be a chord
+					continue;
+				}
+
 				// case where "Am" is followed by "I"
 				if (candidateChordString.equals("Am")
 						&& i + 1 < tokens.length
@@ -223,7 +231,7 @@ public class ChordParser {
 				// case where "A" or "Am" is followed by a lowercase word, e.g. "lady" or capitalised e.g. "Lady"
 				if ((candidateChordString.equals("A") || candidateChordString.equals("Am"))
 						&& i + 1 < tokens.length
-						&& FOLLOW_UP_WORD_PATTERN.matcher(tokens[i + 1].getToken()).matches()
+						&& LOWERCASE_WORD_PATTERN.matcher(tokens[i + 1].getToken()).matches()
 						&& StringUtil.isAllWhitespace(line.substring(tokens[i].getEndIndex(), tokens[i+1].getStartIndex()))) {
 					// unlikely to be a chord
 					continue;
