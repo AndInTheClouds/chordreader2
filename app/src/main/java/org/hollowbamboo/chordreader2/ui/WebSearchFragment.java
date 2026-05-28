@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -38,6 +39,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -177,8 +179,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         assert getArguments() != null;
         getArguments().putBundle("webViewState", bundle);
 
-        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+        Activity activity = getActivity();
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+        }
     }
 
     private void setUpMenu() {
@@ -288,12 +293,14 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         } else if(id == R.id.find_chords_message_secondary_view) {
             showConfirmChordChartDialog(webSearchViewModel.analyzeHtml());
         } else if(id == R.id.find_chords_edit_text) {
-            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
             searchEditText.requestFocus();
 
-            // show keyboard
-
-            imm.showSoftInput(searchEditText, 0);
+            Activity activity = getActivity();
+            if (activity != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchEditText, 0); // show keyboard
+            }
         }
     }
 
@@ -308,10 +315,19 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     private void prepareQuerySaver() {
         long queryLimit = System.currentTimeMillis() - HISTORY_WINDOW;
-        try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext())) {
+
+        final Context context = getContext();
+        if (context == null) {
+            // Fragment nicht angehängt
+            return;
+        }
+
+        try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(context)) {
             List<String> queries = dbHelper.findAllQueries(queryLimit, "");
-            queryAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, queries);
+            queryAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, queries);
             searchEditText.setAdapter(queryAdapter);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "prepareQuerySaver failed", e);
         }
     }
 
@@ -346,7 +362,10 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         } else if (url != null) {
             loadUrl(url);
         } else {
-            requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); //show keyboard immediately
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); //show keyboard immediately
+            }
         }
 
     }
@@ -420,8 +439,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
 
         // dismiss soft keyboard
-        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+        Activity activity = getActivity();
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+        }
 
         String searchText = (searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim());
 
@@ -510,10 +532,16 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(alertDialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        alertDialog.getWindow().setAttributes(lp);
+
+        Window window = alertDialog.getWindow();
+
+        if (window != null) {
+            lp.copyFrom(window.getAttributes());
+
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            window.setAttributes(lp);
+        }
     }
 
     protected void animationBlink(ImageView imageView) {

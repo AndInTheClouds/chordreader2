@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -161,8 +162,11 @@ public class ListFragment extends Fragment implements TextWatcher {
     public void onPause() {
         super.onPause();
 
-        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(filterEditText.getWindowToken(), 0);
+        Activity activity = getActivity();
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(filterEditText.getWindowToken(), 0);
+        }
     }
 
     @Override
@@ -254,13 +258,15 @@ public class ListFragment extends Fragment implements TextWatcher {
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
         editText.setOnFocusChangeListener((v, hasFocus) -> {
-            InputMethodManager imm = (InputMethodManager)
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            if (v.requestFocus())
-                editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
-            else
-                imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            Activity activity = getActivity();
+            if (activity != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (v.requestFocus())
+                    editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
+                else
+                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
         });
 
         editText.setText(R.string.new_setlist);
@@ -546,6 +552,12 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         List<String> result = new ArrayList<>();
 
+        final Context context = getContext();
+        if (context == null) {
+            // Fragment nicht angehängt
+            return result;
+        }
+
         // do in background to avoid jankiness
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -558,7 +570,9 @@ public class ListFragment extends Fragment implements TextWatcher {
                 super.handleMessage(msg);
                 String[] fileList = (String[]) msg.obj;
 
-                result.addAll(Arrays.asList(fileList));
+                if (fileList != null) {
+                    result.addAll(Arrays.asList(fileList));
+                }
 
                 latch.countDown();
 
@@ -568,7 +582,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         Runnable runnable = () -> {
             Message message = new Message();
-            message.obj = SaveFileHelper.getSavedFileNames(requireContext(), fileExtension);
+            message.obj = SaveFileHelper.getSavedFileNames(context, fileExtension);
 
             asyncHandler.sendMessage(message);
         };
@@ -716,20 +730,25 @@ public class ListFragment extends Fragment implements TextWatcher {
         if (isStateToChange)
             isSortedbyName = !isSortedbyName;
 
-        if (isSortedbyName) {
-            drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_by_size, null);
-            if (menu != null) {
-                menu.findItem(R.id.menu_sort_by).setIcon(drawable);
-                menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_by_date));
+        try {
+            if (isSortedbyName) {
+                drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_by_size, null);
+                if (menu != null) {
+                    menu.findItem(R.id.menu_sort_by).setIcon(drawable);
+                    menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_by_date));
+                }
+                fileListAdapter.sortByName();
+            } else {
+                drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_alphabetically, null);
+                if (menu != null) {
+                    menu.findItem(R.id.menu_sort_by).setIcon(drawable);
+                    menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_az));
+                }
+                fileListAdapter.sortByLastModified();
             }
-            fileListAdapter.sortByName();
-        } else {
-            drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_alphabetically, null);
-            if (menu != null) {
-                menu.findItem(R.id.menu_sort_by).setIcon(drawable);
-                menu.findItem(R.id.menu_sort_by).setTitle(getString(R.string.sort_az));
-            }
-            fileListAdapter.sortByLastModified();
+        }
+        catch (Error e) {
+            // "nothing"
         }
     }
 

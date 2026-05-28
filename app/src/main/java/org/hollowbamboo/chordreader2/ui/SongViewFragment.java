@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -49,6 +50,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -74,6 +76,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
@@ -178,6 +181,11 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
+
+        if (releaseWakeLockCountDownTimer != null) {
+            releaseWakeLockCountDownTimer.cancel();
+            releaseWakeLockCountDownTimer = null;
+        }
 
         quickReleaseWakeLock();
     }
@@ -566,36 +574,69 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void releaseWakeLock() {
-        Log.d("SongViewFragment", String.valueOf(PreferenceHelper.getWakeLockDuration(requireContext())));
 
-        int expireMillis = Integer.parseInt(PreferenceHelper.getWakeLockDuration(requireContext())) * 60 * 1000;
+        Context context = getContext();
+
+        if (context == null || !isAdded()) {
+            Log.d(LOG_TAG, "releaseWakeLock skipped: fragment not attached");
+            return;
+        }
+
+        Log.d("SongViewFragment", String.valueOf(PreferenceHelper.getWakeLockDuration(context)));
+
+        int expireMillis;
+        try {
+            expireMillis = Integer.parseInt(PreferenceHelper.getWakeLockDuration(context)) * 60 * 1000;
+        } catch (NumberFormatException e) {
+            Log.d(LOG_TAG, "Invalid wakelock duration in preferences");
+            return;
+        }
+
+        if (releaseWakeLockCountDownTimer != null) {
+            releaseWakeLockCountDownTimer.cancel();
+        }
+
         releaseWakeLockCountDownTimer = new CountDownTimer(expireMillis, 1000) {
 
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
-                try {
-                    requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    Log.d(LOG_TAG, "Released wakelock");
-                } catch (IllegalStateException e) {
-                    Log.d("SongViewFragment", "Fragment not attached to activity");
+                if (isAdded() && getActivity() != null) {
+                    try {
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                        Log.d(LOG_TAG, "Released wakelock");
+                    } catch (IllegalStateException e) {
+                        Log.d(LOG_TAG, "Fragment not attached to activity in onFinish");
+                    }
+                } else {
+                    Log.d(LOG_TAG, "Fragment not attached to activity onFinish");
                 }
             }
         }.start();
 
         Date expireDate = new Date(System.currentTimeMillis() + expireMillis);
 
-        String logMesasge = "Release wake lock at: " + expireDate;
-        Log.d("SongViewFragment", logMesasge);
+        Log.d("SongViewFragment", "Release wake lock at: " + expireDate);
     }
 
-    private void quickReleaseWakeLock() {
-        try {
-            requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            Log.d(LOG_TAG, "Released wakelock");
-        } catch (IllegalStateException e) {
-            Log.d("SongViewFragment", "Fragment not attached to activity");
+    public void quickReleaseWakeLock() {
+        if (isAdded() && getActivity() != null) {
+            try {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                Log.d(LOG_TAG, "Released wakelock");
+            } catch (IllegalStateException e) {
+                Log.d(LOG_TAG, "Fragment not attached to activity");
+            }
+        } else {
+            Log.d(LOG_TAG, "quickReleaseWakeLock skipped: fragment not attached");
+        }
+    }
+
+    public void cancelReleaseWakeLockTimer() {
+        if (releaseWakeLockCountDownTimer != null) {
+            releaseWakeLockCountDownTimer.cancel();
+            releaseWakeLockCountDownTimer = null;
         }
     }
 
@@ -681,11 +722,19 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         else
             subsequentSong = dataViewModel.setListSongs.get(indexCurrentSong - 1);
 
-        SongViewFragmentDirections.ActionNavSongViewSelf action =
-                SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null, null);
+        try {
+            SongViewFragmentDirections.ActionNavSongViewSelf action =
+                    SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null, null);
 
-        if (getParentFragment() != null) {
-            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
+            assert getParentFragment() != null;
+            NavController navController = Navigation.findNavController(getParentFragment().requireView());
+
+            if (navController != null) {
+                navController.navigate(action);
+            }
+
+        } catch (IllegalStateException e) {
+            Log.e(LOG_TAG, "Fragment not attached when navigating to next song", e);
         }
     }
 
@@ -844,13 +893,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER);
         editText.setOnFocusChangeListener((v, hasFocus) -> {
-            InputMethodManager imm = (InputMethodManager)
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            if (v.requestFocus())
-                editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
-            else
-                imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            Activity activity = getActivity();
+            if (activity != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (v.requestFocus())
+                    editText.post(() -> imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT));
+                else
+                    imm.showSoftInput(v, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
         });
 
         editText.setText(songViewFragmentViewModel.filename);
@@ -1007,7 +1057,10 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         alertDialog.show();
 
         //TODO: didn't found a solution to let alert dialog wrap content, so set fixed pixel density dependent value
-        alertDialog.getWindow().setLayout((int) (240 * Resources.getSystem().getDisplayMetrics().density), (int) (350 * Resources.getSystem().getDisplayMetrics().density));
+        Window window = alertDialog.getWindow();
+        if (window != null) {
+            window.setLayout((int) (240 * Resources.getSystem().getDisplayMetrics().density), (int) (350 * Resources.getSystem().getDisplayMetrics().density));
+        }
     }
 
     private void createTransposeDialog() {
@@ -1368,10 +1421,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(Objects.requireNonNull(alertDialog.getWindow()).getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-            alertDialog.getWindow().setAttributes(lp);
+
+            Window window = alertDialog.getWindow();
+            if (window != null) {
+                lp.copyFrom(window.getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                window.setAttributes(lp);
+            }
 
             return alertDialog;
         }
