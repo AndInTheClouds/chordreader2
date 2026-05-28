@@ -344,7 +344,11 @@ public class ListFragment extends Fragment implements TextWatcher {
                 if (isSelectionModeActive && !dataViewModel.mode.equals(MODE_SETLIST_SONG_SELECTION)) {
                     cancelSelectionMode();
                 } else if (getParentFragment() != null) {
-                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    try {
+                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    } catch (IllegalStateException e) {
+                        Log.e("ListFragment", "Error navigating back from setlist", e);
+                    }
                 }
             }
         };
@@ -391,7 +395,11 @@ public class ListFragment extends Fragment implements TextWatcher {
                 okButton.setVisibility(View.VISIBLE);
                 okButton.setOnClickListener(view -> {
                     if (getParentFragment() != null) {
-                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                        try {
+                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                        } catch (IllegalStateException e) {
+                            Log.e("ListFragment", "Error navigating back from setlist", e);
+                        }
                     }
                 });
 
@@ -554,7 +562,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         final Context context = getContext();
         if (context == null) {
-            // Fragment nicht angehängt
+            Log.d("ListFragment", "releaseWakeLock skipped: fragment not attached");
             return result;
         }
 

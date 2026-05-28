@@ -207,7 +207,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                     if(webView.copyBackForwardList().getCurrentIndex() > 0) {
                         webView.goBack();
                     } else if (getParentFragment() != null) {
-                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                        try {
+                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                        } catch (IllegalStateException e) {
+                            Log.e(LOG_TAG, "Error navigating back from setlist", e);
+                        }
                     }
                     return true;
                 }
@@ -314,13 +318,14 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     }
 
     private void prepareQuerySaver() {
-        long queryLimit = System.currentTimeMillis() - HISTORY_WINDOW;
-
         final Context context = getContext();
+
         if (context == null) {
-            // Fragment nicht angehängt
+            Log.d(LOG_TAG, "prpareQuerySaver skipped: fragment not attached");
             return;
         }
+
+        long queryLimit = System.currentTimeMillis() - HISTORY_WINDOW;
 
         try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(context)) {
             List<String> queries = dbHelper.findAllQueries(queryLimit, "");
@@ -338,7 +343,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 if(webView.copyBackForwardList().getCurrentIndex() > 0) {
                     webView.goBack();
                 } else if (getParentFragment() != null) {
-                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    try {
+                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                    } catch (IllegalStateException e) {
+                        Log.e(LOG_TAG, "Error navigating back from setlist", e);
+                    }
                 }
             }
         };

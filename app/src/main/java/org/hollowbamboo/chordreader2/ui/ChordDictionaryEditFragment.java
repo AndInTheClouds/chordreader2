@@ -20,6 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,11 +103,20 @@ public class ChordDictionaryEditFragment extends Fragment implements View.OnClic
         int id = view.getId();
         if(id == R.id.chord_edit_save_button) {
             updateChordDictionary();
-            if (getParentFragment() != null)
-                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            if (getParentFragment() != null) {
+                try {
+                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                } catch (IllegalStateException e) {
+                    Log.e("ChordDictionaryEditFrag", "Error navigating back from setlist", e);
+                }
+            }
         } else if(id == R.id.chord_edit_cancel_button) {
             if (getParentFragment() != null) {
-                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                try {
+                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                } catch (IllegalStateException e) {
+                    Log.e("ChordDictionaryEditFrag", "Error navigating back from setlist", e);
+                }
             }
         } else if(id == R.id.add_chord_var_button) {
             addChordVar();

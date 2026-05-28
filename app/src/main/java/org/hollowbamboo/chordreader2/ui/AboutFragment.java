@@ -97,9 +97,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (getParentFragment() != null) {
-            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-        }
+            if (getParentFragment() != null) {
+                try {
+                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                } catch (IllegalStateException e) {
+                    Log.e("About Activity", "Error navigating back from setlist", e);
+                }
+            }
     }
 
     public void initializeWebView() {

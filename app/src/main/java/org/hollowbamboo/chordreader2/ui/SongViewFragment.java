@@ -513,8 +513,12 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private void proceedAfterSaving() {
         if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_EXIT) {
-            if (getParentFragment() != null) {
-                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+            if (isAdded() && getParentFragment() != null) {
+                try {
+                    Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                } catch (IllegalStateException e) {
+                    Log.e(LOG_TAG, "Error navigating back from setlist", e);
+                }
             }
         } else if (howToProceedAfterSaving == POST_SAVE_PROCEEDING_NEXT_SONG) {
             openNextSong(true);
@@ -727,11 +731,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     SongViewFragmentDirections.actionNavSongViewSelf(null, subsequentSong, null, null);
 
             assert getParentFragment() != null;
-            NavController navController = Navigation.findNavController(getParentFragment().requireView());
-
-            if (navController != null) {
-                navController.navigate(action);
-            }
+            Navigation.findNavController(getParentFragment().requireView()).navigate(action);
 
         } catch (IllegalStateException e) {
             Log.e(LOG_TAG, "Fragment not attached when navigating to next song", e);
