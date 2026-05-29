@@ -82,6 +82,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class ListFragment extends Fragment implements TextWatcher {
 
+    private static final String LOG_TAG = "ListFragment";
     private static final String MODE_SETLIST = "Setlists";
     private static final String MODE_SONGS = "Songs";
     private static final String MODE_SETLIST_SONG_SELECTION = "SetlistSongsSelection";
@@ -104,7 +105,7 @@ public class ListFragment extends Fragment implements TextWatcher {
     private FragmentListBinding binding;
 
     private boolean isSelectionModeActive;
-    private boolean isSortedbyName = true;
+    private boolean isSortedByName = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -249,7 +250,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void newSetListDialog() {
 
-        if (!checkSdCard()) {
+        if (isSdCardUnavailable()) {
             return;
         }
 
@@ -347,7 +348,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                     try {
                         Navigation.findNavController(getParentFragment().requireView()).popBackStack();
                     } catch (IllegalStateException e) {
-                        Log.e("ListFragment", "Error navigating back from setlist", e);
+                        Log.e(LOG_TAG, "Error navigating back from setlist", e);
                     }
                 }
             }
@@ -366,7 +367,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         if (dataViewModel.mode.equals(MODE_SONGS))
             dataViewModel.resetData();
 
-        if (!checkSdCard()) {
+        if (isSdCardUnavailable()) {
             return;
         }
 
@@ -398,7 +399,7 @@ public class ListFragment extends Fragment implements TextWatcher {
                         try {
                             Navigation.findNavController(getParentFragment().requireView()).popBackStack();
                         } catch (IllegalStateException e) {
-                            Log.e("ListFragment", "Error navigating back from setlist", e);
+                            Log.e(LOG_TAG, "Error navigating back from setlist", e);
                         }
                     }
                 });
@@ -562,7 +563,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         final Context context = getContext();
         if (context == null) {
-            Log.d("ListFragment", "releaseWakeLock skipped: fragment not attached");
+            Log.d(LOG_TAG, "releaseWakeLock skipped: fragment not attached");
             return result;
         }
 
@@ -574,7 +575,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         Handler asyncHandler = new Handler(handlerThread.getLooper()) {
             @Override
-            public void handleMessage(Message msg) {
+            public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 String[] fileList = (String[]) msg.obj;
 
@@ -601,7 +602,7 @@ public class ListFragment extends Fragment implements TextWatcher {
         try {
             latch.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Error measuring view pager height", e);
         }
 
         if (result.isEmpty())
@@ -611,27 +612,27 @@ public class ListFragment extends Fragment implements TextWatcher {
     }
 
 
-    private boolean checkSdCard() {
+    private boolean isSdCardUnavailable() {
 
         boolean result = SaveFileHelper.checkIfSdCardExists();
 
         if (!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
         }
-        return result;
+        return !result;
     }
 
 
     protected void verifyDelete() {
 
-        if (!checkSdCard()) {
+        if (isSdCardUnavailable()) {
             return;
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         final ArrayList<String> filenameArray = fileListAdapter.getSelectedFiles();
-        Log.d("ListFragment", filenameArray.toString());
+        Log.d(LOG_TAG, filenameArray.toString());
         final int finalDeleteCount = filenameArray.size();
 
         if (finalDeleteCount > 0) {
@@ -736,10 +737,10 @@ public class ListFragment extends Fragment implements TextWatcher {
 
         //toggle state
         if (isStateToChange)
-            isSortedbyName = !isSortedbyName;
+            isSortedByName = !isSortedByName;
 
         try {
-            if (isSortedbyName) {
+            if (isSortedByName) {
                 drawable = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_sort_by_size, null);
                 if (menu != null) {
                     menu.findItem(R.id.menu_sort_by).setIcon(drawable);
@@ -762,7 +763,7 @@ public class ListFragment extends Fragment implements TextWatcher {
 
     private void restoreFilter() {
         String filterText = filterEditText.getText().toString();
-        if (!(filterEditText.getText().toString().equals("")))
+        if (!(filterEditText.getText().toString().isEmpty()))
             this.fileListAdapter.getFilter().filter(filterText);
     }
 }

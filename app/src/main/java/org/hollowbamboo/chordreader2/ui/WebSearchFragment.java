@@ -22,7 +22,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -68,7 +67,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.hollowbamboo.chordreader2.R;
-import org.hollowbamboo.chordreader2.chords.NoteNaming;
 import org.hollowbamboo.chordreader2.data.ColorScheme;
 import org.hollowbamboo.chordreader2.databinding.FragmentWebSearchBinding;
 import org.hollowbamboo.chordreader2.db.ChordReaderDBHelper;
@@ -197,22 +195,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int itemId = menuItem.getItemId();
-                if(itemId == R.id.menu_stop) {
+                if (itemId == R.id.menu_stop) {
                     stopWebView();
                     return true;
-                } else if(itemId == R.id.menu_refresh) {
+                } else if (itemId == R.id.menu_refresh) {
                     refreshWebView();
-                    return true;
-                } else if(itemId == android.R.id.home) {
-                    if(webView.copyBackForwardList().getCurrentIndex() > 0) {
-                        webView.goBack();
-                    } else if (getParentFragment() != null) {
-                        try {
-                            Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-                        } catch (IllegalStateException e) {
-                            Log.e(LOG_TAG, "Error navigating back from setlist", e);
-                        }
-                    }
                     return true;
                 }
                 return false;
@@ -226,8 +213,12 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     private void setUpWebView() {
         webView.setWebViewClient(webSearchViewModel.getClient());
 
-        assert getArguments() != null;
-        webView.restoreState(getArguments().getBundle("webViewState"));
+        if (getArguments() != null) {
+            Bundle bundle = getArguments().getBundle("webViewState");
+
+            if (bundle != null)
+                webView.restoreState(bundle);
+        }
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new HtmlBridge(), "HTMLOUT");
@@ -236,7 +227,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         View.OnTouchListener touchListener = (v, event) -> {
 
-            if(event.getPointerCount() == 2) {
+            if (event.getPointerCount() == 2) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
@@ -279,7 +270,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-        if(event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
             performSearch();
             return true;
         }
@@ -292,11 +283,11 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     public void onClick(View view) {
         int id = view.getId();
 
-        if(id == R.id.find_chords_search_button) {
+        if (id == R.id.find_chords_search_button) {
             performSearch();
-        } else if(id == R.id.find_chords_message_secondary_view) {
+        } else if (id == R.id.find_chords_message_secondary_view) {
             showConfirmChordChartDialog(webSearchViewModel.analyzeHtml());
-        } else if(id == R.id.find_chords_edit_text) {
+        } else if (id == R.id.find_chords_edit_text) {
 
             searchEditText.requestFocus();
 
@@ -321,7 +312,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         final Context context = getContext();
 
         if (context == null) {
-            Log.d(LOG_TAG, "prpareQuerySaver skipped: fragment not attached");
+            Log.d(LOG_TAG, "prepareQuerySaver skipped: fragment not attached");
             return;
         }
 
@@ -340,13 +331,17 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(webView.copyBackForwardList().getCurrentIndex() > 0) {
-                    webView.goBack();
-                } else if (getParentFragment() != null) {
-                    try {
-                        Navigation.findNavController(getParentFragment().requireView()).popBackStack();
-                    } catch (IllegalStateException e) {
-                        Log.e(LOG_TAG, "Error navigating back from setlist", e);
+                if (webView != null) {
+                    if (webView.copyBackForwardList().getCurrentIndex() > 0) {
+                        webView.goBack();
+                    } else {
+                        if (getParentFragment() != null) {
+                            try {
+                                Navigation.findNavController(getParentFragment().requireView()).popBackStack();
+                            } catch (IllegalStateException e) {
+                                Log.e(LOG_TAG, "Error navigating back from setlist", e);
+                            }
+                        }
                     }
                 }
             }
@@ -393,7 +388,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
     }
 
     private void loadUrl(String url) {
-        Log.d(LOG_TAG,"url is: " + url);
+        Log.d(LOG_TAG, "url is: " + url);
 
         webView.loadUrl(url);
     }
@@ -421,9 +416,9 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         webViewFrame.setVisibility(View.VISIBLE);
         webView.setVisibility(View.VISIBLE);
 
-        Log.d(LOG_TAG,"chordWebpage is: " + webSearchViewModel.getChordWebpage());
+        Log.d(LOG_TAG, "chordWebpage is: " + webSearchViewModel.getChordWebpage());
 
-        if((webSearchViewModel.getChordWebpage() != null && webSearchViewModel.checkHtmlOfKnownWebpage())
+        if ((webSearchViewModel.getChordWebpage() != null && webSearchViewModel.checkHtmlOfKnownWebpage())
                 || webSearchViewModel.getChordWebpage() == null && webSearchViewModel.checkHtmlOfUnknownWebpage()) {
             messageTextView.setText(R.string.chords_found);
             messageSecondaryView.setBackgroundResource(R.drawable.focused_shape);
@@ -456,7 +451,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
         String searchText = (searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim());
 
-        if(TextUtils.isEmpty(searchText)) {
+        if (TextUtils.isEmpty(searchText)) {
             return;
         }
 
@@ -481,7 +476,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
 
     public void saveQuery(String searchText) {
 
-        Log.d(LOG_TAG,"saving: '%s' " + searchText);
+        Log.d(LOG_TAG, "saving: '%s' " + searchText);
 
         try (ChordReaderDBHelper dbHelper = new ChordReaderDBHelper(requireContext())) {
             boolean newQuerySaved = dbHelper.saveQuery(searchText);
@@ -499,9 +494,12 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
         webSearchViewModel.setSearchEngineURL(PreferenceHelper.getSearchEngineURL(requireContext()));
         webSearchViewModel.setNoteNaming(PreferenceHelper.getNoteNaming(requireContext()));
 
-        ColorScheme colorScheme = PreferenceHelper.getColorScheme(getActivity());
+        Activity activity = getActivity();
 
-        mainView.setBackgroundColor(colorScheme.getBackgroundColor(getActivity()));
+        if (activity != null) {
+            ColorScheme colorScheme = PreferenceHelper.getColorScheme(activity);
+            mainView.setBackgroundColor(colorScheme.getBackgroundColor(activity));
+        }
     }
 
 
@@ -511,7 +509,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                 chordInputText,
                 webSearchViewModel.getNoteNaming());
 
-        EditText editText = (EditText) view.findViewById(R.id.conf_chord_edit_text);
+        EditText editText = view.findViewById(R.id.conf_chord_edit_text);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.confirm_chordchart)
@@ -524,7 +522,7 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
                     // get Note naming of spinner and update song setting
                     Spinner spinner = view.findViewById(R.id.transpose_note_naming_spinner_conf_chords);
                     int noteNamingIndex = DialogHelper.getSpinnerIndex(spinner);
-                    List<String> list= Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
+                    List<String> list = Arrays.asList(getResources().getStringArray(R.array.note_namings_values));
                     String noteNamingString = list.get(noteNamingIndex);
 
                     String chordText = editText.getText().toString();
@@ -569,19 +567,19 @@ public class WebSearchFragment extends Fragment implements TextView.OnEditorActi
             float scaleFactor = scaleGestureDetector.getScaleFactor();
             int textSize = webView.getSettings().getTextZoom();
 
-            webView.getSettings().setTextZoom((int)(textSize * scaleFactor));
+            webView.getSettings().setTextZoom((int) (textSize * scaleFactor));
 
             return true;
         }
 
         @Override
-        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+        public boolean onScaleBegin(@NonNull ScaleGestureDetector scaleGestureDetector) {
 
             return true;
         }
 
         @Override
-        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+        public void onScaleEnd(@NonNull ScaleGestureDetector scaleGestureDetector) {
         }
     }
 }

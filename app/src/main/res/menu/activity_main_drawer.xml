@@ -14,7 +14,7 @@
             android:id="@+id/nav_list_view_setlists"
             android:title="Setlists" />
     </group>
-    <group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
             android:title="@string/settings" />

@@ -13,18 +13,18 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.preference.PreferenceManager;
+
 import android.provider.DocumentsContract;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
+import androidx.annotation.Nullable;
+import androidx.navigation.NavDestination;
+import androidx.preference.PreferenceManager;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -35,7 +35,6 @@ import androidx.core.view.GravityCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -45,17 +44,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 
 import org.hollowbamboo.chordreader2.databinding.ActivityMainBinding;
-import org.hollowbamboo.chordreader2.helper.ChordDictionary;
 import org.hollowbamboo.chordreader2.helper.PreferenceHelper;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener {
 
     private static final int STORAGE_PERMISSION_CODE = 100;
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +66,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(binding.appBarMain.toolbar);
 
         drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        navigationView = binding.navView;
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_start)
+                R.id.nav_start, R.id.nav_list_view, R.id.nav_list_view_setlists, R.id.nav_web_search, R.id.nav_song_view, R.id.nav_drag_list_view)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //NavigationUI.setupWithNavController(navigationView, navController);
 
         navigationView.setNavigationItemSelectedListener(this);
+        navController.addOnDestinationChangedListener(this);
 
         if(!areStoragePermissionsGranted())
             requestPermission();
@@ -97,60 +96,91 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
         int itemId = item.getItemId();
         if(itemId == R.id.nav_web_search) {
             MobileNavigationDirections.ActionDrawerToWebSearchFragment action =
                     MobileNavigationDirections.actionDrawerToWebSearchFragment("", null);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
+            navController.navigate(action);
         } else if(itemId == R.id.nav_list_view) {
             MobileNavigationDirections.ActionDrawerToListFragment action =
                     MobileNavigationDirections.actionDrawerToListFragment("Songs");
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
+            navController.navigate(action);
         } else if(itemId == R.id.nav_list_view_setlists) {
             MobileNavigationDirections.ActionDrawerToListFragment action =
                     MobileNavigationDirections.actionDrawerToListFragment("Setlists");
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
+            navController.navigate(action);
         } else if(itemId == R.id.nav_help) {
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
 
             String sectionID = "";
 
-            Fragment f = navHostFragment.getChildFragmentManager().getFragments().get(0);
-            String tag = f.toString();
+            Fragment f;
+            if (navHostFragment != null) {
+                f = navHostFragment.getChildFragmentManager().getFragments().get(0);
 
-            if (tag.contains("List")) {
-                if (tag.contains("DraggableList"))
-                    sectionID = ". Setlists";
-                else {
-                    Bundle bundle = f.getArguments();
-                    if (bundle != null) {
-                        String mode = bundle.getString("mode");
-                        if (mode.equals("Songs"))
-                            sectionID = ". Song";
-                        else if (mode.equals("Setlists") ||
-                                mode.equals("SetlistSongsSelection"))
-                            sectionID = ". Setlists";
+                String tag = f.toString();
+
+                if (tag.contains("List")) {
+                    if (tag.contains("DraggableList"))
+                        sectionID = ". Setlists";
+                    else {
+                        Bundle bundle = f.getArguments();
+                        if (bundle != null) {
+                            String mode = bundle.getString("mode");
+                            if (mode != null && mode.equals("Songs")) sectionID = ". Song";
+                        }
                     }
-                }
-            } else if (tag.contains("SongView"))
-                sectionID = ". Song";
-            else if (tag.contains("WebSearch"))
-                sectionID = ". " + getString(R.string.web_search);
+                } else if (tag.contains("SongView"))
+                    sectionID = ". Song";
+                else if (tag.contains("WebSearch"))
+                    sectionID = ". " + getString(R.string.web_search);
+            }
 
             MobileNavigationDirections.ActionDrawerToHelpFragment action =
                     MobileNavigationDirections.actionDrawerToHelpFragment(sectionID);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action);
+            navController.navigate(action);
         } else if(itemId == R.id.nav_settings) {
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_settings);
+            navController.navigate(R.id.nav_settings, null);
         } else if(itemId == R.id.nav_about) {
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_about);
+            navController.navigate(R.id.nav_about, null);
         }
 
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+        MenuItem selectedItem = null;
+
+        if (navDestination.getId() == R.id.nav_list_view) {
+            String mode = bundle != null ? bundle.getString("mode") : "";
+            if ("Setlists".equals(mode)) {
+                selectedItem = navigationView.getMenu().findItem(R.id.nav_list_view_setlists);
+            } else {
+                selectedItem = navigationView.getMenu().findItem(R.id.nav_list_view);
+            }
+        } else if (navDestination.getId() == R.id.nav_song_view) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_list_view);
+        } else if (navDestination.getId() == R.id.nav_drag_list_view) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_list_view_setlists);
+        } else if (navDestination.getId() == R.id.nav_web_search) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_web_search);
+        } else if (navDestination.getId() == R.id.nav_settings) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_settings);
+        } else if (navDestination.getId() == R.id.nav_help) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_help);
+        } else if (navDestination.getId() == R.id.nav_about) {
+            selectedItem = navigationView.getMenu().findItem(R.id.nav_about);
+        }
+
+        if (selectedItem != null) {
+            selectedItem.setChecked(true);
+        }
     }
 
     private void showInitialMessage() {
@@ -160,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Log.e("Main Activity", "PackageManager.NameNotFound", e);
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -174,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.putInt("lastUpdate", versionCode);
                 editor.apply();
             } catch(Throwable t) {
-                // update failed, or cancelled
+                // update failed, or canceled
             }
         }
 
@@ -182,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(isFirstRun) {
 
             View view = View.inflate(this, R.layout.intro_dialog, null);
-            TextView textView = (TextView) view.findViewById(R.id.first_run_text_view);
+            TextView textView = view.findViewById(R.id.first_run_text_view);
             textView.setMovementMethod(LinkMovementMethod.getInstance());
             textView.setText(R.string.first_run_message);
             textView.setLinkTextColor(ColorStateList.valueOf(getResources().getColor(R.color.linkColorBlue)));
@@ -218,14 +248,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ActivityResultLauncher<Intent> directoryPickerResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if (result.getResultCode() == Activity.RESULT_OK) {
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
 
-                                    if (result.getData() != null) {
-                                        Uri uri = result.getData().getData();
+                                if (result.getData() != null) {
+                                    Uri uri = result.getData().getData();
 
+                                    if (uri != null) {
                                         grantUriPermission(getPackageName(), uri,
                                                 Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                                         getContentResolver().takePersistableUriPermission(uri,
@@ -239,24 +268,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         });
 
 
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        DialogInterface.OnClickListener onClickListener = (dialogInterface, i) -> {
 
-                if(SDK_INT >= Build.VERSION_CODES.O) {
+            if(SDK_INT >= Build.VERSION_CODES.O) {
 
-                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                            PreferenceHelper.getStorageLocation(getApplicationContext()));
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                        PreferenceHelper.getStorageLocation(getApplicationContext()));
 
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                    directoryPickerResultLauncher.launch(intent);
-                } else {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                }
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                directoryPickerResultLauncher.launch(intent);
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
             }
         };
 
@@ -302,12 +328,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void attemptToOpenWebViewWithUrlFromIntent(Intent intent) {
         if (intent.getType() == null || !intent.getType().equals("text/plain") ||
-                !intent.getAction().equals(Intent.ACTION_SEND)) {
+                !Objects.equals(intent.getAction(), Intent.ACTION_SEND)) {
             return;
         }
 
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (text != null && text.length() > 0) {
+        if (text != null && !text.isEmpty()) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                     .navigate(MobileNavigationDirections.actionDrawerToWebSearchFragment(null, text));
         }

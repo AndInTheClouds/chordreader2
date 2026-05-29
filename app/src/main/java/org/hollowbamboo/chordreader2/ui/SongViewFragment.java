@@ -76,7 +76,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
@@ -98,10 +97,8 @@ import org.hollowbamboo.chordreader2.model.SongViewFragmentViewModel;
 import org.hollowbamboo.chordreader2.views.AutoScrollView;
 import org.hollowbamboo.chordreader2.views.ChordVisualisationView;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -182,10 +179,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     public void onStop() {
         super.onStop();
 
-        if (releaseWakeLockCountDownTimer != null) {
-            releaseWakeLockCountDownTimer.cancel();
-            releaseWakeLockCountDownTimer = null;
-        }
+        cancelReleaseWakeLockTimer();
 
         quickReleaseWakeLock();
     }
@@ -223,11 +217,6 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     return true;
                 } else if (itemId == R.id.menu_share_file) {
                     shareFile();
-                    return true;
-                } else if (itemId == android.R.id.home) {
-                    howToProceedAfterSaving = POST_SAVE_PROCEEDING_EXIT;
-                    checkForSaving();
-
                     return true;
                 }
 
@@ -530,14 +519,14 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private boolean checkSdCard() {
+    private boolean isSdCardUnavailable() {
 
         boolean result = SaveFileHelper.checkIfSdCardExists();
 
         if (!result) {
             Toast.makeText(getActivity(), getResources().getString(R.string.sd_card_not_found), Toast.LENGTH_SHORT).show();
         }
-        return result;
+        return !result;
     }
 
     private void setTitle(String titleText) {
@@ -586,7 +575,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        Log.d("SongViewFragment", String.valueOf(PreferenceHelper.getWakeLockDuration(context)));
+        Log.d("SongViewFragment", PreferenceHelper.getWakeLockDuration(context));
 
         int expireMillis;
         try {
@@ -884,7 +873,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     protected void showSaveChordTextDialog() {
 
-        if (!checkSdCard()) {
+        if (isSdCardUnavailable()) {
             return;
         }
 
@@ -968,7 +957,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
         List<String> guitarChords = ChordDictionary.getFingerPositionsForChord(requireContext(), chord, null);
 
-        if (guitarChords.size() > 0) {
+        if (!guitarChords.isEmpty()) {
 
             ChordPagerAdapter chordPagerAdapter = new ChordPagerAdapter();
             WrapContentViewPager viewPager = view.findViewById(R.id.chord_visualisation_view_pager);
@@ -1196,7 +1185,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
 
     private void createSetListDialog() {
 
-        if (!checkSdCard()) {
+        if (isSdCardUnavailable()) {
             return;
         }
 
@@ -1243,7 +1232,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e) {
+        public boolean onDoubleTap(@NonNull MotionEvent e) {
 
             if (viewingScrollView.isAutoScrollOn())
                 stopAutoscroll();
@@ -1292,7 +1281,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
     }
 
     // LinkMovementMethod/onTouchEvent needs to be adapted as otherwise linkified chord links will
-    // be triggered till end of line/text view, when linkified chord is last on line
+    // be triggered till end of line/text view, when linkified chord is last on the line
     public static class MyLinkMovementMethod extends LinkMovementMethod {
         private static MyLinkMovementMethod sInstance;
 
@@ -1353,7 +1342,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error measuring view pager height", e);
             }
 
             try {
@@ -1368,7 +1357,7 @@ public class SongViewFragment extends Fragment implements View.OnClickListener {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error measuring view pager width", e);
             }
 
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
