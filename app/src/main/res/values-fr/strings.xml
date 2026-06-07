@@ -62,7 +62,7 @@
     <string name="pref_first_run_title">Réinitialiser l\'introduction</string>
     <string name="pref_first_run_summary">Montrer de nouveau le message d\'introduction.</string>
     <string name="first_run_title">Bienvenue dans Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.4.1 ?</b>\n<li>Correction de bug : nouvelles lignes ajoutées sous la ligne d’en-tête *** lors de la sauvegarde d’une chanson #60</li>\n<li>Ajout d’une préférence pour le nombre de minutes avant que l’écran reste allumé</li>\n<li>Refactorisation de la suppression en masse des fichiers</li>\n<li>Correction de bug : adaptation de la vitesse de défilement automatique après mise à jour dans EditView</li>\n<li>Correction de bug : mise à l’échelle du texte sur les tablettes plus anciennes dans SongView</li>\n<li>Correction de bug et optimisation du tri par date dans ListView</li>\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
+    <string name="first_run_message">\n<b>Quoi de neuf dans la version 2.4.2 ?</b>\n<li>refactor : navigation et mise en évidence du tiroir</li>\n<li>fix : crash lors du changement de chanson en mode setlist</li>\n<li>fix : problème #63 - lettres suivies d\'apostrophes mal reconnues comme accords</li>\n<li>fix : divers crash lors de la navigation</li>\n<li>feat : Ajout de la prise en charge du défilement via les touches fléchées du clavier pour permettre l\'utilisation de tourne-pages Bluetooth.</li>\nChord Reader 2 est un <b>logiciel open source</b>.\n</string>
     <string name="unsaved_changes">Modifications non enregistrées</string>
     <string name="unsaved_changes_message">Voulez-vous enregistrer vos modifications?</string>
     <string name="closing_chordreader">Fermeture ChordReader</string>
@@ -72,7 +72,7 @@
     <string name="No_BPM_found">Aucune valeur BPM trouvée. Veuillez ajuster la valeur souhaitée dans la première ligne.</string>
     <string name="pref_search_engine_title">Moteur de recherche URL</string>
     <string name="new_file">Nouveau fichier</string>
-    <string name="chord_variation_editing">"Édition de variation d'accord"</string>
+    <string name="chord_variation_editing">"Édition de variation d\'accord"</string>
     <string name="no_chord_available_add">Aucun doigté de guitare disponible. S\'il-vous-plait ajoutez.</string>
     <string name="new_setlist">Nouveau setlist</string>
     <string name="manage_saved_setlists">Gérer les setlists</string>

@@ -89,7 +89,7 @@
     <string name="pref_first_run_title">Reset Introduction</string>
     <string name="pref_first_run_summary">Show introductory message again.</string>
     <string name="first_run_title">Welcome to Chord Reader 2!</string>
-    <string name="first_run_message">\n<b>What\'s new in version 2.4.1?</b> \n        <li>Bugfix newlines added below *** header line when saving a song #60</li>\n<li>Preference for Minutes to keep screen on added</li>\n<li>Refactor bulk deletion of files</li>\n<li>Bugfix adapt autoscroll velocity after update per EditView</li>\n<li>Bugfix text scaling on older tablets in SongView</li>\n<li>Bugfix and optimization of sorting by date in ListView</li>\nChord Reader 2 is <b>open source software</b>. \n</string>
+    <string name="first_run_message">" <b>What\'s new in version 2.4.2?</b>          \n <li>refactor: navigation and drawer highlighting</li> \n <li>fix: crash on song switching in setlist mode</li> \n <li>fix: issue #63 - letters followed by apostrophe incorrectly recognized as chords</li> \n <li>fix: misc crashes on navigation</li> \n <li>feature: keyboard arrow key support to scroll added to support bluetooth page turners</li>\n \n  Chord Reader 2 is <b>open source software</b>.  "</string>
     <string name="unsaved_changes">Unsaved Changes</string>
     <string name="unsaved_changes_message">Do you want to save your changes?</string>
     <string name="closing_chordreader">Closing ChordReader</string>

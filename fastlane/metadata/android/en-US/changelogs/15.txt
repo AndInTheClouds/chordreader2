@@ -1,0 +1,6 @@
+- refactor: navigation and drawer highlighting
+- fix: crash on song switching in setlist mode
+- fix: issue #63 - letters followed by apostrophe incorrectly recognized as chords
+- fix: misc crashes on navigation
+- feat: keyboard arrow key support to scroll added
+- refactor(websearch): isolate the WebView JS bridge in a small inner class #71
